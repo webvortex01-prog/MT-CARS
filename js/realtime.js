@@ -69,8 +69,8 @@ window.MTCarsRealtime = (function () {
       } catch (_) {}
     }, 450);
 
-    // 4. Server-Sent Events (SSE) + Hidratação do Banco Persistente (database/mtcars_db.json)
-    if (window.location.protocol.startsWith("http")) {
+    // 4. Server-Sent Events (SSE) + Hidratação do Banco Persistente (Apenas quando rodando no servidor Node local/túnel)
+    if (hasLocalNodeBackend()) {
       connectLocalSSE();
       syncInitialDatabaseWithServer();
     }
@@ -85,6 +85,14 @@ window.MTCarsRealtime = (function () {
         }
       }
     } catch (_) {}
+  }
+
+  function hasLocalNodeBackend() {
+    const h = window.location.hostname || "";
+    const p = window.location.protocol || "";
+    if (!p.startsWith("http")) return false;
+    if (h.includes("github.io") || h.includes("vercel.app") || h.includes("netlify.app")) return false;
+    return true;
   }
 
   async function syncInitialDatabaseWithServer() {
@@ -237,7 +245,7 @@ window.MTCarsRealtime = (function () {
       localStorage.setItem("mtcars_sync_pulse", raw);
     } catch (_) {}
 
-    if (window.location.protocol.startsWith("http")) {
+    if (hasLocalNodeBackend()) {
       try {
         fetch("/api/broadcast", {
           method: "POST",
