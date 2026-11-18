@@ -1,0 +1,5 @@
+node_modules/
+.vercel/
+.env
+database/mtcars_db.json
+*.log

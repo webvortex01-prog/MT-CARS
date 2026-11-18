@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MT CARS | Portal Estadual de Intermediação de Veículos do Mato Grosso</title>
+  <meta name="description" content="A maior corretora e plataforma digital de intermediação de veículos auditados das melhores garagens do Estado de Mato Grosso." />
+
+  <!-- Google Fonts: Inter & Orbitron -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- TailwindCSS CDN com Tema Dark Luxury Automotive -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Orbitron', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen selection:bg-red-600 selection:text-white overflow-x-hidden">
+
+  <!-- ========================================================================
+       MÓDULO 1: VITRINE PÚBLICA E EXPERIÊNCIA DO CLIENTE (BLINDAGEM COMISSÃO)
+       ======================================================================== -->
+  <div id="view-public-vitrine" class="min-h-screen flex flex-col">
+
+    <!-- Top Regional Bar -->
+    <div class="bg-zinc-900/90 border-b border-zinc-800/80 py-2 px-4 text-xs">
+      <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-3">
+          <span class="inline-flex items-center gap-1.5 text-emerald-400 font-bold">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            INTERMEDIAÇÃO SEGURA EM TODO O MATO GROSSO
+          </span>
+          <span id="header-audited-count" class="hidden md:inline-block px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 font-semibold">
+            10 Veículos Auditados em MT
+          </span>
+        </div>
+
+        <!-- Seletor Regional Rápido + Detectar Localização -->
+        <div class="flex flex-wrap items-center gap-2">
+          <select
+            id="header-city-select"
+            onchange="document.getElementById('filter-city-select').value=this.value; MTCarsApp.applyPublicFilters();"
+            class="bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-xs text-zinc-200 outline-none focus:border-red-500"
+          >
+            <option value="">📍 Todo o Mato Grosso (142 Cidades)</option>
+          </select>
+
+          <button
+            id="btn-detect-location"
+            onclick="MTCarsApp.detectUserLocation()"
+            class="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-amber-400 font-semibold flex items-center gap-1.5 transition"
+          >
+            <i data-lucide="locate-fixed" class="w-3.5 h-3.5"></i>
+            <span>📍 Detectar minha localização</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header Principal Fixo -->
+    <header class="glass-header sticky top-0 z-30">
+      <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-4">
+        <!-- Logo MT CARS -->
+        <a href="#" onclick="MTCarsApp.clearPublicFilters(); return false;" class="flex items-center gap-3 group">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center shadow-lg shadow-red-600/30 border border-red-400/30">
+            <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-display text-2xl font-black tracking-wider text-white">MT <span class="text-red-500">CARS</span></span>
+              <span class="px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-extrabold uppercase">Broker Oficial MT</span>
+            </div>
+            <p class="text-[11px] text-zinc-400">Central Estadual de Veículos Verificados • Mato Grosso</p>
+          </div>
+        </a>
+
+        <!-- Ações do Header -->
+        <div class="flex flex-wrap items-center gap-2.5">
+          <!-- Badge Cliente Identificado -->
+          <div
+            id="header-client-badge"
+            onclick="MTCarsApp.openLeadGateModal('Atualizar Seus Dados VIP MT Cars')"
+            class="hidden px-3 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-xs font-bold items-center gap-1.5 cursor-pointer"
+          ></div>
+
+          <button
+            onclick="MTCarsApp.toggleThemeMode()"
+            class="px-3 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-200 font-semibold text-xs flex items-center gap-1.5 transition"
+          >
+            <span id="theme-toggle-label">☀️ Modo Claro</span>
+          </button>
+
+          <button
+            onclick="MTCarsApp.openSellMyCarModal()"
+            class="px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-200 font-semibold text-xs flex items-center gap-1.5 transition"
+          >
+            <i data-lucide="plus-circle" class="w-4 h-4 text-amber-400"></i>
+            <span>Anunciar Meu Carro</span>
+          </button>
+
+          <button
+            onclick="MTCarsApp.openTrackOrderModal()"
+            class="px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-200 font-semibold text-xs flex items-center gap-1.5 transition"
+          >
+            <i data-lucide="file-search" class="w-4 h-4 text-emerald-400"></i>
+            <span class="hidden sm:inline">Rastrear Pedido</span>
+          </button>
+
+          <button
+            onclick="MTCarsApp.switchViewMode('admin')"
+            class="px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white keep-white-text font-bold text-xs flex items-center gap-1.5 transition shadow"
+          >
+            <i data-lucide="radar" class="w-4 h-4"></i>
+            <span>Painel Vendedores</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero & Barra Única de Busca Prática (Visual Clean e Direto ao Ponto) -->
+    <section class="hero-mesh-bg border-b border-zinc-800/80 py-7 px-4">
+      <div class="max-w-7xl mx-auto space-y-5">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-red-500 block mb-1">
+              Estoque Estadual Verificado • 142 Municípios do Mato Grosso
+            </span>
+            <h1 class="text-2xl sm:text-4xl font-black text-white tracking-tight">
+              Encontre seu próximo veículo abaixo da Tabela FIPE
+            </h1>
+          </div>
+
+          <!-- Pílulas Rápidas de Categoria -->
+          <div class="flex flex-wrap gap-2">
+            <button onclick="MTCarsApp.setQuickCategoryFilter('')" data-cat="" class="quick-cat-pill px-3.5 py-2 rounded-xl text-xs font-bold bg-red-600 text-white keep-white-text border border-red-500 shadow transition">
+              Todos
+            </button>
+            <button onclick="MTCarsApp.setQuickCategoryFilter('Picapes / Agro')" data-cat="Picapes / Agro" class="quick-cat-pill px-3.5 py-2 rounded-xl text-xs font-semibold bg-zinc-900/90 text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">
+              🚜 Picapes 4x4
+            </button>
+            <button onclick="MTCarsApp.setQuickCategoryFilter('SUVs')" data-cat="SUVs" class="quick-cat-pill px-3.5 py-2 rounded-xl text-xs font-semibold bg-zinc-900/90 text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">
+              🛡️ SUVs
+            </button>
+            <button onclick="MTCarsApp.setQuickCategoryFilter('Sedans')" data-cat="Sedans" class="quick-cat-pill px-3.5 py-2 rounded-xl text-xs font-semibold bg-zinc-900/90 text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">
+              💎 Sedans
+            </button>
+          </div>
+        </div>
+
+        <!-- Barra Única de Busca Prática + Gaveta de Filtros Recolhível -->
+        <div class="glass-panel rounded-2xl p-3.5 border border-zinc-800 shadow-lg">
+          <div class="flex flex-col md:flex-row items-stretch md:items-center gap-2.5">
+            <!-- Campo Busca Rápida -->
+            <div class="flex-1 relative flex items-center">
+              <i data-lucide="search" class="w-4 h-4 text-zinc-400 absolute left-3.5 pointer-events-none"></i>
+              <input
+                id="filter-search-input"
+                type="text"
+                oninput="MTCarsApp.applyPublicFilters()"
+                placeholder="Buscar marca, modelo ou código (Ex: Hilux, S10, Jetta, Compass)..."
+                class="w-full bg-zinc-950 border border-zinc-800 focus:border-red-500 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white outline-none"
+              />
+            </div>
+
+            <!-- Seletor Cidade MT -->
+            <div class="md:w-56">
+              <select
+                id="filter-city-select"
+                onchange="MTCarsApp.applyPublicFilters()"
+                class="w-full bg-zinc-950 border border-zinc-800 focus:border-red-500 rounded-xl px-3 py-2.5 text-xs text-white outline-none"
+              >
+                <option value="">📍 Todas as Cidades do MT</option>
+              </select>
+            </div>
+
+            <!-- Seletor Faixa de Preço -->
+            <div class="md:w-48">
+              <select
+                id="filter-price-select"
+                onchange="MTCarsApp.applyPublicFilters()"
+                class="w-full bg-zinc-950 border border-zinc-800 focus:border-red-500 rounded-xl px-3 py-2.5 text-xs text-white outline-none"
+              >
+                <option value="">💰 Qualquer Valor</option>
+                <option value="up_to_50">Até R$ 50 mil</option>
+                <option value="50_to_100">R$ 50k a R$ 100k</option>
+                <option value="100_to_180">R$ 100k a R$ 180k</option>
+                <option value="above_180">Acima de R$ 180k</option>
+              </select>
+            </div>
+
+            <!-- Botão Gaveta de Mais Filtros -->
+            <button
+              type="button"
+              onclick="document.getElementById('extra-filters-drawer').classList.toggle('hidden')"
+              class="px-3.5 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-xs font-semibold text-zinc-200 flex items-center justify-center gap-1.5 transition shrink-0"
+            >
+              <i data-lucide="sliders-horizontal" class="w-4 h-4 text-amber-400"></i>
+              <span>Mais Filtros</span>
+            </button>
+          </div>
+
+          <!-- Gaveta Recolhível de Filtros Extras (Sem poluir a tela inicial!) -->
+          <div id="extra-filters-drawer" class="hidden grid grid-cols-1 sm:grid-cols-4 gap-3 pt-3 mt-3 border-t border-zinc-800/80">
+            <div>
+              <label class="text-[10px] font-bold uppercase text-zinc-400 block mb-1">Categoria</label>
+              <select
+                id="filter-category-select"
+                onchange="MTCarsApp.applyPublicFilters()"
+                class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none"
+              >
+                <option value="">Todas as Categorias</option>
+                <option value="Picapes / Agro">Picapes / Agro</option>
+                <option value="SUVs">SUVs</option>
+                <option value="Sedans">Sedans</option>
+                <option value="Hatches">Hatches</option>
+                <option value="Utilitários">Utilitários</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-[10px] font-bold uppercase text-zinc-400 block mb-1">Ano Mínimo</label>
+              <select
+                id="filter-year-select"
+                onchange="MTCarsApp.applyPublicFilters()"
+                class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none"
+              >
+                <option value="">Qualquer Ano</option>
+                <option value="2024">2024+</option>
+                <option value="2023">2023+</option>
+                <option value="2022">2022+</option>
+                <option value="2021">2021+</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-[10px] font-bold uppercase text-zinc-400 block mb-1">Câmbio</label>
+              <select
+                id="filter-transmission-select"
+                onchange="MTCarsApp.applyPublicFilters()"
+                class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none"
+              >
+                <option value="">Todos</option>
+                <option value="Automático">Automático</option>
+                <option value="Manual">Manual</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-[10px] font-bold uppercase text-zinc-400 block mb-1">Ordenação</label>
+              <select
+                id="filter-sort-select"
+                onchange="MTCarsApp.applyPublicFilters()"
+                class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none"
+              >
+                <option value="featured">Destaques MT Cars</option>
+                <option value="fipe_discount">🔥 Maior Desconto FIPE</option>
+                <option value="price_asc">Menor Preço</option>
+                <option value="price_desc">Maior Preço</option>
+                <option value="year_desc">Mais Novos</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Linha discreta de contagem -->
+          <div class="flex items-center justify-between pt-2.5 mt-2.5 border-t border-zinc-800/60 text-xs">
+            <div id="public-results-count" class="text-zinc-400">Carregando estoque estadual...</div>
+            <button onclick="MTCarsApp.clearPublicFilters()" class="text-zinc-400 hover:text-red-400 text-[11px] font-semibold">
+              Limpar filtros
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grid Principal de Veículos -->
+    <main class="max-w-7xl mx-auto px-4 py-10 flex-1 w-full">
+      <div id="public-vehicles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </main>
+
+    <!-- Rodapé Vitrine -->
+    <footer class="border-t border-zinc-900 bg-zinc-950 py-8 px-4 text-xs text-zinc-500">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <strong class="text-white font-display">MT CARS</strong> — Plataforma Estadual de Intermediação Automotiva do Mato Grosso.
+          <span class="block text-[11px] text-zinc-600">Visão Pública Blindada: Dados das garagens parceiras são restritos à Central de Vendedores.</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <button onclick="MTCarsApp.openLeadGateModal('Receba Ofertas Exclusivas Abaixo da FIPE no WhatsApp')" class="text-zinc-400 hover:text-white">Cadastro VIP WhatsApp</button>
+          <button onclick="MTCarsApp.switchViewMode('admin')" class="text-red-400 hover:text-red-300 font-bold">Painel dos 8 Vendedores →</button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ========================================================================
+       MÓDULO 2: CENTRAL DE GUERRA DOS 8 VENDEDORES (SISTEMA ADMIN E CRM)
+       ======================================================================== -->
+  <div id="view-admin-warroom" class="hidden min-h-screen flex flex-col bg-zinc-950">
+
+    <!-- Header da Central de Guerra -->
+    <header class="glass-header sticky top-0 z-30 border-b border-red-900/30">
+      <div class="max-w-[1440px] mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+        <!-- Identidade War Room -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-amber-600 flex items-center justify-center text-white shadow-lg shadow-red-600/20">
+            <i data-lucide="radar" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-display text-lg font-black text-white">MT CARS <span class="text-red-500">WAR ROOM</span></span>
+              <span class="px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-extrabold animate-pulse">DUAL-SYNC LIVE</span>
+            </div>
+            <p class="text-[11px] text-zinc-400">Central de Guerra dos 8 Vendedores • Radar Ao Vivo + Garagens Secretas + Robô WhatsApp</p>
+          </div>
+        </div>
+
+        <!-- Seletor Rápido de Vendedor Logado (Para testar Trava de Atendimento em 1 clique!) -->
+        <div class="flex flex-wrap items-center gap-2.5">
+          <div id="admin-active-seller-badge" class="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800"></div>
+
+          <div class="flex items-center gap-1.5 bg-zinc-900 border border-zinc-700 rounded-xl px-2.5 py-1.5">
+            <span class="text-[10px] font-bold uppercase text-amber-400 hidden xl:inline">Simular Vendedor:</span>
+            <select
+              id="admin-active-seller-select"
+              onchange="MTCarsAdmin.switchActiveSeller(this.value)"
+              class="bg-transparent text-xs font-bold text-white outline-none cursor-pointer"
+            ></select>
+          </div>
+
+          <button
+            onclick="MTCarsAdmin.openDealCalculatorModal()"
+            class="px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500 border border-amber-500/40 text-amber-300 hover:text-zinc-950 font-extrabold text-xs flex items-center gap-1.5 transition"
+          >
+            <i data-lucide="calculator" class="w-4 h-4"></i>
+            <span>🧮 Calculadora Troca & Frete MT</span>
+          </button>
+
+          <button
+            id="admin-sound-toggle-btn"
+            onclick="MTCarsRealtime.toggleSound(); MTCarsAdmin.renderSellerHeader();"
+            class="px-3 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-semibold flex items-center gap-1.5"
+          ></button>
+
+          <button
+            onclick="MTCarsApp.switchViewMode('public', true)"
+            class="px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-200 font-bold text-xs flex items-center gap-1.5 transition"
+          >
+            <i data-lucide="external-link" class="w-4 h-4 text-amber-400"></i>
+            <span>Ver Vitrine do Cliente</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra das 5 Abas Principais da Central de Guerra -->
+      <div class="max-w-[1440px] mx-auto px-4 pb-3 flex items-center gap-2 overflow-x-auto">
+        <button onclick="MTCarsAdmin.switchAdminTab('radar')" data-tab="radar" class="admin-tab-btn px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 bg-red-600 text-white shadow-lg shadow-red-600/25 transition shrink-0">
+          <i data-lucide="radio" class="w-4 h-4"></i>
+          <span>1. RADAR AO VIVO</span>
+          <span id="tab-badge-radar" class="px-2 py-0.5 rounded-full bg-zinc-950/60 text-emerald-400 text-[11px] font-extrabold">4</span>
+        </button>
+
+        <button onclick="MTCarsAdmin.switchAdminTab('stock')" data-tab="stock" class="admin-tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs flex items-center gap-2 bg-zinc-900/90 text-zinc-400 hover:text-white border border-zinc-800 transition shrink-0">
+          <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
+          <span>2. ESTOQUE & GARAGENS SECRETAS</span>
+          <span id="tab-badge-stock" class="px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-200 text-[11px]">10</span>
+        </button>
+
+        <button onclick="MTCarsAdmin.switchAdminTab('bot')" data-tab="bot" class="admin-tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs flex items-center gap-2 bg-zinc-900/90 text-zinc-400 hover:text-white border border-zinc-800 transition shrink-0">
+          <i data-lucide="bot" class="w-4 h-4 text-emerald-400"></i>
+          <span>3. ROBÔ RETARGETING WHATSAPP</span>
+          <span id="tab-badge-bot" class="px-2 py-0.5 rounded-full bg-zinc-800 text-emerald-400 text-[11px]">2</span>
+        </button>
+
+        <button onclick="MTCarsAdmin.switchAdminTab('crm')" data-tab="crm" class="admin-tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs flex items-center gap-2 bg-zinc-900/90 text-zinc-400 hover:text-white border border-zinc-800 transition shrink-0">
+          <i data-lucide="kanban" class="w-4 h-4 text-purple-400"></i>
+          <span>4. CRM KANBAN (5 ETAPAS)</span>
+          <span id="tab-badge-crm" class="px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-200 text-[11px]">6</span>
+        </button>
+
+        <button onclick="MTCarsAdmin.switchAdminTab('sellers')" data-tab="sellers" class="admin-tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs flex items-center gap-2 bg-zinc-900/90 text-zinc-400 hover:text-white border border-zinc-800 transition shrink-0">
+          <i data-lucide="users" class="w-4 h-4 text-amber-400"></i>
+          <span>5. OS 8 VENDEDORES & COMISSÕES</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Conteúdo das 5 Abas -->
+    <main class="max-w-[1440px] mx-auto px-4 py-6 flex-1 w-full">
+
+      <!-- ====================================================================
+           ABA 1: RADAR AO VIVO (LIVE VISITOR TRACKER)
+           ==================================================================== -->
+      <section id="admin-panel-radar" class="space-y-6">
+        <!-- 4 KPIs no Topo -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="glass-panel rounded-2xl p-5 border border-emerald-500/40 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold uppercase text-emerald-400 block">🟢 Visitantes Online Agora</span>
+              <span id="radar-kpi-online" class="text-3xl font-black text-white mt-1 block">4</span>
+              <span class="text-[11px] text-zinc-400">Rastreamento em milissegundos</span>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+              <i data-lucide="activity" class="w-6 h-6"></i>
+            </div>
+          </div>
+
+          <div class="glass-panel rounded-2xl p-5 border border-zinc-800 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold uppercase text-zinc-400 block">👥 Total de Acessos Hoje</span>
+              <span id="radar-kpi-access" class="text-3xl font-black text-white mt-1 block">148</span>
+              <span class="text-[11px] text-zinc-500">Em 142 municípios de MT</span>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-700 flex items-center justify-center text-zinc-300">
+              <i data-lucide="globe" class="w-6 h-6"></i>
+            </div>
+          </div>
+
+          <div class="glass-panel rounded-2xl p-5 border border-amber-500/30 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold uppercase text-amber-400 block">🎯 Leads c/ WhatsApp Capturado</span>
+              <span id="radar-kpi-leads" class="text-3xl font-black text-white mt-1 block">34</span>
+              <span class="text-[11px] text-zinc-400">Via Isca Inteligente & Simulador</span>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400">
+              <i data-lucide="target" class="w-6 h-6"></i>
+            </div>
+          </div>
+
+          <div class="glass-panel rounded-2xl p-5 border border-red-500/30 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold uppercase text-red-400 block">🤖 Abordagens Automáticas Robô</span>
+              <span id="radar-kpi-bot" class="text-3xl font-black text-white mt-1 block">19</span>
+              <span class="text-[11px] text-zinc-400">Retargeting de saída no WhatsApp</span>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-red-500/15 border border-red-500/30 flex items-center justify-center text-red-400">
+              <i data-lucide="bot" class="w-6 h-6"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Barra de Ações Rápidas do Radar + Telemetria ao Vivo -->
+        <div class="glass-panel rounded-2xl p-4 border border-emerald-500/40 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5 text-xs">
+              <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 font-extrabold flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                TELEMETRIA ENTRE ABAS AO VIVO:
+              </span>
+              <span class="text-zinc-300">Mexa na <strong>Aba da Vitrine</strong> (passe o mouse nos carros, filtre ou simule entrada) e veja atualizar aqui no mesmo segundo!</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <button
+                onclick="MTCarsApp.simulateNewIncomingVisitor()"
+                class="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-extrabold text-xs flex items-center gap-1.5 shadow"
+              >
+                <span>🔥 Simular Novo Cliente Entrando</span>
+              </button>
+              <button
+                onclick="MTCarsApp.triggerExitRetargetingBot()"
+                class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-extrabold text-xs flex items-center gap-1.5 shadow"
+              >
+                <span>🚪 Simular Saída (Disparar Robô WhatsApp)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Feed de Eventos Instantâneos da Vitrine -->
+          <div id="radar-live-telemetry-feed" class="p-3 rounded-xl bg-zinc-950/90 border border-zinc-800 text-xs space-y-1.5"></div>
+        </div>
+
+        <!-- Grid de Visitantes em Tempo Real -->
+        <div id="radar-visitors-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-5"></div>
+      </section>
+
+      <!-- ====================================================================
+           ABA 2: ESTOQUE ESTADUAL & DADOS SECRETOS DAS GARAGENS
+           ==================================================================== -->
+      <section id="admin-panel-stock" class="hidden space-y-6">
+        <!-- KPIs Financeiros do Estoque -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="glass-panel rounded-2xl p-5 border border-zinc-800">
+            <span class="text-xs font-bold uppercase text-zinc-400 block">Volume Total em Estoque (Vitrine)</span>
+            <span id="stock-kpi-total-value" class="text-2xl font-black text-white mt-1 block">R$ 1.594.100</span>
+          </div>
+          <div class="glass-panel rounded-2xl p-5 border border-emerald-500/40">
+            <span class="text-xs font-bold uppercase text-emerald-400 block">💎 Comissões Líquidas Projetadas (MT Cars)</span>
+            <span id="stock-kpi-total-commission" class="text-2xl font-black text-emerald-400 mt-1 block">R$ 85.100</span>
+          </div>
+          <div class="glass-panel rounded-2xl p-5 border border-amber-500/40">
+            <span class="text-xs font-bold uppercase text-amber-400 block">Margem Média de Intermediação</span>
+            <span id="stock-kpi-avg-margin" class="text-2xl font-black text-amber-400 mt-1 block">5.3% líquido</span>
+          </div>
+        </div>
+
+        <!-- Filtros do Estoque Admin + Botão Novo Veículo -->
+        <div class="glass-panel rounded-2xl p-4 border border-zinc-800 flex flex-wrap items-center justify-between gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 flex-1">
+            <input
+              id="admin-stock-search-input"
+              type="text"
+              oninput="MTCarsAdmin.renderStockTab()"
+              placeholder="Buscar modelo, #MT-Ref ou garagem..."
+              class="bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none"
+            />
+            <select id="admin-stock-city-filter" onchange="MTCarsAdmin.renderStockTab()" class="bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none">
+              <option value="">Todas as Cidades MT</option>
+            </select>
+            <select id="admin-stock-garage-filter" onchange="MTCarsAdmin.renderStockTab()" class="bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none">
+              <option value="">Todas as Garagens Parceiras</option>
+            </select>
+            <select id="admin-stock-status-filter" onchange="MTCarsAdmin.renderStockTab()" class="bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none">
+              <option value="">Todos os Status</option>
+              <option value="Disponível">🟢 Disponível</option>
+              <option value="Reservado">⏳ Reservado</option>
+              <option value="Vendido">🏆 Vendido</option>
+            </select>
+          </div>
+
+          <button
+            onclick="MTCarsAdmin.openNewVehicleModal()"
+            class="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-red-600/25 shrink-0"
+          >
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>Cadastrar Novo Veículo (Garagem Parceira)</span>
+          </button>
+        </div>
+
+        <!-- Lista de Veículos com Bloco Secreto das Garagens -->
+        <div id="admin-stock-list" class="space-y-4"></div>
+      </section>
+
+      <!-- ====================================================================
+           ABA 3: ROBÔ DE ABORDAGEM AUTOMÁTICA (RETARGETING DE SAÍDA) + FIREBASE
+           ==================================================================== -->
+      <section id="admin-panel-bot" class="hidden space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Coluna Esquerda: Configuração da API de WhatsApp + Firebase Cloud (5 cols) -->
+          <div class="lg:col-span-5 space-y-6">
+            <form onsubmit="MTCarsAdmin.saveBotConfiguration(event)" class="glass-panel rounded-2xl p-5 border border-zinc-800 space-y-4">
+              <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+                <div>
+                  <span class="text-xs font-bold uppercase text-emerald-400">Motor de Retargeting Automático</span>
+                  <h3 class="text-lg font-extrabold text-white">Configuração da API de WhatsApp</h3>
+                </div>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input id="bot-cfg-enabled" type="checkbox" checked class="w-4 h-4 accent-emerald-500" />
+                  <span class="text-xs font-bold text-emerald-400">Robô Ativo</span>
+                </label>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="text-[11px] font-bold text-zinc-400 block mb-1">Provedor WhatsApp</label>
+                  <select id="bot-cfg-provider" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white">
+                    <option value="Evolution API">Evolution API</option>
+                    <option value="Z-API">Z-API</option>
+                    <option value="WPPConnect">WPPConnect</option>
+                    <option value="Webhook Custom">Webhook Custom</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-[11px] font-bold text-zinc-400 block mb-1">Delay após saída (seg)</label>
+                  <input id="bot-cfg-delay" type="number" min="1" max="120" value="3" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white" />
+                </div>
+              </div>
+
+              <div>
+                <label class="text-[11px] font-bold text-zinc-400 block mb-1">URL da Instância / Endpoint POST</label>
+                <input id="bot-cfg-url" type="text" placeholder="https://sua-evolution-api.com/message/sendText/MTCars" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white font-mono" />
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="text-[11px] font-bold text-zinc-400 block mb-1">Token / API Key</label>
+                  <input id="bot-cfg-key" type="password" placeholder="Token da instância" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white font-mono" />
+                </div>
+                <div>
+                  <label class="text-[11px] font-bold text-zinc-400 block mb-1">Nome da Instância</label>
+                  <input id="bot-cfg-instance" type="text" placeholder="MTCars_Central_MT" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white" />
+                </div>
+              </div>
+
+              <!-- Editor do Template com Variáveis Clicáveis -->
+              <div>
+                <label class="text-[11px] font-bold text-zinc-400 block mb-1">Template Inteligente da Mensagem (Clique nas tags para inserir)</label>
+                <div class="flex flex-wrap gap-1.5 mb-2">
+                  <button type="button" onclick="MTCarsAdmin.insertTemplateTag('{nome}')" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-[11px] font-mono text-amber-400">{nome}</button>
+                  <button type="button" onclick="MTCarsAdmin.insertTemplateTag('{ultimo_carro}')" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-[11px] font-mono text-amber-400">{ultimo_carro}</button>
+                  <button type="button" onclick="MTCarsAdmin.insertTemplateTag('{cidade_ultimo}')" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-[11px] font-mono text-amber-400">{cidade_ultimo}</button>
+                  <button type="button" onclick="MTCarsAdmin.insertTemplateTag('{carro_sugerido}')" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-[11px] font-mono text-emerald-400">{carro_sugerido}</button>
+                  <button type="button" onclick="MTCarsAdmin.insertTemplateTag('{preco_sugerido}')" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-[11px] font-mono text-emerald-400">{preco_sugerido}</button>
+                  <button type="button" onclick="MTCarsAdmin.insertTemplateTag('{cidade_sugerido}')" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-[11px] font-mono text-emerald-400">{cidade_sugerido}</button>
+                  <button type="button" onclick="MTCarsAdmin.insertTemplateTag('{entrada_cliente}')" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-[11px] font-mono text-sky-400">{entrada_cliente}</button>
+                  <button type="button" onclick="MTCarsAdmin.insertTemplateTag('{link_carro}')" class="px-2 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-[11px] font-mono text-sky-400">{link_carro}</button>
+                </div>
+                <textarea id="bot-cfg-template" rows="5" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-xs text-zinc-200 leading-relaxed"></textarea>
+              </div>
+
+              <div class="flex items-center gap-2 pt-1">
+                <button type="submit" class="flex-1 py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs transition">
+                  Salvar Configuração do Robô
+                </button>
+                <button type="button" onclick="MTCarsApp.triggerExitRetargetingBot()" class="py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-extrabold text-xs transition">
+                  ⚡ Testar Disparo Agora
+                </button>
+              </div>
+            </form>
+
+            <!-- Configuração Cloud Firebase Realtime Database -->
+            <form onsubmit="MTCarsAdmin.saveFirebaseConfiguration(event)" class="glass-panel rounded-2xl p-5 border border-zinc-800 space-y-3">
+              <div class="flex items-center justify-between border-b border-zinc-800 pb-2.5">
+                <div>
+                  <span class="text-[11px] font-bold uppercase text-amber-400">Camada Cloud Dual-Sync</span>
+                  <h4 class="text-sm font-extrabold text-white">Firebase Realtime Database</h4>
+                </div>
+                <div id="firebase-status-badge"></div>
+              </div>
+              <p class="text-[11px] text-zinc-400">
+                Sincroniza automaticamente os nós <code class="text-zinc-200">/vehicles</code>, <code class="text-zinc-200">/visitors_live</code>, <code class="text-zinc-200">/leads_crm</code>, <code class="text-zinc-200">/bot_logs</code>, <code class="text-zinc-200">/sellers</code> e ativa <code class="text-emerald-400">onDisconnect()</code>.
+              </p>
+              <div class="space-y-2">
+                <input id="fb-cfg-apikey" type="text" placeholder="Firebase apiKey (Ex: AIzaSy...)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white font-mono" />
+                <input id="fb-cfg-dburl" type="text" placeholder="databaseURL (Ex: https://mtcars-mt-default-rtdb.firebaseio.com)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white font-mono" />
+                <input id="fb-cfg-projectid" type="text" placeholder="projectId (Ex: mtcars-mt)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white font-mono" />
+              </div>
+              <button type="submit" class="w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-xs font-bold text-white transition">
+                Conectar & Sincronizar Firebase Cloud
+              </button>
+            </form>
+          </div>
+
+          <!-- Coluna Direita: Terminal de Logs do Robô em Tempo Real (7 cols) -->
+          <div class="lg:col-span-7">
+            <div class="glass-panel rounded-2xl p-5 border border-zinc-800 space-y-4 h-full">
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 pb-3">
+                <div>
+                  <span class="text-xs font-bold uppercase text-emerald-400">Monitoramento de Retargeting de Saída</span>
+                  <h3 class="text-lg font-extrabold text-white">Terminal de Disparos do Robô WhatsApp</h3>
+                </div>
+                <button
+                  onclick="MTCarsApp.triggerExitRetargetingBot()"
+                  class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-extrabold text-xs flex items-center gap-1.5"
+                >
+                  <span>🚪 Simular Saída de Cliente & Ver Disparo</span>
+                </button>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs text-zinc-300">
+                💡 <strong>Como funciona:</strong> Quando o cliente sai do site sem que nenhum dos 8 vendedores tenha assumido o atendimento, o Robô identifica o <strong>último carro visto</strong>, busca automaticamente uma <strong>segunda opção da mesma categoria/faixa de preço</strong> no estoque de MT e envia no WhatsApp do cliente!
+              </div>
+
+              <div id="bot-terminal-logs" class="space-y-3 max-h-[680px] overflow-y-auto pr-1"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           ABA 4: CRM KANBAN E FILA DE LEADS (5 COLUNAS)
+           ==================================================================== -->
+      <section id="admin-panel-crm" class="hidden space-y-5">
+        <div class="glass-panel rounded-2xl p-4 border border-zinc-800 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h3 class="text-base font-extrabold text-white">CRM Kanban Estadual MT Cars (Arraste os cards ou clique em Avançar)</h3>
+            <p class="text-xs text-zinc-400">Acompanhe desde a visita ao vivo até a aprovação de ficha e comissão gerada</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <input
+              id="admin-crm-search-input"
+              type="text"
+              oninput="MTCarsAdmin.renderCrmTab()"
+              placeholder="Buscar cliente ou veículo..."
+              class="bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none"
+            />
+            <select id="admin-crm-seller-filter" onchange="MTCarsAdmin.renderCrmTab()" class="bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none">
+              <option value="">Todos os 8 Vendedores</option>
+            </select>
+            <select id="admin-crm-city-filter" onchange="MTCarsAdmin.renderCrmTab()" class="bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none">
+              <option value="">Todas as Cidades MT</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Quadro 5 Colunas -->
+        <div id="crm-kanban-board" class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4"></div>
+      </section>
+
+      <!-- ====================================================================
+           ABA 5: GESTÃO DOS 8 VENDEDORES E COMISSÕES
+           ==================================================================== -->
+      <section id="admin-panel-sellers" class="hidden space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="glass-panel rounded-2xl p-5 border border-zinc-800">
+            <span class="text-xs font-bold uppercase text-zinc-400 block">Total de Vendas da Equipe (Mês)</span>
+            <span id="sellers-kpi-total-sales" class="text-2xl font-black text-white mt-1 block">28 veículos vendidos</span>
+          </div>
+          <div class="glass-panel rounded-2xl p-5 border border-emerald-500/40">
+            <span class="text-xs font-bold uppercase text-emerald-400 block">🏆 Total de Comissões Geradas (8 Vendedores)</span>
+            <span id="sellers-kpi-total-commissions" class="text-2xl font-black text-emerald-400 mt-1 block">R$ 265.500</span>
+          </div>
+          <div class="glass-panel rounded-2xl p-5 border border-amber-500/40">
+            <span class="text-xs font-bold uppercase text-amber-400 block">Leads Assumidos no Radar Hoje</span>
+            <span id="sellers-kpi-total-leads" class="text-2xl font-black text-amber-400 mt-1 block">40 atendimentos hoje</span>
+          </div>
+        </div>
+
+        <div id="admin-sellers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       MODAIS DO SISTEMA
+       ======================================================================== -->
+
+  <!-- 1. MODAL "ISCA INTELIGENTE" (GATE DE CAPTURA DE LEAD / WHATSAPP) -->
+  <div id="lead-gate-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md items-center justify-center p-4">
+    <div class="glass-panel luxury-gradient-border rounded-3xl max-w-md w-full p-6 sm:p-8 border border-zinc-700 shadow-2xl relative space-y-5">
+      <button onclick="MTCarsApp.closeLeadGateModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white p-1">✕</button>
+
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-600 to-amber-500 flex items-center justify-center text-white shadow-lg">
+          <i data-lucide="unlock" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="text-[11px] font-extrabold uppercase tracking-wider text-amber-400">Acesso VIP Liberado na Hora</span>
+          <h3 id="lead-gate-title" class="text-lg font-black text-white leading-snug">
+            Desbloqueie as Melhores Ofertas e o Simulador Oficial MT Cars
+          </h3>
+        </div>
+      </div>
+
+      <p class="text-xs text-zinc-300 leading-relaxed">
+        Identifique-se rapidamente para liberar o <strong>Simulador Oficial de Financiamento</strong>, laudos cautelares e ofertas abaixo da Tabela FIPE na sua cidade do Mato Grosso:
+      </p>
+
+      <form onsubmit="MTCarsApp.submitLeadGateForm(event)" class="space-y-3.5">
+        <div>
+          <label class="text-xs font-bold text-zinc-300 block mb-1">Seu Nome ou Empresa / Fazenda</label>
+          <input
+            id="gate-name-input"
+            type="text"
+            required
+            oninput="MTCarsApp.onGateLiveTyping()"
+            placeholder="Ex: João Paulo / Fazenda Santa Luzia"
+            class="w-full bg-zinc-950 border border-zinc-700 focus:border-red-500 rounded-xl px-3.5 py-2.5 text-sm text-white outline-none"
+          />
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-zinc-300 block mb-1">Seu WhatsApp com DDD (65 ou 66)</label>
+          <input
+            id="gate-phone-input"
+            type="tel"
+            required
+            oninput="this.value = MTCarsApp.maskPhone(this.value); MTCarsApp.onGateLiveTyping();"
+            placeholder="(65) 99999-9999"
+            class="w-full bg-zinc-950 border border-zinc-700 focus:border-red-500 rounded-xl px-3.5 py-2.5 text-sm text-white font-mono outline-none"
+          />
+        </div>
+
+        <div>
+          <label class="text-xs font-bold text-zinc-300 block mb-1">Sua Cidade no Mato Grosso</label>
+          <select
+            id="gate-city-select"
+            required
+            onchange="MTCarsApp.onGateLiveTyping()"
+            class="w-full bg-zinc-950 border border-zinc-700 focus:border-red-500 rounded-xl px-3.5 py-2.5 text-sm text-white outline-none"
+          >
+            <option value="Cuiabá">Cuiabá - MT</option>
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-black text-sm shadow-xl shadow-red-600/30 transition"
+        >
+          🔓 Liberar Ofertas e Simulador Agora
+        </button>
+      </form>
+
+      <p class="text-[11px] text-zinc-500 text-center">
+        🔒 Seus dados estão seguros na Central MT Cars. Sem spam.
+      </p>
+    </div>
+  </div>
+
+  <!-- 2. MODAL DE DETALHES DO VEÍCULO + SIMULADOR "DEDO-DURO" -->
+  <div id="vehicle-detail-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-start justify-center p-3 sm:p-6 overflow-y-auto">
+    <div class="glass-panel rounded-3xl max-w-6xl w-full p-5 sm:p-7 border border-zinc-700 shadow-2xl my-auto relative">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-4 mb-5">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded-lg bg-red-600 text-white text-xs font-extrabold">FICHA AUDITADA MT CARS</span>
+          <span class="text-xs text-zinc-400 hidden sm:inline">Intermediação Blindada • Garantia de Procedência</span>
+        </div>
+        <button
+          onclick="MTCarsApp.closeVehicleDetailModal()"
+          class="px-3.5 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-xs font-bold text-zinc-200"
+        >
+          ✕ Fechar Ficha
+        </button>
+      </div>
+
+      <div id="vehicle-detail-content"></div>
+    </div>
+  </div>
+
+  <!-- 3. MODAL DE LOGIN ADMINISTRATIVO (8 VENDEDORES + 1 DIRETOR EM 1 CLIQUE) -->
+  <div id="admin-login-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel rounded-3xl max-w-2xl w-full p-6 sm:p-8 border border-zinc-700 shadow-2xl relative space-y-5 my-auto">
+      <button onclick="MTCarsAdmin.closeLoginModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white p-1">✕</button>
+
+      <div>
+        <span class="text-xs font-extrabold uppercase text-red-500">Acesso Corporativo Restrito</span>
+        <h3 class="text-2xl font-black text-white">Central de Guerra dos 8 Vendedores MT Cars</h3>
+        <p class="text-xs text-zinc-400 mt-1">
+          Clique em qualquer perfil abaixo para <strong>Login Instantâneo em 1 Clique</strong> (ou digite e-mail e senha padrão <code class="text-amber-400">123456</code>):
+        </p>
+      </div>
+
+      <!-- Botões de Login Rápido em 1 Clique (8 Vendedores + Diretor) -->
+      <div id="quick-seller-login-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 max-h-72 overflow-y-auto pr-1"></div>
+
+      <form onsubmit="MTCarsAdmin.submitManualLogin(event)" class="pt-4 border-t border-zinc-800 grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
+        <div>
+          <label class="text-[11px] font-bold text-zinc-400 block mb-1">E-mail Corporativo</label>
+          <input id="login-email-input" type="email" value="vendedor1@mtcars.com" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
+        </div>
+        <div>
+          <label class="text-[11px] font-bold text-zinc-400 block mb-1">Senha</label>
+          <input id="login-pass-input" type="password" value="123456" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
+        </div>
+        <button type="submit" class="py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs">
+          Entrar no Painel →
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. MODAL DE NOVO / EDIÇÃO DE VEÍCULO + DADOS SECRETOS DA GARAGEM + BUSCA FIPE -->
+  <div id="new-vehicle-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel rounded-3xl max-w-3xl w-full p-6 sm:p-8 border border-zinc-700 shadow-2xl relative my-auto">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3 mb-4">
+        <h3 id="new-veh-modal-title" class="text-lg font-black text-white">Cadastrar Novo Veículo no Estoque Estadual</h3>
+        <button onclick="MTCarsAdmin.closeNewVehicleModal()" class="text-zinc-400 hover:text-white">✕</button>
+      </div>
+
+      <form id="new-vehicle-form" onsubmit="MTCarsAdmin.submitNewVehicleForm(event)" class="space-y-4">
+        <input id="new-veh-id" type="hidden" />
+
+        <!-- Bloco 1: Dados Públicos -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="text-[11px] font-bold text-zinc-400 block mb-1">Marca</label>
+            <input id="new-veh-brand" type="text" required placeholder="Ex: Toyota" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="text-[11px] font-bold text-zinc-400 block mb-1">Modelo e Versão</label>
+            <input id="new-veh-model" type="text" required placeholder="Ex: Hilux SRX 2.8 Turbo Diesel 4x4" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+          <div>
+            <label class="text-[11px] font-bold text-zinc-400 block mb-1">Ano</label>
+            <input id="new-veh-year" type="number" required value="2023" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
+          </div>
+          <div>
+            <label class="text-[11px] font-bold text-zinc-400 block mb-1">Quilometragem</label>
+            <input id="new-veh-km" type="number" required value="25000" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
+          </div>
+          <div>
+            <label class="text-[11px] font-bold text-zinc-400 block mb-1">Categoria</label>
+            <select id="new-veh-category" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-2.5 py-2 text-xs text-white">
+              <option value="Picapes / Agro">Picapes / Agro</option>
+              <option value="SUVs">SUVs</option>
+              <option value="Sedans">Sedans</option>
+              <option value="Hatches">Hatches</option>
+              <option value="Utilitários">Utilitários</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-[11px] font-bold text-zinc-400 block mb-1">Câmbio</label>
+            <select id="new-veh-transmission" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-2.5 py-2 text-xs text-white">
+              <option value="Automático">Automático</option>
+              <option value="Manual">Manual</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-[11px] font-bold text-zinc-400 block mb-1">Combustível</label>
+            <select id="new-veh-fuel" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-2.5 py-2 text-xs text-white">
+              <option value="Diesel">Diesel</option>
+              <option value="Flex">Flex</option>
+              <option value="Gasolina">Gasolina</option>
+              <option value="Híbrido">Híbrido</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
+          <div>
+            <label class="text-[11px] font-bold text-zinc-400 block mb-1">Cidade em MT (IBGE)</label>
+            <select id="new-veh-city" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white">
+              <option value="Cuiabá">Cuiabá - MT</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-[11px] font-bold text-emerald-400 block mb-1">Preço Venda Vitrine (R$)</label>
+            <input id="new-veh-price-sale" type="number" required oninput="MTCarsAdmin.updateLiveMarginPreview()" placeholder="259900" class="w-full bg-zinc-950 border border-emerald-500/60 rounded-xl px-3 py-2 text-xs font-bold text-white" />
+          </div>
+          <div>
+            <label class="text-[11px] font-bold text-amber-400 block mb-1">Preço Tabela FIPE (R$)</label>
+            <input id="new-veh-price-fipe" type="number" required oninput="MTCarsAdmin.updateLiveMarginPreview()" placeholder="266400" class="w-full bg-zinc-950 border border-amber-500/60 rounded-xl px-3 py-2 text-xs font-bold text-white" />
+          </div>
+          <button
+            id="btn-fetch-fipe"
+            type="button"
+            onclick="MTCarsAdmin.autoFetchFipeForModal()"
+            class="py-2 px-3 rounded-xl bg-amber-500/20 hover:bg-amber-500 border border-amber-500/50 text-amber-300 hover:text-zinc-950 font-extrabold text-xs transition"
+          >
+            🔍 Buscar Preço Médio FIPE
+          </button>
+        </div>
+
+        <!-- Bloco 2: Dados Confidenciais da Garagem Parceira -->
+        <div class="p-4 rounded-2xl secret-garage-box border border-amber-500/40 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="text-xs font-extrabold uppercase text-amber-400">🔒 Dados Internos da Garagem Parceira (Ocultos na Vitrine)</span>
+            <div id="new-veh-margin-preview" class="flex items-center gap-4 text-xs"></div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+            <div>
+              <label class="text-[11px] font-bold text-zinc-300 block mb-1">💰 Valor de Repasse/Custo (R$)</label>
+              <input id="new-veh-price-repasse" type="number" required oninput="MTCarsAdmin.updateLiveMarginPreview()" placeholder="248000" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs font-bold text-white" />
+            </div>
+            <div>
+              <label class="text-[11px] font-bold text-zinc-300 block mb-1">🏢 Nome da Garagem Parceira</label>
+              <input id="new-veh-garage-name" type="text" required placeholder="Ex: Auto Prime Sinop" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
+            </div>
+            <div>
+              <label class="text-[11px] font-bold text-zinc-300 block mb-1">👤 Nome do Dono / Garagista</label>
+              <input id="new-veh-garage-owner" type="text" required placeholder="Ex: Marcos Vinícius" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
+            </div>
+            <div>
+              <label class="text-[11px] font-bold text-zinc-300 block mb-1">📞 WhatsApp da Garagem</label>
+              <input id="new-veh-garage-phone" type="text" required oninput="this.value=MTCarsApp.maskPhone(this.value)" placeholder="(66) 99999-0000" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white font-mono" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="text-[11px] font-bold text-zinc-300 block mb-1">Vendedor Captador (Equipe MT Cars)</label>
+              <select id="new-veh-captador" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white"></select>
+            </div>
+            <div>
+              <label class="text-[11px] font-bold text-zinc-300 block mb-1">URL da Foto Principal</label>
+              <input id="new-veh-image" type="url" placeholder="https://images.unsplash.com/..." class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-bold text-zinc-400 block mb-1">Descrição Auditada do Veículo</label>
+          <textarea id="new-veh-desc" rows="2" placeholder="Estado de conservação, revisões, pneus, laudo cautelar..." class="w-full bg-zinc-950 border border-zinc-700 rounded-xl p-3 text-xs text-white"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" onclick="MTCarsAdmin.closeNewVehicleModal()" class="px-4 py-2.5 rounded-xl bg-zinc-900 text-zinc-300 text-xs font-bold">Cancelar</button>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs shadow-lg shadow-red-600/25">
+            💾 Salvar Veículo no Estoque Estadual
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. MODAL DE DOSSIÊ DO LEAD (CRM KANBAN) -->
+  <div id="lead-dossier-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md items-center justify-center p-4">
+    <div class="glass-panel rounded-3xl max-w-lg w-full p-6 border border-zinc-700 shadow-2xl relative">
+      <button onclick="MTCarsAdmin.closeLeadDossierModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white">✕</button>
+      <div id="lead-dossier-content"></div>
+    </div>
+  </div>
+
+  <!-- 6. MODAL DE EDIÇÃO DE VENDEDOR / META -->
+  <div id="edit-seller-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md items-center justify-center p-4">
+    <div class="glass-panel rounded-3xl max-w-md w-full p-6 border border-zinc-700 shadow-2xl relative space-y-4">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <h3 class="text-base font-black text-white">Editar Perfil & Meta do Vendedor</h3>
+        <button onclick="MTCarsAdmin.closeEditSellerModal()" class="text-zinc-400 hover:text-white">✕</button>
+      </div>
+      <form onsubmit="MTCarsAdmin.submitEditSellerForm(event)" class="space-y-3">
+        <input id="edit-seller-id" type="hidden" />
+        <div>
+          <label class="text-xs font-bold text-zinc-400 block mb-1">Nome do Vendedor</label>
+          <input id="edit-seller-name" type="text" required class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
+        </div>
+        <div>
+          <label class="text-xs font-bold text-zinc-400 block mb-1">WhatsApp Oficial</label>
+          <input id="edit-seller-phone" type="text" required oninput="this.value=MTCarsApp.maskPhone(this.value)" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white font-mono" />
+        </div>
+        <div>
+          <label class="text-xs font-bold text-zinc-400 block mb-1">Cidade Base em MT</label>
+          <select id="edit-seller-city" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white"></select>
+        </div>
+        <div>
+          <label class="text-xs font-bold text-zinc-400 block mb-1">Meta Mensal de Comissões (R$)</label>
+          <input id="edit-seller-goal" type="number" required step="1000" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="MTCarsAdmin.closeEditSellerModal()" class="px-4 py-2 rounded-xl bg-zinc-900 text-zinc-400 text-xs font-bold">Cancelar</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-extrabold">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. MODAL "ANUNCIAR MEU CARRO" (CAPTAÇÃO DE REPASSE NA VITRINE) -->
+  <div id="sell-my-car-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md items-center justify-center p-4">
+    <div class="glass-panel rounded-3xl max-w-md w-full p-6 border border-zinc-700 shadow-2xl relative space-y-4">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase text-amber-400">Captação Estadual MT Cars</span>
+          <h3 class="text-lg font-black text-white">Anunciar Meu Veículo na MT Cars</h3>
+        </div>
+        <button onclick="MTCarsApp.closeSellMyCarModal()" class="text-zinc-400 hover:text-white">✕</button>
+      </div>
+      <form onsubmit="MTCarsApp.submitSellMyCarForm(event)" class="space-y-3">
+        <div>
+          <label class="text-xs font-bold text-zinc-400 block mb-1">Seu Nome ou Garagem</label>
+          <input id="sell-car-owner" type="text" required placeholder="Ex: Fazenda Boa Esperança" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
+        </div>
+        <div>
+          <label class="text-xs font-bold text-zinc-400 block mb-1">Seu WhatsApp</label>
+          <input id="sell-car-phone" type="text" required oninput="this.value=MTCarsApp.maskPhone(this.value)" placeholder="(65) 99999-9999" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white font-mono" />
+        </div>
+        <div>
+          <label class="text-xs font-bold text-zinc-400 block mb-1">Cidade do Veículo em MT</label>
+          <select id="sell-car-city" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white"></select>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div class="col-span-2">
+            <label class="text-xs font-bold text-zinc-400 block mb-1">Marca e Modelo</label>
+            <input id="sell-car-model" type="text" required placeholder="Ex: Toyota SW4 Diamond" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
+          </div>
+          <div>
+            <label class="text-xs font-bold text-zinc-400 block mb-1">Ano</label>
+            <input id="sell-car-year" type="number" required value="2023" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-bold text-zinc-400 block mb-1">Valor Líquido Pretendido (R$)</label>
+          <input id="sell-car-price" type="number" required placeholder="Ex: 295000" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs">
+          Enviar para Intermediação MT Cars
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 8. MODAL "RASTREAR MEU PEDIDO / PROPOSTA" -->
+  <div id="track-order-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md items-center justify-center p-4">
+    <div class="glass-panel rounded-3xl max-w-md w-full p-6 border border-zinc-700 shadow-2xl relative space-y-4">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <h3 class="text-base font-black text-white">Rastrear Minha Simulação / Proposta</h3>
+        <button onclick="MTCarsApp.closeTrackOrderModal()" class="text-zinc-400 hover:text-white">✕</button>
+      </div>
+      <div class="flex gap-2">
+        <input
+          id="track-phone-input"
+          type="text"
+          oninput="this.value=MTCarsApp.maskPhone(this.value)"
+          placeholder="Digite seu WhatsApp (65) 99999-9999..."
+          class="flex-1 bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white font-mono"
+        />
+        <button onclick="MTCarsApp.renderTrackOrderResult(document.getElementById('track-phone-input').value)" class="px-4 py-2 rounded-xl bg-red-600 text-white font-bold text-xs">
+          Consultar
+        </button>
+      </div>
+      <div id="track-order-result-box"></div>
+    </div>
+  </div>
+
+  <!-- 9. MODAL GERADOR DE PROPOSTA OFICIAL MT CARS (PDF / IMPRESSÃO) -->
+  <div id="proposal-pdf-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel rounded-3xl max-w-3xl w-full p-6 sm:p-8 border border-zinc-700 shadow-2xl relative my-auto">
+      <button onclick="MTCarsAdmin.closeProposalPdfModal()" class="no-print absolute top-4 right-4 text-zinc-400 hover:text-white">✕</button>
+      <div id="proposal-pdf-content"></div>
+    </div>
+  </div>
+
+  <!-- 10. MODAL MATCH INTELIGENTE ESTOQUE x CLIENTES DO CRM -->
+  <div id="stock-match-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel rounded-3xl max-w-2xl w-full p-6 border border-zinc-700 shadow-2xl relative my-auto">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3 mb-4">
+        <h3 class="text-base font-black text-white">🎯 Oportunidades Cruzadas: Veículo x Clientes do CRM</h3>
+        <button onclick="MTCarsAdmin.closeStockMatchModal()" class="text-zinc-400 hover:text-white">✕</button>
+      </div>
+      <div id="stock-match-content"></div>
+    </div>
+  </div>
+
+  <!-- 11. MODAL CALCULADORA DE FECHAMENTO, TROCA, FRETE CEGONHA MT & SPLIT COMISSÃO -->
+  <div id="deal-calculator-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel rounded-3xl max-w-2xl w-full p-6 border border-zinc-700 shadow-2xl relative my-auto space-y-4">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase text-amber-400">Ferramenta de Mesa de Negociação</span>
+          <h3 class="text-lg font-black text-white">🧮 Calculadora de Troca, Logística MT & Split de Comissão</h3>
+        </div>
+        <button onclick="MTCarsAdmin.closeDealCalculatorModal()" class="text-zinc-400 hover:text-white">✕</button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+        <div>
+          <label class="text-zinc-400 font-bold block mb-1">Veículo do Estoque MT Cars</label>
+          <select id="calc-veh-select" onchange="MTCarsAdmin.recalcDealSimulator()" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white"></select>
+        </div>
+        <div>
+          <label class="text-zinc-400 font-bold block mb-1">Cidade do Comprador em MT (Para Frete)</label>
+          <select id="calc-client-city" onchange="MTCarsAdmin.recalcDealSimulator()" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white"></select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+        <div>
+          <label class="text-zinc-400 font-bold block mb-1">Carro do Cliente na Troca</label>
+          <input id="calc-trade-model" type="text" value="Hilux SRV 2018" oninput="MTCarsAdmin.recalcDealSimulator()" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white" />
+        </div>
+        <div>
+          <label class="text-zinc-400 font-bold block mb-1">Valor Pedido pelo Cliente (R$)</label>
+          <input id="calc-trade-asked" type="number" value="155000" step="1000" oninput="MTCarsAdmin.recalcDealSimulator()" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white" />
+        </div>
+        <div>
+          <label class="text-zinc-400 font-bold block mb-1">Entrada em Dinheiro (R$)</label>
+          <input id="calc-cash-down" type="number" value="50000" step="1000" oninput="MTCarsAdmin.recalcDealSimulator()" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-white" />
+        </div>
+      </div>
+
+      <div id="calc-results-box"></div>
+    </div>
+  </div>
+
+  <!-- 12. BARRA FLUTUANTE E MODAL DO COMPARADOR DE VEÍCULOS (VITRINE) -->
+  <div id="compare-floating-bar" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-40 glass-panel px-4 py-2.5 rounded-2xl border border-amber-500/60 shadow-2xl items-center gap-3">
+    <span class="text-xs font-bold text-white">⚖️ Comparador MT Cars: <strong id="compare-bar-count" class="text-amber-400">1 selecionado</strong></span>
+    <button onclick="MTCarsApp.openCompareModal()" class="px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-extrabold text-xs transition">
+      Comparar Lado a Lado
+    </button>
+  </div>
+
+  <div id="compare-vehicles-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel rounded-3xl max-w-5xl w-full p-6 border border-zinc-700 shadow-2xl relative my-auto">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3 mb-4">
+        <h3 class="text-lg font-black text-white">⚖️ Comparativo Lado a Lado — Estoque Auditado MT Cars</h3>
+        <button onclick="MTCarsApp.closeCompareModal()" class="text-zinc-400 hover:text-white">✕</button>
+      </div>
+      <div id="compare-vehicles-content"></div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       6. BARRA DE CONTROLE DE DEMONSTRAÇÃO (MODO APRESENTAÇÃO) - CANTO INFERIOR ESQUERDO
+       ======================================================================== -->
+  <div id="demo-control-dock" class="fixed bottom-4 left-4 z-40 max-w-sm">
+    <div class="glass-panel rounded-2xl border-2 border-amber-500/60 shadow-2xl overflow-hidden">
+      <!-- Header Recolhível da Barra Demo -->
+      <div
+        onclick="document.getElementById('demo-dock-body').classList.toggle('hidden')"
+        class="bg-zinc-950/95 px-4 py-2.5 flex items-center justify-between gap-3 cursor-pointer select-none border-b border-zinc-800"
+      >
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+          <span class="text-xs font-black text-white tracking-wide">⚡ Painel de Controle Demo (MT Cars)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="demo-bar-online-count" class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">4 online</span>
+          <span class="text-zinc-400 text-xs">▾</span>
+        </div>
+      </div>
+
+      <!-- Botões de 1 Clique para Apresentação ao Vivo -->
+      <div id="demo-dock-body" class="p-3 space-y-2 bg-zinc-950/90">
+        <button
+          onclick="MTCarsApp.openSecondTabAdminRadar()"
+          class="w-full py-2 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-black text-xs flex items-center justify-between transition shadow"
+        >
+          <span>🖥️ Abrir 2ª Aba (Radar ao Vivo)</span>
+          <span>↗</span>
+        </button>
+
+        <button
+          onclick="MTCarsApp.toggleViewModeQuick()"
+          class="w-full py-2 px-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs flex items-center justify-between transition shadow"
+        >
+          <span id="demo-toggle-view-label">Alternar Nesta Aba (Cliente/Admin)</span>
+          <span>⇄</span>
+        </button>
+
+        <button
+          onclick="MTCarsApp.simulateNewIncomingVisitor()"
+          class="w-full py-2 px-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-emerald-500/50 text-emerald-300 font-bold text-xs flex items-center justify-between transition"
+        >
+          <span>🔥 Simular Novo Cliente Entrando no Site</span>
+          <span>+1</span>
+        </button>
+
+        <button
+          onclick="MTCarsApp.triggerExitRetargetingBot()"
+          class="w-full py-2 px-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-amber-500/50 text-amber-300 font-bold text-xs flex items-center justify-between transition"
+        >
+          <span>🚪 Simular Saída (Disparar Robô WhatsApp)</span>
+          <span>🤖</span>
+        </button>
+
+        <button
+          onclick="MTCarsApp.resetDemoEnvironment()"
+          class="w-full py-1.5 px-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-white font-semibold text-[11px] flex items-center justify-center gap-1.5 transition"
+        >
+          <span>🔄 Resetar Dados de Demonstração</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Container de Notificações Smartphone do Robô WhatsApp (Canto Inferior Direito) -->
+  <div id="whatsapp-bot-notification-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-3 max-w-md w-full pointer-events-none px-4 sm:px-0"></div>
+
+  <!-- Container de Toasts Gerais (Topo Direito) -->
+  <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col gap-2 max-w-sm w-full"></div>
+
+  <!-- Scripts Modulares da Aplicação -->
+  <script src="js/data.js"></script>
+  <script src="js/realtime.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      MTCarsApp.init();
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>
+
