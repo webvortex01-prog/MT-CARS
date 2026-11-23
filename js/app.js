@@ -670,25 +670,25 @@ window.MTCarsApp = (function () {
             </div>
           </div>
 
-          <div class="glass-panel rounded-2xl p-5 border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-zinc-900 to-zinc-900">
+          <div class="glass-panel rounded-2xl p-5 border-2 border-amber-500/40">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
                 <i data-lucide="award" class="w-4 h-4"></i> Comparativo Oficial Tabela FIPE (${v.fipeCode || "Mato Grosso"})
               </span>
-              <span class="text-xs font-semibold text-emerald-400">Economia imediata de ${formatBRL(Math.max(0, fipeDiff))}</span>
+              <span class="text-xs font-extrabold text-emerald-400">Economia imediata de ${formatBRL(Math.max(0, fipeDiff))}</span>
             </div>
             <div class="grid grid-cols-2 gap-4 mt-3">
-              <div class="p-3 rounded-xl bg-zinc-950/80 border border-zinc-800">
+              <div class="p-3 rounded-xl bg-zinc-950 border border-zinc-800">
                 <span class="text-xs text-zinc-400 block">Preço Médio FIPE no MT</span>
-                <span class="text-lg font-bold text-zinc-300">${formatBRL(v.priceFipe)}</span>
+                <span class="text-lg font-bold text-white">${formatBRL(v.priceFipe)}</span>
               </div>
-              <div class="p-3 rounded-xl bg-zinc-950/80 border border-emerald-500/40">
-                <span class="text-xs text-emerald-400 block">Preço Exclusivo MT Cars</span>
+              <div class="p-3 rounded-xl bg-zinc-950 border border-emerald-500/50">
+                <span class="text-xs text-emerald-400 font-bold block">Preço Exclusivo MT Car</span>
                 <span class="text-lg font-extrabold text-white">${formatBRL(v.priceSale)}</span>
               </div>
             </div>
-            <p class="text-[11px] text-zinc-400 mt-3">
-              🔒 <strong>Blindagem de Negócio MT Cars:</strong> Veículo vistoriado presencialmente em <strong>${v.city} - MT</strong>. Pagamento seguro diretamente na transferência com intermediação jurídica completa.
+            <p class="text-xs text-zinc-300 mt-3">
+              🔒 <strong>Blindagem de Negócio MT Car:</strong> Veículo vistoriado presencialmente em <strong>${v.city} - MT</strong>. Pagamento seguro diretamente na transferência com intermediação jurídica completa.
             </p>
           </div>
         </div>
@@ -797,16 +797,16 @@ window.MTCarsApp = (function () {
               </div>
             </div>
 
-            <div class="p-4 rounded-2xl bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 border border-emerald-500/40 space-y-2">
+            <div class="p-4 rounded-2xl bg-zinc-950 border-2 border-emerald-500/50 space-y-2">
               <div class="flex items-center justify-between text-xs text-zinc-400">
                 <span>Saldo a Financiar Estimado:</span>
-                <span id="sim-financed-amount" class="font-bold text-zinc-200">${formatBRL(Math.max(0, v.priceSale - state.simulator.downPayment))}</span>
+                <span id="sim-financed-amount" class="font-bold text-white">${formatBRL(Math.max(0, v.priceSale - state.simulator.downPayment))}</span>
               </div>
               <div class="flex items-baseline justify-between pt-1">
-                <span id="sim-result-months-label" class="text-sm font-bold text-zinc-300">${state.simulator.installments}x fixas de:</span>
+                <span id="sim-result-months-label" class="text-sm font-bold text-white">${state.simulator.installments}x fixas de:</span>
                 <span id="sim-result-installment" class="text-3xl font-black text-emerald-400">${formatBRL(installmentVal)}</span>
               </div>
-              <p class="text-[11px] text-zinc-500">
+              <p class="text-[11px] text-zinc-400">
                 *Taxa referencial de 1,49% a.m. sujeita à aprovação de CPF/CNPJ (Safra, Santander, BV, Itaú, Sicredi MT).
               </p>
             </div>

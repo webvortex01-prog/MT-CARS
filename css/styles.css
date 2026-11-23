@@ -62,7 +62,12 @@ html.theme-light .bg-zinc-950\/90,
 html.theme-light .bg-zinc-950\/85,
 html.theme-light .bg-zinc-950\/80,
 html.theme-light .bg-zinc-950\/70,
-html.theme-light .bg-zinc-950\/60 {
+html.theme-light .bg-zinc-950\/60,
+html.theme-light .via-zinc-900,
+html.theme-light .to-zinc-900,
+html.theme-light .from-zinc-950,
+html.theme-light .to-zinc-950 {
+  background-image: none !important;
   background-color: #f1f5f9 !important;
   color: #0f172a !important;
   border-color: #cbd5e1 !important;
