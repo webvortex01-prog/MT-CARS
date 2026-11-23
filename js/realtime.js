@@ -9,9 +9,13 @@
 window.MTCarsRealtime = (function () {
   const CHANNEL_NAME = "mtcars_dual_sync_channel_v1";
   const TAB_INSTANCE_ID = "tab_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7);
+  // Banco de Dados Cloud Global Automático (Funciona 24h no GitHub Pages entre celulares e PCs diferentes!)
+  const CLOUD_VEHICLES_TOPIC = "mtcars_mt51_cloud_vehicles_v3";
+  const CLOUD_STREAM_TOPIC = "mtcars_mt51_cloud_stream_v3";
 
   let bc = null;
   let sse = null;
+  let cloudSse = null;
   let listeners = [];
   let soundEnabled = true;
   let audioCtx = null;
@@ -69,13 +73,17 @@ window.MTCarsRealtime = (function () {
       } catch (_) {}
     }, 450);
 
-    // 4. Server-Sent Events (SSE) + Hidratação do Banco Persistente (Apenas quando rodando no servidor Node local/túnel)
+    // 4. Server-Sent Events (SSE) + Hidratação do Banco Persistente Local (Quando rodando no Node.js)
     if (hasLocalNodeBackend()) {
       connectLocalSSE();
       syncInitialDatabaseWithServer();
     }
 
-    // 5. Firebase Cloud caso configurado
+    // 5. Banco de Dados Cloud Global Automático (Sincroniza veículos salvos pelos Cooperados/Lojistas no GitHub Pages!)
+    hydrateVehiclesFromCloudDB();
+    connectGlobalCloudSSE();
+
+    // 6. Firebase Cloud caso configurado
     try {
       const savedFb = localStorage.getItem(window.MTCarsData.STORAGE_KEYS.FIREBASE_CONFIG);
       if (savedFb) {
@@ -258,11 +266,148 @@ window.MTCarsRealtime = (function () {
       } catch (_) {}
     }
 
+    // Salva automaticamente no Banco Cloud Global quando um veículo é adicionado/atualizado/vendido
+    if (data && data.vehicle) {
+      persistVehicleToCloudDB(data.vehicle);
+    }
+
+    // Transmite evento ao vivo pela Nuvem (Funciona no GitHub Pages entre celular e PC!)
+    broadcastEventToCloudStream(payload);
+
     if (firebaseConnected && firebaseConfig && firebaseConfig.databaseURL) {
       syncToFirebaseNode(type, data);
     }
 
     return payload;
+  }
+
+  // Persiste um veículo cadastrado/editado por Cooperado ou Lojista no Banco Cloud Global
+  async function persistVehicleToCloudDB(vehicle) {
+    if (!vehicle || !vehicle.id) return;
+    try {
+      const compactVeh = {
+        id: vehicle.id,
+        ref: vehicle.ref,
+        brand: vehicle.brand,
+        model: vehicle.model,
+        title: vehicle.title,
+        year: vehicle.year,
+        km: vehicle.km,
+        transmission: vehicle.transmission,
+        fuel: vehicle.fuel,
+        category: vehicle.category,
+        city: vehicle.city,
+        uf: vehicle.uf || "MT",
+        priceSale: vehicle.priceSale,
+        priceFipe: vehicle.priceFipe,
+        priceRepasse: vehicle.priceRepasse,
+        garageName: vehicle.garageName,
+        garageOwner: vehicle.garageOwner,
+        garageWhatsapp: vehicle.garageWhatsapp,
+        captadorId: vehicle.captadorId,
+        captadorName: vehicle.captadorName,
+        photoStatus: vehicle.photoStatus || "complete",
+        status: vehicle.status || "Disponível",
+        highlightTag: vehicle.highlightTag,
+        image: vehicle.image,
+        gallery: [vehicle.image],
+        description: (vehicle.description || "").slice(0, 220),
+        options: (vehicle.options || []).slice(0, 5)
+      };
+
+      await fetch(`https://ntfy.sh/${CLOUD_VEHICLES_TOPIC}`, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "UPSERT_VEHICLE",
+          senderTabId: TAB_INSTANCE_ID,
+          timestamp: Date.now(),
+          vehicle: compactVeh
+        })
+      });
+    } catch (_) {}
+  }
+
+  // Carrega todos os veículos salvos na Nuvem pelos Cooperados e Lojistas ao abrir o site
+  async function hydrateVehiclesFromCloudDB() {
+    try {
+      const res = await fetch(`https://ntfy.sh/${CLOUD_VEHICLES_TOPIC}/json?poll=1&since=all`);
+      if (!res.ok) return;
+      const text = await res.text();
+      if (!text.trim()) return;
+
+      const lines = text.trim().split("\n");
+      const KEYS = window.MTCarsData.STORAGE_KEYS;
+      let currentVehicles = JSON.parse(localStorage.getItem(KEYS.VEHICLES) || "[]");
+      let changed = false;
+
+      for (const line of lines) {
+        try {
+          const env = JSON.parse(line);
+          if (env.event === "message" && env.message) {
+            const data = JSON.parse(env.message);
+            if (data.action === "UPSERT_VEHICLE" && data.vehicle && data.vehicle.id) {
+              const idx = currentVehicles.findIndex((v) => v.id === data.vehicle.id);
+              if (idx >= 0) {
+                currentVehicles[idx] = { ...currentVehicles[idx], ...data.vehicle };
+              } else {
+                currentVehicles.unshift(data.vehicle);
+              }
+              changed = true;
+            }
+          }
+        } catch (_) {}
+      }
+
+      if (changed) {
+        localStorage.setItem(KEYS.VEHICLES, JSON.stringify(currentVehicles));
+        notifyListeners({
+          id: "evt_cloud_hydrated_" + Date.now(),
+          type: "CLOUD_DB_SYNCED",
+          data: {}
+        });
+      }
+    } catch (_) {}
+  }
+
+  // Stream SSE em Nuvem para sincronizar ações ao vivo até no GitHub Pages
+  function connectGlobalCloudSSE() {
+    if (!("EventSource" in window)) return;
+    try {
+      cloudSse = new EventSource(`https://ntfy.sh/${CLOUD_STREAM_TOPIC}/sse`);
+      cloudSse.onmessage = (e) => {
+        if (!e.data) return;
+        try {
+          const env = JSON.parse(e.data);
+          if (env.event === "message" && env.message) {
+            const payload = JSON.parse(env.message);
+            if (payload.senderTabId === TAB_INSTANCE_ID) return;
+            if (payload.data && payload.data.vehicle) {
+              const KEYS = window.MTCarsData.STORAGE_KEYS;
+              const currentVehicles = JSON.parse(localStorage.getItem(KEYS.VEHICLES) || "[]");
+              const idx = currentVehicles.findIndex((v) => v.id === payload.data.vehicle.id);
+              if (idx >= 0) {
+                currentVehicles[idx] = { ...currentVehicles[idx], ...payload.data.vehicle };
+              } else {
+                currentVehicles.unshift(payload.data.vehicle);
+              }
+              localStorage.setItem(KEYS.VEHICLES, JSON.stringify(currentVehicles));
+            }
+            handleIncomingPayload(payload);
+          }
+        } catch (_) {}
+      };
+    } catch (_) {}
+  }
+
+  function broadcastEventToCloudStream(payload) {
+    try {
+      const str = JSON.stringify(payload);
+      if (str.length > 3800) return;
+      fetch(`https://ntfy.sh/${CLOUD_STREAM_TOPIC}`, {
+        method: "POST",
+        body: str
+      }).catch(() => {});
+    } catch (_) {}
   }
 
   function playSound(effectType = "radar_ping") {

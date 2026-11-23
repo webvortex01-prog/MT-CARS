@@ -843,7 +843,7 @@ window.MTCarsAdmin = (function () {
     if (!v || v.status === "Vendido") return;
     v.status = v.status === "Reservado" ? "Disponível" : "Reservado";
     App.persistAll();
-    window.MTCarsRealtime.emit("VEHICLE_UPDATED", { vehicleId });
+    window.MTCarsRealtime.emit("VEHICLE_UPDATED", { vehicleId, vehicle: v });
     renderStockTab();
     App.showToast(`📌 Status do ${v.title} alterado para: ${v.status}`, "amber");
   }
@@ -893,7 +893,7 @@ window.MTCarsAdmin = (function () {
 
     App.persistAll();
     window.MTCarsRealtime.playSound("sale_closed");
-    window.MTCarsRealtime.emit("VEHICLE_SOLD", { vehicleId: v.id, commission, sellerName: seller.fullTitle });
+    window.MTCarsRealtime.emit("VEHICLE_SOLD", { vehicleId: v.id, commission, sellerName: seller.fullTitle, vehicle: v });
 
     renderStockTab();
     App.showToast(`🏆 VENDA FECHADA! ${v.title} vendido! Comissão de ${App.formatBRL(commission)} creditada para ${seller.fullTitle}!`, "emerald");
@@ -1020,6 +1020,7 @@ window.MTCarsAdmin = (function () {
     const image = document.getElementById("new-veh-image")?.value.trim() || "https://images.unsplash.com/photo-1559416523-140ddc3d238c?auto=format&fit=crop&w=1000&q=85";
     const description = document.getElementById("new-veh-desc")?.value.trim() || `Veículo selecionado em ${city} - MT com intermediação e garantia documental MT Cars.`;
 
+    let savedVehObj = null;
     if (editId) {
       const idx = App.state.vehicles.findIndex((v) => v.id === editId);
       if (idx !== -1) {
@@ -1046,8 +1047,9 @@ window.MTCarsAdmin = (function () {
           gallery: [image],
           description
         };
+        savedVehObj = App.state.vehicles[idx];
       }
-      App.showToast(`✅ Veículo ${brand} ${model} atualizado com sucesso!`, "emerald");
+      App.showToast(`✅ Veículo ${brand} ${model} salvo no Banco de Dados em Nuvem!`, "emerald");
     } else {
       const newVeh = {
         id: "veh_" + Date.now(),
@@ -1071,22 +1073,23 @@ window.MTCarsAdmin = (function () {
         captadorId,
         captadorName: sellerObj.fullTitle,
         status: "Disponível",
-        highlightTag: category.includes("Agro") ? "🚜 Pronto pro Agro" : "🔥 Oferta Auditada MT",
-        color: "Original",
+        highlightTag: category.includes("Camionetes") ? "🚜 Pronto pro Agro" : "⭐ Oferta Auditada MT",
+        color: "Branco",
         plateEnd: "IPVA 2026 Pago",
         description,
-        options: ["Laudo Cautelar Aprovado", "IPVA 2026 Pago", "Garantia Procedência MT Cars", "Multimídia Completa"],
+        options: ["Laudo Cautelar Aprovado", "IPVA 2026 Pago", "Garantia Procedência MT Car", "Multimídia Completa"],
         image,
         gallery: [image],
         fipeCode: "002140-1"
       };
       App.state.vehicles.unshift(newVeh);
+      savedVehObj = newVeh;
       sellerObj.carrosCaptados = (Number(sellerObj.carrosCaptados) || 0) + 1;
-      App.showToast(`🚗 Novo veículo ${newVeh.title} (${newVeh.ref}) cadastrado no estoque estadual!`, "emerald");
+      App.showToast(`🚗 Novo veículo ${newVeh.title} (${newVeh.ref}) salvo no Banco Cloud MT Car!`, "emerald");
     }
 
     App.persistAll();
-    window.MTCarsRealtime.emit("VEHICLE_SAVED", {});
+    window.MTCarsRealtime.emit("VEHICLE_SAVED", { vehicle: savedVehObj });
     closeNewVehicleModal();
     renderStockTab();
   }
@@ -2021,7 +2024,7 @@ window.MTCarsAdmin = (function () {
     }
 
     App.persistAll();
-    window.MTCarsRealtime.emit("VEHICLE_UPDATED", { vehicleId: v.id });
+    window.MTCarsRealtime.emit("VEHICLE_UPDATED", { vehicleId: v.id, vehicle: v });
     renderStockTab();
     App.showToast(`📸 Fotos adicionadas por ${currentSeller.fullTitle}! O veículo ${v.title} já está publicado na Vitrine!`, "emerald");
   }
