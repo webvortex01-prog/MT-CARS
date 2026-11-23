@@ -18,26 +18,59 @@
 }
 
 /* ==========================================================================
-   MODO PADRÃO OFICIAL MT: FUNDO CLARO PEROLADO/AZULADO (#E8EEF5)
-   Projetado especificamente para DESTACAR CARROS BRANCOS e dar leitura limpa
+   MODO PADRÃO OFICIAL MT: FUNDO 100% BRANCO LIMPO + CONTRASTE P/ CARROS BRANCOS
    ========================================================================== */
+html.theme-light,
 html.theme-light body {
-  background-color: #e8eef5 !important;
+  background-color: #ffffff !important;
   color: #0f172a !important;
 }
 
-html.theme-light .bg-zinc-950 {
-  background-color: #eef3f9 !important;
+html.theme-light #view-public-vitrine,
+html.theme-light #view-admin-warroom {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+html.theme-light .bg-zinc-950,
+html.theme-light .bg-zinc-950\/95,
+html.theme-light .bg-zinc-950\/90,
+html.theme-light .bg-zinc-950\/85,
+html.theme-light .bg-zinc-950\/80,
+html.theme-light .bg-zinc-950\/70,
+html.theme-light .bg-zinc-950\/60 {
+  background-color: #f1f5f9 !important;
   color: #0f172a !important;
 }
 
 html.theme-light .bg-zinc-900,
+html.theme-light .bg-zinc-900\/95,
 html.theme-light .bg-zinc-900\/90,
-html.theme-light .glass-panel {
+html.theme-light .bg-zinc-900\/80,
+html.theme-light .bg-zinc-800 {
   background-color: #ffffff !important;
   border-color: #cbd5e1 !important;
   color: #0f172a !important;
-  box-shadow: 0 8px 24px -4px rgba(7, 30, 72, 0.08) !important;
+}
+
+html.theme-light .glass-panel {
+  background-color: #ffffff !important;
+  border: 1px solid #dbe3ee !important;
+  color: #0f172a !important;
+  box-shadow: 0 8px 24px -4px rgba(0, 56, 168, 0.08) !important;
+}
+
+html.theme-light input,
+html.theme-light select,
+html.theme-light textarea {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.theme-light input::placeholder,
+html.theme-light textarea::placeholder {
+  color: #64748b !important;
 }
 
 /* Header e Hero no Modo Claro mantêm o Azul Royal Oficial da Bandeira de MT para contraste máximo! */

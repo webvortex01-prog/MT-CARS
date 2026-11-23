@@ -1691,16 +1691,16 @@ window.MTCarsApp = (function () {
     }, 5000);
   }
 
-  // Alternador de Tema Prático (Modo Clean Claro x Modo Carbono Escuro)
+  // Alternador de Tema Prático (Fundo Branco Padrão x Modo Escuro Opcional)
   function toggleThemeMode() {
     const htmlEl = document.documentElement;
     const isLight = htmlEl.classList.toggle("theme-light");
-    localStorage.setItem("mtcars_theme_mode", isLight ? "light" : "dark");
+    localStorage.setItem("mtcars_theme_mode_v3", isLight ? "light" : "dark");
     const labelEl = document.getElementById("theme-toggle-label");
     if (labelEl) {
-      labelEl.textContent = isLight ? "🌙 Modo Escuro" : "☀️ Modo Claro";
+      labelEl.textContent = isLight ? "🌙 Mudar Fundo (Escuro)" : "☀️ Fundo Branco Padrão";
     }
-    showToast(isLight ? "☀️ Visual Prático Claro ativado!" : "🌙 Visual Carbono Escuro ativado!", "emerald");
+    showToast(isLight ? "☀️ Fundo Branco Padrão ativado!" : "🌙 Fundo Escuro ativado!", "emerald");
   }
 
   // Comparador Prático de Veículos (Até 3 carros lado a lado)
@@ -1796,16 +1796,16 @@ window.MTCarsApp = (function () {
   }
 
   function init() {
-    // Por padrão inicia no Tema Oficial Claro Bandeira de MT (Alto Contraste p/ Carros Brancos)
-    const savedTheme = localStorage.getItem("mtcars_theme_mode");
+    // Sempre inicia com FUNDO BRANCO POR PADRÃO (a menos que a pessoa clique no botão para mudar)
+    const savedTheme = localStorage.getItem("mtcars_theme_mode_v3");
     if (savedTheme !== "dark") {
       document.documentElement.classList.add("theme-light");
       const labelEl = document.getElementById("theme-toggle-label");
-      if (labelEl) labelEl.textContent = "🌙 Modo Noturno";
+      if (labelEl) labelEl.textContent = "🌙 Mudar Fundo (Escuro)";
     } else {
       document.documentElement.classList.remove("theme-light");
       const labelEl = document.getElementById("theme-toggle-label");
-      if (labelEl) labelEl.textContent = "☀️ Modo Claro MT";
+      if (labelEl) labelEl.textContent = "☀️ Fundo Branco Padrão";
     }
     loadStateFromStorage();
     ensureLiveSessionVisitor();
