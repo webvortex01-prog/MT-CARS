@@ -1,8 +1,8 @@
 /* ==========================================================================
    MT CAR - IDENTIDADE OFICIAL BANDEIRA DO MATO GROSSO
-   Cores Oficiais: Azul MT (#0038A8 / #1d4ed8), Verde MT (#008040 / #10b981),
-   Amarelo Estrela de Sirius (#f59e0b / #fbbf24) e Branco/Gelo Alto Contraste
-   (ZERO VERMELHO - 100% Bandeira de Mato Grosso)
+   Cores Oficiais: Azul MT (#0038A8 / #1d4ed8), Verde MT (#008040 / #059669),
+   Amarelo Estrela de Sirius (#f59e0b / #fbbf24) e Fundo 100% Branco Limpo
+   COM CONTRASTE TOTAL DE LEITURA (ZERO TEXTO BRANCO EM FUNDO BRANCO)
    ========================================================================== */
 
 :root {
@@ -17,8 +17,23 @@
   --text-primary: #f8fafc;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.font-display {
+  font-family: 'Orbitron', 'Inter', sans-serif;
+}
+
 /* ==========================================================================
-   MODO PADRÃO OFICIAL MT: FUNDO 100% BRANCO LIMPO + CONTRASTE P/ CARROS BRANCOS
+   1. MODO PADRÃO OFICIAL: FUNDO 100% BRANCO E LEITURA DE ALTO CONTRASTE
    ========================================================================== */
 html.theme-light,
 html.theme-light body {
@@ -28,10 +43,19 @@ html.theme-light body {
 
 html.theme-light #view-public-vitrine,
 html.theme-light #view-admin-warroom {
-  background-color: #f8fafc !important;
+  background-color: #f4f7fb !important;
   color: #0f172a !important;
 }
 
+/* Cards e Painéis Gerais no Modo Claro: Fundo Branco Puro + Letra Escura */
+html.theme-light .glass-panel {
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 6px 20px -4px rgba(7, 30, 72, 0.08) !important;
+}
+
+/* Caixas internas (bg-zinc-950 / bg-zinc-900 / bg-zinc-800) fora do Header Azul */
 html.theme-light .bg-zinc-950,
 html.theme-light .bg-zinc-950\/95,
 html.theme-light .bg-zinc-950\/90,
@@ -41,6 +65,7 @@ html.theme-light .bg-zinc-950\/70,
 html.theme-light .bg-zinc-950\/60 {
   background-color: #f1f5f9 !important;
   color: #0f172a !important;
+  border-color: #cbd5e1 !important;
 }
 
 html.theme-light .bg-zinc-900,
@@ -48,62 +73,19 @@ html.theme-light .bg-zinc-900\/95,
 html.theme-light .bg-zinc-900\/90,
 html.theme-light .bg-zinc-900\/80,
 html.theme-light .bg-zinc-800 {
-  background-color: #ffffff !important;
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
   border-color: #cbd5e1 !important;
-  color: #0f172a !important;
 }
 
-html.theme-light .glass-panel {
-  background-color: #ffffff !important;
-  border: 1px solid #dbe3ee !important;
-  color: #0f172a !important;
-  box-shadow: 0 8px 24px -4px rgba(0, 56, 168, 0.08) !important;
+html.theme-light .bg-zinc-900:hover,
+html.theme-light .bg-zinc-900\/90:hover,
+html.theme-light .bg-zinc-800:hover {
+  background-color: #cbd5e1 !important;
+  color: #071e48 !important;
 }
 
-html.theme-light input,
-html.theme-light select,
-html.theme-light textarea {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  color: #0f172a !important;
-}
-
-html.theme-light input::placeholder,
-html.theme-light textarea::placeholder {
-  color: #64748b !important;
-}
-
-/* Header e Hero no Modo Claro mantêm o Azul Royal Oficial da Bandeira de MT para contraste máximo! */
-html.theme-light .glass-header {
-  background: linear-gradient(90deg, #071e48 0%, #0038a8 100%) !important;
-  border-bottom: 3px solid #f59e0b !important;
-  color: #ffffff !important;
-}
-
-html.theme-light .glass-header .text-white,
-html.theme-light .glass-header span,
-html.theme-light .glass-header p {
-  color: #ffffff !important;
-}
-
-html.theme-light .glass-header .bg-zinc-900 {
-  background-color: rgba(255, 255, 255, 0.14) !important;
-  border-color: rgba(255, 255, 255, 0.28) !important;
-  color: #ffffff !important;
-}
-
-html.theme-light .hero-mesh-bg {
-  background: linear-gradient(135deg, #071e48 0%, #0038a8 58%, #065f46 100%) !important;
-  color: #ffffff !important;
-  border-bottom: 4px solid #f59e0b !important;
-}
-
-html.theme-light .hero-mesh-bg h1,
-html.theme-light .hero-mesh-bg .hero-title-text {
-  color: #ffffff !important;
-}
-
-/* Textos nos cards brancos */
+/* Textos gerais em Fundo Branco -> Sempre Escuros e Nítidos */
 html.theme-light .text-white {
   color: #0f172a !important;
 }
@@ -115,12 +97,15 @@ html.theme-light .text-zinc-300 {
 }
 
 html.theme-light .text-zinc-400,
-html.theme-light .text-zinc-500 {
+html.theme-light .text-zinc-500,
+html.theme-light .text-zinc-600 {
   color: #475569 !important;
 }
 
+/* Cores de Destaque em Fundo Branco (Escurecidas para Contraste Perfeito!) */
 html.theme-light .text-emerald-400,
-html.theme-light .text-emerald-300 {
+html.theme-light .text-emerald-300,
+html.theme-light .text-emerald-200 {
   color: #047857 !important;
 }
 
@@ -129,21 +114,155 @@ html.theme-light .text-amber-300 {
   color: #b45309 !important;
 }
 
+html.theme-light .text-sky-300,
+html.theme-light .text-sky-400 {
+  color: #0369a1 !important;
+}
+
+html.theme-light .text-purple-300,
+html.theme-light .text-purple-400 {
+  color: #6d28d9 !important;
+}
+
+html.theme-light .text-orange-300,
+html.theme-light .text-orange-400 {
+  color: #c2410c !important;
+}
+
+/* Inputs, Selects e Textareas em Fundo Branco */
+html.theme-light input,
+html.theme-light select,
+html.theme-light textarea {
+  background-color: #ffffff !important;
+  border: 1px solid #94a3b8 !important;
+  color: #0f172a !important;
+}
+
+html.theme-light select option {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+html.theme-light input::placeholder,
+html.theme-light textarea::placeholder {
+  color: #64748b !important;
+}
+
 html.theme-light .border-zinc-800,
 html.theme-light .border-zinc-800\/80,
 html.theme-light .border-zinc-800\/90,
-html.theme-light .border-zinc-700 {
+html.theme-light .border-zinc-700,
+html.theme-light .border-zinc-700\/80 {
   border-color: #cbd5e1 !important;
 }
 
-/* Moldura Escura Exclusiva nas Fotos dos Veículos para DESTACAR CARROS BRANCOS */
-.vehicle-photo-frame {
-  background: radial-gradient(circle at center, #1e293b 0%, #091326 100%) !important;
-  border-bottom: 2px solid #0038a8;
+/* ==========================================================================
+   2. EXCEÇÃO CONTROLADA: HEADER AZUL MARINHO MT (.glass-header) E HERO (.hero-mesh-bg)
+   Garante que nenhum botão dentro do Header fique "Branco com Letra Branca"!
+   ========================================================================== */
+html.theme-light .glass-header {
+  background: linear-gradient(90deg, #071e48 0%, #0038a8 100%) !important;
+  border-bottom: 3px solid #f59e0b !important;
+}
+
+/* Textos soltos direto no Header Azul são Brancos */
+html.theme-light .glass-header .font-display,
+html.theme-light .glass-header p {
+  color: #ffffff !important;
+}
+
+/* Botões e Abas INATIVAS dentro do Header Azul (.bg-zinc-900 / .admin-tab-btn):
+   Fundo Azul-Marinho Escuro Translúcido + Letra Branca Nítida! */
+html.theme-light .glass-header .bg-zinc-900,
+html.theme-light .glass-header .bg-zinc-900\/90,
+html.theme-light .glass-header .bg-zinc-800 {
+  background-color: rgba(7, 24, 60, 0.78) !important;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  color: #ffffff !important;
+}
+
+html.theme-light .glass-header .bg-zinc-900:hover,
+html.theme-light .glass-header .bg-zinc-900\/90:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border-color: #fbbf24 !important;
+}
+
+html.theme-light .glass-header .bg-zinc-900 span,
+html.theme-light .glass-header .bg-zinc-900\/90 span,
+html.theme-light .glass-header .admin-tab-btn span,
+html.theme-light .glass-header #admin-active-seller-badge div {
+  color: #ffffff !important;
+}
+
+/* Select de Simular Vendedor dentro do Header Azul */
+html.theme-light .glass-header select#admin-active-seller-select {
+  background-color: rgba(7, 24, 60, 0.9) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+html.theme-light .glass-header select#admin-active-seller-select option {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* Badges numéricas dentro das abas do Header Azul */
+html.theme-light .glass-header .admin-tab-btn .bg-zinc-950\/60,
+html.theme-light .glass-header .admin-tab-btn .bg-zinc-800 {
+  background-color: rgba(255, 255, 255, 0.22) !important;
+  color: #fbbf24 !important;
+}
+
+html.theme-light .glass-header .admin-tab-btn .bg-amber-500 {
+  background-color: #f59e0b !important;
+  color: #071e48 !important;
+}
+
+/* Hero Banner Azul/Verde da Bandeira de MT */
+html.theme-light .hero-mesh-bg {
+  background: linear-gradient(135deg, #071e48 0%, #0038a8 58%, #065f46 100%) !important;
+  border-bottom: 4px solid #f59e0b !important;
+}
+
+html.theme-light .hero-mesh-bg h1,
+html.theme-light .hero-mesh-bg .hero-title-text {
+  color: #ffffff !important;
+}
+
+html.theme-light .hero-mesh-bg .text-amber-300 {
+  color: #fde047 !important;
+}
+
+/* Pílulas de Categoria no Hero Azul */
+html.theme-light .hero-mesh-bg .quick-cat-pill.bg-zinc-900\/90 {
+  background-color: rgba(7, 24, 60, 0.78) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+}
+
+html.theme-light .hero-mesh-bg .quick-cat-pill.bg-zinc-900\/90:hover {
+  background-color: rgba(255, 255, 255, 0.22) !important;
+}
+
+/* Card Branco de Busca dentro do Hero Azul mantém textos escuros */
+html.theme-light .hero-mesh-bg .glass-panel {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+html.theme-light .hero-mesh-bg .glass-panel .bg-zinc-900 {
+  background-color: #0038a8 !important;
+  color: #ffffff !important;
+}
+
+html.theme-light .hero-mesh-bg .glass-panel .bg-zinc-900 span {
+  color: #ffffff !important;
 }
 
 /* ==========================================================================
-   BLINDAGEM ZERO VERMELHO -> CONVERSÃO AUTOMÁTICA PARA AZUL BANDEIRA DE MT
+   3. BOTÕES SÓLIDOS (AZUL MT, VERDE MT, AMARELO MT) — CONTRASTE BLINDADO
    ========================================================================== */
 .bg-red-600,
 .bg-red-500,
@@ -157,6 +276,55 @@ html.theme-light .border-zinc-700 {
   background-color: #1d4ed8 !important;
 }
 
+/* Garante que qualquer span ou texto dentro de botão Azul ou Verde seja BRANCO */
+html.theme-light .bg-red-600,
+html.theme-light .bg-red-600 span,
+html.theme-light .bg-emerald-600,
+html.theme-light .bg-emerald-600 span,
+html.theme-light .from-red-600,
+html.theme-light .from-red-600 span,
+html.theme-light .from-emerald-500,
+html.theme-light .from-emerald-500 span {
+  color: #ffffff !important;
+}
+
+/* Garante que qualquer span ou texto dentro de botão Amarelo Ouro ou Verde Claro seja ESCURO (#071e48) */
+html.theme-light .bg-amber-500,
+html.theme-light .bg-amber-500 span,
+html.theme-light .bg-emerald-500,
+html.theme-light .bg-emerald-500 span {
+  color: #071e48 !important;
+}
+
+/* Overlays escuros sobre as fotos dos carros mantêm letra branca */
+html.theme-light .keep-white-text,
+html.theme-light .keep-white-text span {
+  color: #ffffff !important;
+}
+
+/* Popup de Notificação do WhatsApp (Simulador de Celular) mantém o visual escuro oficial do WhatsApp */
+html.theme-light #whatsapp-bot-notification-container .whatsapp-popup-enter,
+html.theme-light #whatsapp-bot-notification-container .whatsapp-popup-enter span,
+html.theme-light #whatsapp-bot-notification-container .whatsapp-popup-enter div,
+html.theme-light #whatsapp-bot-notification-container .whatsapp-popup-enter strong {
+  color: #ffffff !important;
+}
+
+html.theme-light #whatsapp-bot-notification-container .bg-emerald-500 {
+  color: #071e48 !important;
+}
+
+/* ==========================================================================
+   4. MOLDURA DE ALTO CONTRASTE PARA DESTACAR CARROS BRANCOS
+   ========================================================================== */
+.vehicle-photo-frame {
+  background: radial-gradient(circle at center, #1e293b 0%, #091326 100%) !important;
+  border-bottom: 3px solid #0038a8;
+}
+
+/* ==========================================================================
+   5. CONVERSÃO ZERO VERMELHO -> AZUL BANDEIRA DE MATO GROSSO
+   ========================================================================== */
 .from-red-600 {
   --tw-gradient-from: #0038a8 !important;
   --tw-gradient-to: #1d4ed8 !important;
@@ -173,7 +341,7 @@ html.theme-light .border-zinc-700 {
 .text-red-300,
 .group:hover .group-hover\:text-red-500,
 .group:hover .group-hover\:text-red-400 {
-  color: #1d4ed8 !important;
+  color: #0038a8 !important;
 }
 
 html:not(.theme-light) .text-red-500,
@@ -186,42 +354,13 @@ html:not(.theme-light) .text-red-300 {
 .border-red-600\/50,
 .border-red-500\/40,
 .focus\:border-red-500:focus {
-  border-color: #1d4ed8 !important;
+  border-color: #0038a8 !important;
 }
 
 .bg-red-600\/15,
 .bg-red-600\/20,
 .bg-red-500\/15 {
-  background-color: rgba(0, 56, 168, 0.14) !important;
-}
-
-.shadow-red-600\/20,
-.shadow-red-600\/25,
-.shadow-red-600\/30 {
-  --tw-shadow-color: rgba(0, 56, 168, 0.28) !important;
-}
-
-html.theme-light .keep-white-text,
-html.theme-light .bg-red-600,
-html.theme-light .bg-blue-700,
-html.theme-light .bg-emerald-600,
-html.theme-light .bg-emerald-500 {
-  color: #ffffff !important;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-  background-color: var(--bg-main);
-  color: var(--text-primary);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-.font-display {
-  font-family: 'Orbitron', 'Inter', sans-serif;
+  background-color: rgba(0, 56, 168, 0.12) !important;
 }
 
 /* Scrollbar limpa nas cores de MT */
@@ -265,7 +404,7 @@ html {
 
 .vehicle-card-clean:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 32px -8px rgba(0, 56, 168, 0.25) !important;
+  box-shadow: 0 16px 32px -8px rgba(0, 56, 168, 0.22) !important;
   border-color: #0038a8 !important;
 }
 
@@ -276,7 +415,6 @@ html {
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -284,7 +422,6 @@ html {
   animation: fadeInUpSoft 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Radar Live Pulse Rings */
 @keyframes radarPing {
   0% {
     transform: scale(1);
@@ -318,7 +455,6 @@ html {
   animation: flashUpdate 1.2s ease-out;
 }
 
-/* Range Slider Azul Mato Grosso */
 input[type="range"].mtcars-slider {
   -webkit-appearance: none;
   appearance: none;
@@ -346,7 +482,6 @@ input[type="range"].mtcars-slider::-webkit-slider-thumb:hover {
   transform: scale(1.15);
 }
 
-/* WhatsApp Smartphone Popup Animation */
 @keyframes slideInRightBounce {
   0% {
     transform: translateX(110%);
@@ -368,11 +503,10 @@ input[type="range"].mtcars-slider::-webkit-slider-thumb:hover {
 }
 
 .secret-garage-box {
-  background: rgba(15, 23, 42, 0.04);
+  background: rgba(0, 56, 168, 0.04);
   border-left: 4px solid #0038a8;
 }
 
-/* Mini Bandeira Oficial do Mato Grosso em CSS/SVG */
 .mt-flag-badge {
   display: inline-flex;
   align-items: center;
