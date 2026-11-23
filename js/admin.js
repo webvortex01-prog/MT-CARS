@@ -151,7 +151,7 @@ window.MTCarsAdmin = (function () {
       }
     });
 
-    ["radar", "stock", "bot", "crm", "sellers"].forEach((t) => {
+    ["radar", "stock", "bot", "crm", "sellers", "stores"].forEach((t) => {
       const panel = document.getElementById(`admin-panel-${t}`);
       if (panel) {
         panel.classList.toggle("hidden", t !== tabName);
@@ -171,6 +171,7 @@ window.MTCarsAdmin = (function () {
     else if (tab === "bot") renderBotTab();
     else if (tab === "crm") renderCrmTab();
     else if (tab === "sellers") renderSellersTab();
+    else if (tab === "stores") renderStoresTab();
 
     if (window.lucide) window.lucide.createIcons();
   }
@@ -178,18 +179,22 @@ window.MTCarsAdmin = (function () {
   function updateAdminTabBadges() {
     const onlineCount = App.state.visitors.filter((v) => v.online).length;
     const stockCount = App.state.vehicles.filter((v) => v.status !== "Vendido").length;
+    const pendingPhotosCount = App.state.vehicles.filter((v) => v.photoStatus === "pending_photos").length;
     const botCount = App.state.botLogs.length;
     const crmCount = App.state.leads.length;
+    const storesCount = new Set(App.state.vehicles.map((v) => v.garageName)).size;
 
     const bRadar = document.getElementById("tab-badge-radar");
     const bStock = document.getElementById("tab-badge-stock");
     const bBot = document.getElementById("tab-badge-bot");
     const bCrm = document.getElementById("tab-badge-crm");
+    const bStores = document.getElementById("tab-badge-stores");
 
     if (bRadar) bRadar.textContent = onlineCount;
-    if (bStock) bStock.textContent = stockCount;
+    if (bStock) bStock.textContent = pendingPhotosCount > 0 ? `${stockCount} (${pendingPhotosCount} s/ foto)` : stockCount;
     if (bBot) bBot.textContent = botCount;
     if (bCrm) bCrm.textContent = crmCount;
+    if (bStores) bStores.textContent = storesCount;
   }
 
   // =========================================================================
@@ -637,30 +642,87 @@ window.MTCarsAdmin = (function () {
 
     if (!tbody) return;
 
-    tbody.innerHTML = filtered.map((v) => {
+    const currentSeller = App.state.currentSeller || App.state.sellers[0];
+    const isDirector = Boolean(currentSeller.isDirector);
+    const pendingPhotoVehicles = App.state.vehicles.filter((v) => v.photoStatus === "pending_photos");
+
+    const pendingBannerHtml = pendingPhotoVehicles.length > 0
+      ? `
+        <div class="glass-panel rounded-2xl p-5 border-2 border-amber-500/70 space-y-3 mb-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="px-2.5 py-0.5 rounded-full bg-amber-500 text-zinc-950 text-[11px] font-black uppercase">
+                📸 FILA ABERTA PARA TODOS OS COOPERADOS (${pendingPhotoVehicles.length})
+              </span>
+              <h4 class="text-base font-extrabold text-white mt-1">
+                Lojistas cadastraram estes veículos sem fotos — Cooperado pode ir até a loja e adicionar as fotos!
+              </h4>
+            </div>
+            <button
+              onclick="MTCarsApp.openSellMyCarModal()"
+              class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-extrabold text-xs transition"
+            >
+              🏪 Simular Lojista Cadastrando s/ Foto
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            ${pendingPhotoVehicles.map((pv) => `
+              <div class="p-3.5 rounded-xl bg-zinc-950 border border-amber-500/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div class="space-y-1">
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold">📸 AGUARDANDO FOTOS</span>
+                    <span class="text-xs font-bold text-white">📍 ${pv.city} - MT</span>
+                  </div>
+                  <div class="text-sm font-extrabold text-white">${pv.title} (${pv.year}) — ${App.formatBRL(pv.priceSale)}</div>
+                  <div class="text-xs text-zinc-300">
+                    🏪 Ir na Loja: <strong class="text-amber-400">${pv.garageName}</strong> (Responsável: ${pv.garageOwner} • ${pv.garageWhatsapp})
+                  </div>
+                </div>
+                <button
+                  onclick="MTCarsAdmin.cooperadoAddPhotosToVehicle('${pv.id}')"
+                  class="px-3.5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-black text-xs shrink-0 shadow transition"
+                >
+                  📷 Fui na Loja / Adicionar Fotos
+                </button>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `
+      : "";
+
+    tbody.innerHTML = pendingBannerHtml + filtered.map((v) => {
       const commissionVal = Number(v.priceSale) - Number(v.priceRepasse);
       const commissionPct = v.priceSale > 0 ? ((commissionVal / v.priceSale) * 100).toFixed(1) : "0.0";
       const fipeDiff = Number(v.priceFipe) - Number(v.priceSale);
+      const isPendingPhoto = v.photoStatus === "pending_photos";
 
       const statusBadge =
-        v.status === "Vendido"
+        isPendingPhoto
+          ? `<span class="px-2.5 py-1 rounded-full bg-amber-500 text-zinc-950 text-xs font-black">📸 SEM FOTOS (ABERTO P/ COOPERADOS)</span>`
+          : v.status === "Vendido"
           ? `<span class="px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 text-xs font-extrabold">🏆 VENDIDO</span>`
           : v.status === "Reservado"
           ? `<span class="px-2.5 py-1 rounded-full bg-amber-500/20 border border-amber-500/50 text-amber-300 text-xs font-extrabold">⏳ RESERVADO</span>`
-          : `<span class="px-2.5 py-1 rounded-full bg-sky-500/20 border border-sky-500/40 text-sky-300 text-xs font-bold">🟢 DISPONÍVEL</span>`;
+          : `<span class="px-2.5 py-1 rounded-full bg-sky-500/20 border border-sky-500/40 text-sky-300 text-xs font-bold">🟢 DISPONÍVEL NA VITRINE</span>`;
+
+      // Se for Diretor OU se o carro estiver sem fotos (aberto pros cooperados irem na loja), mostra o nome da loja; senão protege na Aba Exclusiva do Dono!
+      const showStoreIdentity = isDirector || isPendingPhoto;
 
       return `
-        <div class="glass-panel rounded-2xl p-5 border border-zinc-800 hover:border-zinc-700 transition grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+        <div class="glass-panel rounded-2xl p-5 border ${isPendingPhoto ? "border-amber-500/70" : "border-zinc-800 hover:border-zinc-700"} transition grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
           <!-- BLOCO PÚBLICO (5 cols) -->
           <div class="lg:col-span-5 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-            <div class="relative w-full sm:w-36 h-28 rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800 shrink-0">
-              <img src="${v.image}" alt="${v.title}" class="w-full h-full object-cover" />
-              <span class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded bg-zinc-950/90 text-[10px] font-mono text-zinc-200">${v.ref}</span>
+            <div class="relative w-full sm:w-36 h-28 rounded-xl overflow-hidden vehicle-photo-frame border border-zinc-800 shrink-0">
+              <img src="${v.image}" alt="${v.title}" class="w-full h-full object-cover ${isPendingPhoto ? "opacity-40 grayscale" : ""}" />
+              <span class="absolute top-1.5 left-1.5 px-2 py-0.5 rounded bg-zinc-950/90 text-[10px] font-mono text-zinc-200 keep-white-text">${v.ref}</span>
+              ${isPendingPhoto ? `<span class="absolute inset-0 flex items-center justify-center text-[11px] font-black text-amber-300 bg-black/60 text-center px-2">📸 FALTA FOTO DO COOPERADO</span>` : ""}
             </div>
             <div class="space-y-1.5 flex-1">
               <div class="flex flex-wrap items-center gap-2">
                 ${statusBadge}
                 <span class="text-xs font-bold text-zinc-300">📍 ${v.city} - ${v.uf}</span>
+                <span class="text-[11px] px-2 py-0.5 rounded bg-zinc-900 text-zinc-300">${v.category}</span>
               </div>
               <h4 class="text-base font-extrabold text-white">${v.title} (${v.year})</h4>
               <div class="flex flex-wrap items-baseline gap-3 text-xs">
@@ -674,46 +736,57 @@ window.MTCarsAdmin = (function () {
             </div>
           </div>
 
-          <!-- BLOCO CONFIDENCIAL EXCLUSIVO EQUIPE MT CARS (5 cols) -->
+          <!-- BLOCO CONFIDENCIAL EQUIPE MT CAR (5 cols) -->
           <div class="lg:col-span-5 secret-garage-box rounded-xl p-4 border border-amber-500/30 space-y-2">
             <div class="flex items-center justify-between border-b border-zinc-800 pb-1.5">
               <span class="text-[10px] font-black uppercase tracking-wider text-amber-400 flex items-center gap-1">
-                🔒 DADOS CONFIDENCIAIS DA GARAGEM PARCEIRA (OCULTO NO SITE)
+                ${showStoreIdentity ? "🏪 DADOS DA LOJA PARCEIRA" : "🔒 LOJA PARCEIRA PROTEGIDA (EXCLUSIVO DIRETORIA)"}
               </span>
               <span class="text-[10px] text-zinc-400">👤 ${v.captadorName}</span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-              <div>
-                <span class="text-zinc-400 block text-[11px]">🏢 Garagem Parceira:</span>
-                <strong class="text-white">${v.garageName}</strong>
-              </div>
-              <div>
-                <span class="text-zinc-400 block text-[11px]">📞 Dono / Responsável:</span>
-                <div class="flex items-center gap-2">
-                  <strong class="text-zinc-200">${v.garageOwner}</strong>
-                  <a
-                    href="https://wa.me/${App.cleanPhoneDigits(v.garageWhatsapp)}?text=${encodeURIComponent(`Olá ${v.garageOwner} (${v.garageName}), aqui é da Central MT Cars sobre o veículo ${v.title} (${v.ref})!`)}"
-                    target="_blank"
-                    class="px-2 py-0.5 rounded bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold"
-                  >
-                    WhatsApp Garagem ↗
-                  </a>
-                </div>
-              </div>
-            </div>
+            ${
+              showStoreIdentity
+                ? `
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                    <div>
+                      <span class="text-zinc-400 block text-[11px]">🏢 Loja Cadastrada:</span>
+                      <strong class="text-white">${v.garageName} (${v.city}-MT)</strong>
+                    </div>
+                    <div>
+                      <span class="text-zinc-400 block text-[11px]">📞 Lojista Responsável:</span>
+                      <div class="flex items-center gap-2">
+                        <strong class="text-zinc-200">${v.garageOwner}</strong>
+                        <a
+                          href="https://wa.me/${App.cleanPhoneDigits(v.garageWhatsapp)}?text=${encodeURIComponent(`Olá ${v.garageOwner} (${v.garageName}), aqui é da MT Car sobre o veículo ${v.title} (${v.ref})!`)}"
+                          target="_blank"
+                          class="px-2 py-0.5 rounded bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold"
+                        >
+                          Whats Loja ↗
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                `
+                : `
+                  <div class="p-2 rounded-lg bg-zinc-950/70 border border-zinc-800 text-xs flex items-center justify-between">
+                    <span class="text-zinc-400">📍 Veículo localizado em <strong class="text-white">${v.city} - MT</strong> (Nome da loja visível apenas para Diretoria)</span>
+                    <button onclick="MTCarsAdmin.switchAdminTab('stores')" class="text-[10px] font-bold text-amber-400 underline ml-2">Ver Aba Dono 👑</button>
+                  </div>
+                `
+            }
 
             <div class="grid grid-cols-3 gap-2 pt-1 border-t border-zinc-800/80">
               <div>
-                <span class="text-[10px] text-zinc-400 block">💰 Repasse Garagem:</span>
+                <span class="text-[10px] text-zinc-400 block">💰 Repasse Loja:</span>
                 <span class="text-xs font-bold text-zinc-200">${App.formatBRL(v.priceRepasse)}</span>
               </div>
               <div>
-                <span class="text-[10px] text-emerald-400 font-bold block">💎 Margem Total:</span>
+                <span class="text-[10px] text-emerald-400 font-bold block">💎 Margem MT Car:</span>
                 <span class="text-sm font-black text-emerald-400">${App.formatBRL(commissionVal)} (${commissionPct}%)</span>
               </div>
               <div>
-                <span class="text-[10px] text-amber-400 font-bold block">👤 Vendedor (35%):</span>
+                <span class="text-[10px] text-amber-400 font-bold block">👤 Cooperado (35%):</span>
                 <span class="text-xs font-extrabold text-amber-300">${App.formatBRL(Math.round(commissionVal * 0.35))}</span>
               </div>
             </div>
@@ -722,7 +795,14 @@ window.MTCarsAdmin = (function () {
           <!-- AÇÕES DO VEÍCULO (2 cols) -->
           <div class="lg:col-span-2 flex flex-wrap lg:flex-col gap-2 justify-end">
             ${
-              v.status !== "Vendido"
+              isPendingPhoto
+                ? `<button
+                     onclick="MTCarsAdmin.cooperadoAddPhotosToVehicle('${v.id}')"
+                     class="w-full py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-black text-xs flex items-center justify-center gap-1.5 shadow transition"
+                   >
+                     <span>📷 Adicionar Fotos (Cooperado)</span>
+                   </button>`
+                : v.status !== "Vendido"
                 ? `<button
                      onclick="MTCarsAdmin.markVehicleAsSold('${v.id}')"
                      class="flex-1 py-2 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-500/15 transition"
@@ -1905,9 +1985,219 @@ window.MTCarsAdmin = (function () {
           <div class="flex justify-between"><span>Custo Cegonha / Plataforma:</span> <strong class="text-amber-400">${App.formatBRL(freight.freightCost)}</strong></div>
           <div class="flex justify-between"><span>Margem Bruta (${veh.ref}):</span> <span class="text-zinc-200">${App.formatBRL(grossCommission)}</span></div>
           <div class="pt-1 border-t border-zinc-800 flex justify-between">
-            <span>🏢 Caixa MT Cars (65%): <strong class="text-white">${App.formatBRL(companySplit)}</strong></span>
-            <span>👤 Vendedor (35%): <strong class="text-emerald-400">${App.formatBRL(sellerSplit)}</strong></span>
+            <span>🏢 Caixa MT Car (65%): <strong class="text-white">${App.formatBRL(companySplit)}</strong></span>
+            <span>👤 Cooperado (35%): <strong class="text-emerald-400">${App.formatBRL(sellerSplit)}</strong></span>
           </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // 5. Cooperado Vai até a Loja e Adiciona as Fotos do Veículo Cadastrado pelo Lojista
+  function cooperadoAddPhotosToVehicle(vehicleId) {
+    App.loadStateFromStorage();
+    const v = App.state.vehicles.find((item) => item.id === vehicleId);
+    if (!v) return;
+
+    const currentSeller = App.state.currentSeller || App.state.sellers[0];
+    const customUrl = window.prompt(
+      `📷 COOPERADO NA LOJA (${v.garageName} - ${v.city}/MT)\n\nCole a URL da foto tirada do ${v.title} (ou deixe em branco para usar a foto oficial de alta resolução da galeria MT Car):`,
+      v.image || "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1000&q=85"
+    );
+    if (customUrl === null) return;
+
+    const finalImg = customUrl.trim() || "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1000&q=85";
+    v.image = finalImg;
+    v.gallery = [finalImg];
+    v.photoStatus = "complete";
+    v.status = "Disponível";
+    v.captadorId = currentSeller.id;
+    v.captadorName = `${currentSeller.fullTitle} (Fotografou na Loja)`;
+    v.highlightTag = "📸 Fotografado por Cooperado MT Car";
+
+    const sellerObj = App.state.sellers.find((s) => s.id === currentSeller.id);
+    if (sellerObj) {
+      sellerObj.carrosCaptados = (Number(sellerObj.carrosCaptados) || 0) + 1;
+    }
+
+    App.persistAll();
+    window.MTCarsRealtime.emit("VEHICLE_UPDATED", { vehicleId: v.id });
+    renderStockTab();
+    App.showToast(`📸 Fotos adicionadas por ${currentSeller.fullTitle}! O veículo ${v.title} já está publicado na Vitrine!`, "emerald");
+  }
+
+  // 6. ABA 6 EXCLUSIVA DO DONO: PÁGINA EXCLUSIVA DE LOJAS PARCEIRAS CADASTRADAS
+  function renderStoresTab() {
+    const container = document.getElementById("admin-stores-exclusive-container");
+    if (!container) return;
+
+    const currentSeller = App.state.currentSeller || App.state.sellers[0];
+    const isDirector = Boolean(currentSeller.isDirector);
+
+    if (!isDirector) {
+      container.innerHTML = `
+        <div class="glass-panel rounded-3xl p-10 text-center max-w-2xl mx-auto border-2 border-amber-500/60 space-y-4">
+          <div class="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500/50 flex items-center justify-center mx-auto text-amber-400 text-2xl font-black">
+            👑
+          </div>
+          <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-extrabold uppercase">
+            Área Restrita — Exclusividade do Dono / Diretoria MT Car
+          </span>
+          <h3 class="text-2xl font-black text-white">
+            Relação Confidencial de Lojas Parceiras Cadastradas
+          </h3>
+          <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+            Você está visualizando o painel como <strong>${currentSeller.fullTitle}</strong> (Cooperado). Conforme a regra de sigilo da <strong>MT Car</strong>, a página com a lista completa das Lojas Parceiras, donos e telefones diretos é de <strong>exclusividade do Dono (Diretor Geral)</strong>.
+          </p>
+          <div class="pt-2">
+            <button
+              onclick="MTCarsAdmin.switchActiveSeller('director_master')"
+              class="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-black text-xs uppercase tracking-wider shadow-lg transition"
+            >
+              👑 Alternar para Visão do Dono (Diretor Geral - RD) Agora
+            </button>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // Agrupa todas as Lojas Parceiras cadastradas no sistema
+    const storesMap = {};
+    App.state.vehicles.forEach((v) => {
+      const key = v.garageName || "Loja Parceira MT";
+      if (!storesMap[key]) {
+        storesMap[key] = {
+          name: key,
+          owner: v.garageOwner || "Lojista Parceiro",
+          whatsapp: v.garageWhatsapp || "(65) 99999-0000",
+          city: v.city || "Cuiabá",
+          vehicles: [],
+          totalSaleValue: 0,
+          totalRepasseValue: 0,
+          totalCommission: 0,
+          pendingPhotosCount: 0
+        };
+      }
+      storesMap[key].vehicles.push(v);
+      storesMap[key].totalSaleValue += Number(v.priceSale) || 0;
+      storesMap[key].totalRepasseValue += Number(v.priceRepasse) || 0;
+      storesMap[key].totalCommission += (Number(v.priceSale) || 0) - (Number(v.priceRepasse) || 0);
+      if (v.photoStatus === "pending_photos") {
+        storesMap[key].pendingPhotosCount += 1;
+      }
+    });
+
+    const storesList = Object.values(storesMap);
+    const totalStores = storesList.length;
+    const totalPendingPhotos = storesList.reduce((acc, s) => acc + s.pendingPhotosCount, 0);
+    const totalGuaranteedMargin = storesList.reduce((acc, s) => acc + s.totalCommission, 0);
+
+    container.innerHTML = `
+      <div class="space-y-6">
+        <!-- Banner Exclusivo do Dono -->
+        <div class="glass-panel rounded-2xl p-5 border-2 border-amber-500/60 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full bg-amber-500 text-zinc-950 text-[10px] font-black uppercase">
+              👑 PÁGINA EXCLUSIVA DO DONO (OCULTA PARA CLIENTES E COOPERADOS)
+            </span>
+            <h3 class="text-xl font-black text-white mt-1">
+              Central Confidencial das Lojas Parceiras Credenciadas no Mato Grosso
+            </h3>
+            <p class="text-xs text-zinc-300">
+              Controle total de todas as garagens/lojas cadastradas, contato direto dos lojistas e veículos aguardando fotos dos cooperados.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button
+              onclick="MTCarsApp.openSellMyCarModal()"
+              class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-black text-xs shadow transition"
+            >
+              🏪 + Cadastrar Veículo de Lojista (Com ou Sem Fotos)
+            </button>
+          </div>
+        </div>
+
+        <!-- KPIs das Lojas Parceiras -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="glass-panel rounded-2xl p-5 border border-zinc-800">
+            <span class="text-xs font-bold uppercase text-zinc-400 block">🏢 Lojas Parceiras Cadastradas em MT</span>
+            <span class="text-3xl font-black text-white mt-1 block">${totalStores} Lojas Ativas</span>
+          </div>
+          <div class="glass-panel rounded-2xl p-5 border border-amber-500/40">
+            <span class="text-xs font-bold uppercase text-amber-400 block">📸 Carros de Lojistas Aguardando Fotos</span>
+            <span class="text-3xl font-black text-amber-400 mt-1 block">${totalPendingPhotos} Abertos p/ Cooperados</span>
+          </div>
+          <div class="glass-panel rounded-2xl p-5 border border-emerald-500/40">
+            <span class="text-xs font-bold uppercase text-emerald-400 block">💎 Margem Total nas Lojas Parceiras</span>
+            <span class="text-3xl font-black text-emerald-400 mt-1 block">${App.formatBRL(totalGuaranteedMargin)}</span>
+          </div>
+        </div>
+
+        <!-- Grid de Lojas Parceiras -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          ${storesList.map((st) => `
+            <div class="glass-panel rounded-2xl p-5 border border-zinc-800 hover:border-amber-500/60 transition flex flex-col justify-between space-y-4">
+              <div class="space-y-3">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <span class="text-[11px] font-bold text-amber-400 uppercase">📍 ${st.city} - MT</span>
+                    <h4 class="text-lg font-black text-white">${st.name}</h4>
+                  </div>
+                  <span class="px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 text-xs font-extrabold">
+                    ${st.vehicles.length} ${st.vehicles.length === 1 ? "veículo" : "veículos"}
+                  </span>
+                </div>
+
+                <div class="p-3 rounded-xl bg-zinc-950 border border-zinc-800 space-y-1 text-xs">
+                  <div class="text-zinc-400">👤 Dono / Lojista: <strong class="text-white">${st.owner}</strong></div>
+                  <div class="text-zinc-400">📱 WhatsApp Direto: <strong class="text-emerald-400 font-mono">${st.whatsapp}</strong></div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                  <div class="p-2.5 rounded-xl bg-zinc-950 border border-zinc-800">
+                    <span class="text-[10px] text-zinc-400 block">Total Repasse Loja:</span>
+                    <strong class="text-white">${App.formatBRL(st.totalRepasseValue)}</strong>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-zinc-950 border border-zinc-800">
+                    <span class="text-[10px] text-emerald-400 block">Comissão MT Car:</span>
+                    <strong class="text-emerald-400">${App.formatBRL(st.totalCommission)}</strong>
+                  </div>
+                </div>
+
+                <!-- Lista rápida dos veículos desta loja -->
+                <div class="space-y-1.5">
+                  <span class="text-[10px] font-bold uppercase text-zinc-400 block">Veículos desta Loja:</span>
+                  ${st.vehicles.map((sv) => `
+                    <div class="px-2.5 py-1.5 rounded-lg bg-zinc-950 border border-zinc-800 text-xs flex items-center justify-between">
+                      <span class="truncate font-semibold text-white">${sv.ref} • ${sv.title}</span>
+                      ${
+                        sv.photoStatus === "pending_photos"
+                          ? `<span class="px-1.5 py-0.5 rounded bg-amber-500 text-zinc-950 text-[10px] font-black shrink-0">📸 Sem Foto</span>`
+                          : `<span class="text-emerald-400 font-bold shrink-0">${App.formatBRL(sv.priceSale)}</span>`
+                      }
+                    </div>
+                  `).join("")}
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2 pt-2 border-t border-zinc-800">
+                <a
+                  href="https://wa.me/${App.cleanPhoneDigits(st.whatsapp)}?text=${encodeURIComponent(`Fala ${st.owner} (${st.name}), tudo certo? Aqui é da Diretoria da MT Car!`)}"
+                  target="_blank"
+                  class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-extrabold text-xs text-center transition"
+                >
+                  💬 Chamar Lojista no Whats
+                </a>
+                <button
+                  onclick="document.getElementById('admin-stock-garage-filter').value='${st.name}'; MTCarsAdmin.switchAdminTab('stock');"
+                  class="py-2.5 px-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-white font-bold text-xs transition"
+                >
+                  Ver no Estoque
+                </button>
+              </div>
+            </div>
+          `).join("")}
         </div>
       </div>
     `;
@@ -1957,7 +2247,9 @@ window.MTCarsAdmin = (function () {
     closeStockMatchModal,
     openDealCalculatorModal,
     closeDealCalculatorModal,
-    recalcDealSimulator
+    recalcDealSimulator,
+    cooperadoAddPhotosToVehicle,
+    renderStoresTab
   };
 })();
 

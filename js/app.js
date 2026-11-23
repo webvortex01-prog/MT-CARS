@@ -343,9 +343,9 @@ window.MTCarsApp = (function () {
     const countBadge = document.getElementById("public-results-count");
     const auditedHeaderCount = document.getElementById("header-audited-count");
 
-    const availableVehicles = state.vehicles.filter((v) => v.status !== "Vendido");
+    const availableVehicles = state.vehicles.filter((v) => v.status !== "Vendido" && v.photoStatus !== "pending_photos");
     if (auditedHeaderCount) {
-      auditedHeaderCount.textContent = `${availableVehicles.length} Veículos Auditados em MT`;
+      auditedHeaderCount.textContent = `${availableVehicles.length} Veículos & Motos em MT`;
     }
 
     if (!grid) return;
@@ -425,8 +425,8 @@ window.MTCarsApp = (function () {
           } flex flex-col justify-between"
         >
           <div>
-            <!-- Foto Limpa e Direta -->
-            <div class="relative h-52 overflow-hidden bg-zinc-900">
+            <!-- Foto Limpa e Direta com Moldura de Alto Contraste p/ Carros Brancos -->
+            <div class="relative h-52 overflow-hidden vehicle-photo-frame">
               <img
                 src="${v.image}"
                 alt="${v.title}"
@@ -436,12 +436,12 @@ window.MTCarsApp = (function () {
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/25 pointer-events-none"></div>
 
-              <!-- Topo Esquerdo: Cidade MT Limpa -->
-              <div class="absolute top-3 left-3 flex items-center gap-1.5">
-                <span class="px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md text-[11px] font-semibold text-white keep-white-text flex items-center gap-1">
-                  📍 ${v.city} - ${v.uf}
+              <!-- Topo Esquerdo: Cidade MT bem discreta e pequena para Cooperados saberem onde está -->
+              <div class="absolute top-2.5 left-2.5 flex items-center gap-1">
+                <span class="px-2 py-0.5 rounded bg-black/70 backdrop-blur-md text-[10px] font-medium text-white keep-white-text flex items-center gap-1">
+                  📍 ${v.city}-${v.uf}
                 </span>
-                ${isRegionalMatch ? `<span class="px-2 py-0.5 rounded-full bg-emerald-500 text-zinc-950 text-[10px] font-extrabold">Sua Região</span>` : ""}
+                ${isRegionalMatch ? `<span class="px-1.5 py-0.5 rounded bg-emerald-500 text-zinc-950 text-[9px] font-extrabold">Sua Região</span>` : ""}
               </div>
 
               <!-- Topo Direito: Botão Prático Comparar -->
@@ -1420,21 +1420,29 @@ window.MTCarsApp = (function () {
 
   function submitSellMyCarForm(e) {
     if (e) e.preventDefault();
+    const storeName = document.getElementById("sell-car-store")?.value.trim() || "Loja Parceira MT";
     const owner = document.getElementById("sell-car-owner")?.value.trim();
     const phone = document.getElementById("sell-car-phone")?.value.trim();
     const city = document.getElementById("sell-car-city")?.value || "Cuiabá";
+    const category = document.getElementById("sell-car-category")?.value || "Camionetes";
     const model = document.getElementById("sell-car-model")?.value.trim();
     const year = Number(document.getElementById("sell-car-year")?.value) || 2023;
     const priceRepasse = Number(document.getElementById("sell-car-price")?.value) || 120000;
+    const photoUrl = document.getElementById("sell-car-photo")?.value.trim() || "";
+    const waitCooperadoPhotos = document.getElementById("sell-car-wait-photos")?.checked || !photoUrl;
 
     if (!owner || !phone || !model) {
-      showToast("⚠️ Preencha seu nome, WhatsApp e o modelo do veículo.", "amber");
+      showToast("⚠️ Preencha o nome do lojista/responsável, WhatsApp e o modelo do veículo.", "amber");
       return;
     }
 
     const priceSale = Math.round((priceRepasse * 1.06) / 100) * 100;
     const priceFipe = Math.round((priceSale * 1.035) / 100) * 100;
     const newRef = "#MT-" + Math.floor(200 + Math.random() * 799);
+
+    const defaultImg = category === "Motos"
+      ? "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1000&q=85"
+      : "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1000&q=85";
 
     const newVeh = {
       id: "veh_" + Date.now(),
@@ -1444,27 +1452,30 @@ window.MTCarsApp = (function () {
       title: `${model}`,
       year,
       km: 25000,
-      transmission: "Automático",
+      transmission: category === "Motos" ? "Manual" : "Automático",
       fuel: "Flex",
-      category: "SUVs",
+      category,
       city,
       uf: "MT",
       priceSale,
       priceFipe,
       priceRepasse,
-      garageName: `Repasse Particular / ${owner}`,
+      garageName: storeName,
       garageOwner: owner,
       garageWhatsapp: phone,
-      captadorId: "seller_1",
-      captadorName: "Vendedor 01 - Carlos (Captação Site)",
-      status: "Disponível",
-      highlightTag: "🔥 Recém Captado MT",
-      color: "Original",
-      plateEnd: "Vistoriado MT Cars",
-      description: `Veículo captado via portal estadual MT Cars em ${city} - MT. Disponível para intermediação imediata.`,
-      options: ["Vistoria Cautelar MT Cars", "Documentação 2026 OK", "Intermediação Garantida"],
-      image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1000&q=85",
-      gallery: ["https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1000&q=85"],
+      captadorId: waitCooperadoPhotos ? null : "seller_1",
+      captadorName: waitCooperadoPhotos ? "📸 Aberto p/ Cooperado Fotografar na Loja" : "Lojista Parceiro (Com Fotos)",
+      photoStatus: waitCooperadoPhotos ? "pending_photos" : "complete",
+      status: waitCooperadoPhotos ? "Aguardando Fotos" : "Disponível",
+      highlightTag: waitCooperadoPhotos ? "📸 Sem Fotos (Aberto p/ Cooperados)" : "⭐ Recém Cadastrado MT",
+      color: "Branco",
+      plateEnd: "Vistoriado MT Car",
+      description: waitCooperadoPhotos
+        ? `Cadastrado pelo lojista ${storeName} (${city}-MT) sem fotos. Aberto no painel para qualquer Cooperado ir até a loja fotografar e ativar na vitrine!`
+        : `Veículo cadastrado pelo lojista parceiro ${storeName} em ${city} - MT. Disponível para intermediação imediata.`,
+      options: ["Vistoria Cautelar MT Car", "Documentação 2026 OK", "Intermediação Garantida"],
+      image: photoUrl || defaultImg,
+      gallery: photoUrl ? [photoUrl] : [],
       fipeCode: "005400-1"
     };
 
@@ -1474,7 +1485,11 @@ window.MTCarsApp = (function () {
     closeSellMyCarModal();
     renderPublicVitrine();
     window.MTCarsRealtime.emit("VEHICLE_ADDED", { vehicle: newVeh });
-    showToast(`🚗 Veículo ${model} (${newRef}) enviado para a Central MT Cars e publicado na Vitrine!`, "emerald");
+    if (waitCooperadoPhotos) {
+      showToast(`📸 Veículo ${model} (${newRef}) cadastrado sem fotos! Já está ABERTO para todos os Cooperados irem até a loja fotografar!`, "amber");
+    } else {
+      showToast(`🚗 Veículo ${model} (${newRef}) cadastrado pelo lojista e publicado na Vitrine!`, "emerald");
+    }
   }
 
   function openTrackOrderModal() {
@@ -1781,10 +1796,16 @@ window.MTCarsApp = (function () {
   }
 
   function init() {
-    if (localStorage.getItem("mtcars_theme_mode") === "light") {
+    // Por padrão inicia no Tema Oficial Claro Bandeira de MT (Alto Contraste p/ Carros Brancos)
+    const savedTheme = localStorage.getItem("mtcars_theme_mode");
+    if (savedTheme !== "dark") {
       document.documentElement.classList.add("theme-light");
       const labelEl = document.getElementById("theme-toggle-label");
-      if (labelEl) labelEl.textContent = "🌙 Modo Escuro";
+      if (labelEl) labelEl.textContent = "🌙 Modo Noturno";
+    } else {
+      document.documentElement.classList.remove("theme-light");
+      const labelEl = document.getElementById("theme-toggle-label");
+      if (labelEl) labelEl.textContent = "☀️ Modo Claro MT";
     }
     loadStateFromStorage();
     ensureLiveSessionVisitor();
