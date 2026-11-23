@@ -5,7 +5,7 @@
 
 window.MTCarsData = (function () {
   const STORAGE_KEYS = {
-    VEHICLES: 'mtcars_vehicles_v2',
+    VEHICLES: 'mtcars_vehicles_v3',
     VISITORS: 'mtcars_visitors_v2',
     LEADS: 'mtcars_leads_v2',
     SELLERS: 'mtcars_sellers_v2',
@@ -216,8 +216,60 @@ window.MTCarsData = (function () {
     isDirector: true
   };
 
-  // 10 Veículos Reais e Atrativos do Mercado do Mato Grosso
+  // Veículos Reais e Atrativos do Mercado do Mato Grosso (Iniciando com o Onix Sedan LTZ 2025/26 Real)
   const INITIAL_VEHICLES = [
+    {
+      id: "veh_100",
+      ref: "#MT-100",
+      brand: "Chevrolet",
+      model: "Onix Sedan LTZ 1.0 Turbo Automático",
+      title: "Chevrolet Onix Sedan LTZ Automático",
+      year: "2025/26",
+      km: 45533,
+      transmission: "Automático",
+      fuel: "Flex",
+      category: "Sedan",
+      city: "Cuiabá",
+      uf: "MT",
+      priceSale: 95800,
+      priceFipe: 102900,
+      priceRepasse: 89500,
+      garageName: "Centro Oeste Veículos MT",
+      garageOwner: "Diretoria Centro Oeste",
+      garageWhatsapp: "(65) 99999-9000",
+      captadorId: "seller_1",
+      captadorName: "Cooperado 01 - Carlos",
+      status: "Disponível",
+      highlightTag: "⭐ Modelo Novo 2025/26 • Painel Digital",
+      color: "Branco Summit",
+      plateEnd: "IPVA 2026 Pago",
+      description: "Chevrolet Onix Sedan (Plus) LTZ 1.0 Turbo Automático Ano 2025/2026! Novo cockpit 100% digital integrado com central multimídia panorâmica MyLink, faróis dianteiros com assinatura Full LED, chave presencial, partida por botão, rodas de liga leve exclusivas LTZ, sensor de estacionamento e câmera de ré. Apenas 45.533 km rodados, estado impecável!",
+      options: [
+        "Novo Painel Digital Integrado",
+        "Multimídia Panorâmica MyLink",
+        "Motor 1.0 Turbo Automático",
+        "Faróis com DRL em LED",
+        "Chave Presencial Easy Entry",
+        "Rodas de Liga Leve LTZ",
+        "Bancos Premium com Regulagem",
+        "Laudo Cautelar 100% Aprovado"
+      ],
+      image: "img/onix-ltz-2026/foto-1.jpg",
+      gallery: [
+        "img/onix-ltz-2026/foto-1.jpg",
+        "img/onix-ltz-2026/foto-2.jpg",
+        "img/onix-ltz-2026/foto-3.jpg",
+        "img/onix-ltz-2026/foto-4.jpg",
+        "img/onix-ltz-2026/foto-5.jpg",
+        "img/onix-ltz-2026/foto-6.jpg",
+        "img/onix-ltz-2026/foto-7.jpg",
+        "img/onix-ltz-2026/foto-8.jpg",
+        "img/onix-ltz-2026/foto-9.jpg",
+        "img/onix-ltz-2026/foto-10.jpg",
+        "img/onix-ltz-2026/foto-11.jpg"
+      ],
+      fipeCode: "004504-7"
+    },
     {
       id: "veh_101",
       ref: "#MT-101",
