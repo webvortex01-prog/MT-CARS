@@ -321,7 +321,36 @@
     </section>
 
     <!-- Grid Principal de Veículos -->
-    <main class="max-w-7xl mx-auto px-4 py-10 flex-1 w-full">
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-6">
+      <!-- Banner Oficial de Facilidades de Pagamento MT CAR -->
+      <div class="glass-panel rounded-2xl p-4 sm:p-5 border-2 border-blue-500/30 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-2xl font-black shrink-0">
+            🤝
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-black uppercase text-amber-400 tracking-wider">Facilidade de Negociação MT Car</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-extrabold">142 Cidades de MT</span>
+            </div>
+            <h3 class="text-base sm:text-lg font-black text-white">
+              À Vista • Financiamento Bancário • Cartas de Crédito Contempladas • Troca c/ Avaliação
+            </h3>
+            <p class="text-xs text-zinc-400">
+              Pegamos seu carro/moto usado de entrada e aceitamos consórcios contemplados de qualquer administradora com faturamento ágil!
+            </p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="MTCarsApp.openLeadGateModal('Consultar Condições Especiais e Cartas Contempladas')"
+            class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-black text-xs transition shadow flex items-center gap-1.5">
+            <span>📜 Simular Carta ou Troca no Whats</span>
+            <span>↗</span>
+          </button>
+        </div>
+      </div>
+
       <div id="public-vehicles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </main>
 
