@@ -730,15 +730,23 @@ window.MTCarsApp = (function () {
             </p>
           </div>
 
-          <!-- MÓDULO EXCLUSIVO: 4 FORMAS DE PAGAMENTO ACEITAS -->
+          <!-- MÓDULO EXCLUSIVO: 4 FORMAS DE NEGOCIAÇÃO INDEPENDENTES NA MT CAR -->
           <div class="glass-panel rounded-2xl p-5 border-2 border-blue-500/40 space-y-4">
             <div class="flex items-center justify-between border-b border-zinc-800 pb-2.5">
               <span class="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-2">
-                💳 FORMAS DE PAGAMENTO ACEITAS NA MT CAR
+                💳 MODALIDADES DE COMPRA ACEITAS NA MT CAR
               </span>
               <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-extrabold">
-                Negociação Flexível
+                100% Descomplicado
               </span>
+            </div>
+
+            <!-- Alerta Jurídico Importante: Alienação Única -->
+            <div class="p-3 rounded-xl bg-blue-950/40 border border-blue-500/40 text-[11px] text-blue-200 flex items-start gap-2.5">
+              <span class="text-base leading-none">⚖️</span>
+              <p class="leading-relaxed">
+                <strong>Regra de Alienação Financeira:</strong> Cada veículo só pode ter uma única alienação no Detran. Ou seja, você compra via <strong>Financiamento Bancário</strong> OU via <strong>Carta de Crédito Contemplada</strong> (não se misturam). Se sua carta contemplada ou entrada cobrir parte do valor, a diferença é quitada à vista ou pelo seu usado na troca!
+              </p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
@@ -749,7 +757,7 @@ window.MTCarsApp = (function () {
                   <span>1. Pagamento À Vista</span>
                 </div>
                 <p class="text-[11px] text-zinc-400 leading-snug">
-                  TED ou PIX direto na transferência segura. Liberação ágil de documento com garantia jurídica de procedência.
+                  TED ou PIX direto na transferência segura. Liberação imediata com vistoria e garantia jurídica MT Car.
                 </p>
               </div>
 
@@ -760,7 +768,7 @@ window.MTCarsApp = (function () {
                   <span>2. Financiamento Bancário</span>
                 </div>
                 <p class="text-[11px] text-zinc-400 leading-snug">
-                  Trabalhamos com os maiores bancos (Santander, BV, Safra, Itaú, Sicredi MT) em até 60x com as melhores taxas do Estado.
+                  Até 60x com os maiores bancos (Santander, BV, Safra, Itaú, Sicredi MT). O carro fica alienado ao banco que financiou.
                 </p>
               </div>
 
@@ -769,14 +777,15 @@ window.MTCarsApp = (function () {
                 <div class="flex flex-wrap items-center justify-between gap-1">
                   <div class="flex items-center gap-2 text-white font-extrabold">
                     <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs">📜</span>
-                    <span class="text-amber-300">3. Aceitamos Cartas de Crédito Contempladas (Consórcio)</span>
+                    <span class="text-amber-300">3. Cartas de Crédito Contempladas (Aceitamos & Vendemos Cotas)</span>
                   </div>
                   <span class="px-2 py-0.5 rounded bg-amber-500 text-zinc-950 font-black text-[10px] uppercase">
-                    Faturamento Rápido
+                    Cota Própria ou da MT Car
                   </span>
                 </div>
                 <p class="text-[11px] text-zinc-300 leading-relaxed">
-                  Tem uma cota contemplada do seu consórcio (Porto Seguro, Bradesco, Rodobens, Caixa, Sicredi, etc.)? A <strong>MT Car</strong> cuida de todo o processo burocrático de faturamento e transferência para você retirar seu carro sem dor de cabeça!
+                  <strong>• Você já tem uma carta contemplada?</strong> Nós faturamos o veículo diretamente nela (Porto Seguro, Caixa, Sicredi, Bradesco, Rodobens, etc.). O veículo é alienado à administradora do consórcio.<br>
+                  <strong>• Quer comprar uma cota já contemplada?</strong> A MT Car também comercializa cartas de crédito contempladas prontas para faturar! Fale com nossos consultores.
                 </p>
               </div>
 
@@ -788,11 +797,11 @@ window.MTCarsApp = (function () {
                     <span class="text-emerald-300">4. Carro ou Moto na Troca (Sob Avaliação)</span>
                   </div>
                   <span class="px-2 py-0.5 rounded bg-emerald-500 text-zinc-950 font-black text-[10px] uppercase">
-                    Melhor Avaliação de MT
+                    Entrada Facilitada
                   </span>
                 </div>
                 <p class="text-[11px] text-zinc-300 leading-relaxed">
-                  Pegamos seu usado de entrada! A avaliação é feita pelos nossos 8 cooperados com critério justo de mercado em qualquer uma das 142 cidades de MT.
+                  Seu usado entra como pagamento! Pode ser usado como entrada no financiamento ou para abater a diferença do valor caso sua carta de crédito seja menor que o preço do veículo. Avaliação transparente em todo o MT.
                 </p>
               </div>
             </div>
@@ -801,90 +810,210 @@ window.MTCarsApp = (function () {
 
         <div class="lg:col-span-5">
           <div class="glass-panel rounded-2xl p-6 border-2 border-blue-600/50 sticky top-4 space-y-5 shadow-2xl">
-            <div class="flex items-center justify-between border-b border-zinc-800 pb-4">
+            <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
               <div>
                 <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold inline-flex items-center gap-1 mb-1">
                   <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Conectado à Central MT Cars
                 </span>
-                <h3 class="text-xl font-extrabold text-white">Simulador Oficial de Financiamento</h3>
-                <p class="text-xs text-zinc-400">Ajuste a entrada ou adicione seu usado na troca</p>
+                <h3 class="text-xl font-extrabold text-white">Simulador de Condições MT</h3>
+                <p class="text-xs text-zinc-400">Escolha como prefere negociar este veículo</p>
               </div>
             </div>
 
-            <div class="space-y-2">
-              <div class="flex justify-between items-center">
-                <label class="text-xs font-bold uppercase tracking-wider text-zinc-300">💰 Valor de Entrada Disponível (R$)</label>
-                <span id="sim-down-badge" class="text-base font-extrabold text-amber-400">${formatBRL(state.simulator.downPayment)}</span>
-              </div>
-              <input
-                id="sim-down-slider"
-                type="range"
-                min="0"
-                max="${Math.round(v.priceSale * 0.9)}"
-                step="1000"
-                value="${state.simulator.downPayment}"
-                oninput="MTCarsApp.onSimulatorChange('slider', this.value)"
-                class="mtcars-slider"
-              />
-              <div class="flex items-center gap-2 pt-1">
-                <span class="text-xs text-zinc-400">Digitar valor exato: R$</span>
+            <!-- Seletor de Modalidade: Financiamento vs Carta Contemplada -->
+            <div class="grid grid-cols-2 gap-2 p-1.5 rounded-xl bg-zinc-950 border border-zinc-800">
+              <button
+                type="button"
+                id="btn-mode-financiamento"
+                onclick="MTCarsApp.onSimulatorChange('mode', 'financiamento')"
+                class="py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+                  state.simulator.mode !== 'carta'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-zinc-400 hover:text-white'
+                }"
+              >
+                <span>🏦 Financiamento</span>
+              </button>
+              <button
+                type="button"
+                id="btn-mode-carta"
+                onclick="MTCarsApp.onSimulatorChange('mode', 'carta')"
+                class="py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+                  state.simulator.mode === 'carta'
+                    ? 'bg-amber-500 text-zinc-950 shadow-md'
+                    : 'text-zinc-400 hover:text-white'
+                }"
+              >
+                <span>📜 Carta Contemplada</span>
+              </button>
+            </div>
+
+            <!-- BLOCO 1: MODO FINANCIAMENTO BANCÁRIO -->
+            <div id="sim-box-financiamento" class="${state.simulator.mode === 'carta' ? 'hidden' : 'space-y-4'}">
+              <div class="space-y-2">
+                <div class="flex justify-between items-center">
+                  <label class="text-xs font-bold uppercase tracking-wider text-zinc-300">💰 Entrada em Dinheiro (R$)</label>
+                  <span id="sim-down-badge" class="text-base font-extrabold text-amber-400">${formatBRL(state.simulator.downPayment)}</span>
+                </div>
                 <input
-                  id="sim-down-input"
-                  type="number"
-                  step="1000"
+                  id="sim-down-slider"
+                  type="range"
                   min="0"
-                  max="${v.priceSale}"
+                  max="${Math.round(v.priceSale * 0.9)}"
+                  step="1000"
                   value="${state.simulator.downPayment}"
-                  oninput="MTCarsApp.onSimulatorChange('input', this.value)"
-                  class="flex-1 bg-zinc-950 border border-zinc-700 focus:border-blue-500 rounded-xl px-3 py-2 text-sm font-bold text-white outline-none"
+                  oninput="MTCarsApp.onSimulatorChange('slider', this.value)"
+                  class="mtcars-slider"
                 />
+                <div class="flex items-center gap-2 pt-1">
+                  <span class="text-xs text-zinc-400">Digitar valor exato: R$</span>
+                  <input
+                    id="sim-down-input"
+                    type="number"
+                    step="1000"
+                    min="0"
+                    max="${v.priceSale}"
+                    value="${state.simulator.downPayment}"
+                    oninput="MTCarsApp.onSimulatorChange('input', this.value)"
+                    class="flex-1 bg-zinc-950 border border-zinc-700 focus:border-blue-500 rounded-xl px-3 py-2 text-sm font-bold text-white outline-none"
+                  />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-xs font-bold uppercase tracking-wider text-zinc-300 block">📅 Prazo de Pagamento</label>
+                <div class="grid grid-cols-5 gap-2" id="sim-months-buttons">
+                  ${[12, 24, 36, 48, 60]
+                    .map(
+                      (m) => `
+                    <button
+                      type="button"
+                      onclick="MTCarsApp.onSimulatorChange('months', ${m})"
+                      data-months="${m}"
+                      class="sim-month-btn py-2.5 rounded-xl font-bold text-xs border transition ${
+                        m === state.simulator.installments
+                          ? "bg-blue-700 border-blue-500 text-white shadow-lg shadow-blue-700/30"
+                          : "bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-600"
+                      }"
+                    >
+                      ${m}x
+                    </button>
+                  `
+                    )
+                    .join("")}
+                </div>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-zinc-950 border-2 border-emerald-500/50 space-y-2">
+                <div class="flex items-center justify-between text-xs text-zinc-400">
+                  <span>Saldo a Financiar pelo Banco:</span>
+                  <span id="sim-financed-amount" class="font-bold text-white">${formatBRL(Math.max(0, v.priceSale - state.simulator.downPayment - (state.simulator.hasTradeIn ? Number(state.simulator.tradeInValue) || 0 : 0)))}</span>
+                </div>
+                <div class="flex items-baseline justify-between pt-1">
+                  <span id="sim-result-months-label" class="text-sm font-bold text-white">${state.simulator.installments}x fixas de:</span>
+                  <span id="sim-result-installment" class="text-3xl font-black text-emerald-400">${formatBRL(installmentVal)}</span>
+                </div>
+                <p class="text-[11px] text-zinc-400">
+                  *Carro alienado ao banco parceiro. Taxa média referencial de 1,49% a.m. sujeita a análise de CPF/CNPJ.
+                </p>
               </div>
             </div>
 
-            <div class="space-y-2">
-              <label class="text-xs font-bold uppercase tracking-wider text-zinc-300 block">📅 Prazo de Pagamento</label>
-              <div class="grid grid-cols-5 gap-2" id="sim-months-buttons">
-                ${[12, 24, 36, 48, 60]
-                  .map(
-                    (m) => `
-                  <button
-                    type="button"
-                    onclick="MTCarsApp.onSimulatorChange('months', ${m})"
-                    data-months="${m}"
-                    class="sim-month-btn py-2.5 rounded-xl font-bold text-xs border transition ${
-                      m === state.simulator.installments
-                        ? "bg-blue-700 border-blue-500 text-white shadow-lg shadow-blue-700/30"
-                        : "bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-600"
-                    }"
-                  >
-                    ${m}x
-                  </button>
-                `
-                  )
-                  .join("")}
+            <!-- BLOCO 2: MODO CARTA DE CRÉDITO CONTEMPLADA (CONSÓRCIO) -->
+            <div id="sim-box-carta" class="${state.simulator.mode === 'carta' ? 'space-y-4' : 'hidden space-y-4'}">
+              <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/40 space-y-3">
+                <div class="flex items-center gap-2 text-amber-300 font-extrabold text-sm">
+                  <span>📜</span>
+                  <span>Alienação Direta na Administradora do Consórcio</span>
+                </div>
+                <p class="text-xs text-zinc-300 leading-relaxed">
+                  Não envolve banco financiador. O veículo é faturado diretamente pela cota contemplada do seu consórcio ou de uma cota que você comprar com a MT Car.
+                </p>
+                <div class="space-y-2.5 pt-2 border-t border-amber-500/30">
+                  <div>
+                    <label class="text-[11px] font-bold text-zinc-300 block mb-1">Administradora do Consórcio</label>
+                    <input
+                      id="sim-consortium-admin"
+                      type="text"
+                      placeholder="Ex: Porto Seguro, Sicredi, Caixa, Bradesco, Rodobens..."
+                      value="${state.simulator.consortiumAdmin || ''}"
+                      oninput="MTCarsApp.onSimulatorChange('consortiumAdmin', this.value)"
+                      class="w-full bg-zinc-950 border border-zinc-700 focus:border-amber-500 rounded-xl px-3 py-2 text-xs text-white outline-none"
+                    />
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    <div>
+                      <label class="text-[11px] font-bold text-zinc-300 block mb-1">Valor da Carta (R$)</label>
+                      <input
+                        id="sim-consortium-value"
+                        type="number"
+                        step="1000"
+                        placeholder="Ex: 85000"
+                        value="${state.simulator.consortiumValue || ''}"
+                        oninput="MTCarsApp.onSimulatorChange('consortiumValue', this.value)"
+                        class="w-full bg-zinc-950 border border-zinc-700 focus:border-amber-500 rounded-xl px-3 py-2 text-xs font-bold text-white outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label class="text-[11px] font-bold text-zinc-300 block mb-1">Situação da Carta</label>
+                      <select
+                        id="sim-consortium-status"
+                        onchange="MTCarsApp.onSimulatorChange('consortiumStatus', this.value)"
+                        class="w-full bg-zinc-950 border border-zinc-700 focus:border-amber-500 rounded-xl px-2.5 py-2 text-xs text-white outline-none"
+                      >
+                        <option value="tenho_carta">Já tenho cota contemplada</option>
+                        <option value="quero_comprar">Quero comprar cota da MT Car</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Resumo da Carta vs Valor do Carro -->
+              <div class="p-4 rounded-2xl bg-zinc-950 border-2 border-amber-500/50 space-y-2 text-xs">
+                <div class="flex items-center justify-between text-zinc-300">
+                  <span>Valor do Carro:</span>
+                  <strong class="text-white text-sm">${formatBRL(v.priceSale)}</strong>
+                </div>
+                <div class="flex items-center justify-between text-zinc-300">
+                  <span>Crédito da Carta Contemplada:</span>
+                  <strong id="sim-carta-val-label" class="text-amber-400 text-sm">${formatBRL(Number(state.simulator.consortiumValue) || 0)}</strong>
+                </div>
+                <div class="flex items-center justify-between pt-1 border-t border-zinc-800 text-sm">
+                  <span id="sim-carta-diff-title" class="font-bold text-zinc-200">Diferença a complementar:</span>
+                  <span id="sim-carta-diff-val" class="font-extrabold text-emerald-400">
+                    ${formatBRL(Math.max(0, v.priceSale - (Number(state.simulator.consortiumValue) || 0) - (state.simulator.hasTradeIn ? Number(state.simulator.tradeInValue) || 0 : 0)))}
+                  </span>
+                </div>
+                <p class="text-[11px] text-zinc-400 pt-1">
+                  *Essa diferença pode ser paga à vista via PIX ou coberta pelo seu veículo na troca.
+                </p>
               </div>
             </div>
 
+            <!-- OPÇÃO DE TROCA (VÁLIDA PARA AMBAS AS MODALIDADES) -->
             <div class="p-4 rounded-xl bg-zinc-950/90 border border-zinc-800 space-y-3">
               <label class="flex items-center gap-3 cursor-pointer select-none">
                 <input
                   id="sim-tradein-check"
                   type="checkbox"
+                  ${state.simulator.hasTradeIn ? 'checked' : ''}
                   onchange="MTCarsApp.onSimulatorChange('tradeInToggle', this.checked)"
-                  class="w-4 h-4 accent-blue-600 rounded cursor-pointer"
+                  class="w-4 h-4 accent-emerald-500 rounded cursor-pointer"
                 />
                 <span class="text-sm font-bold text-white flex items-center gap-1.5">
                   🔄 Quero dar meu veículo usado na troca (sob avaliação)
                 </span>
               </label>
 
-              <div id="sim-tradein-fields" class="hidden space-y-3 pt-2 border-t border-zinc-800/80">
+              <div id="sim-tradein-fields" class="${state.simulator.hasTradeIn ? '' : 'hidden'} space-y-3 pt-2 border-t border-zinc-800/80">
                 <div>
                   <label class="text-[11px] text-zinc-400 block mb-1">Qual seu carro atual? (Marca / Modelo / Ano)</label>
                   <input
                     id="sim-tradein-model"
                     type="text"
                     placeholder="Ex: Gol G7 2019 ou Onix LTZ 2020"
+                    value="${state.simulator.tradeInModel || ''}"
                     oninput="MTCarsApp.onSimulatorChange('tradeInModel', this.value)"
                     class="w-full bg-zinc-900 border border-zinc-700 focus:border-amber-500 rounded-xl px-3 py-2 text-sm text-white outline-none"
                   />
@@ -896,74 +1025,17 @@ window.MTCarsApp = (function () {
                     type="number"
                     step="1000"
                     placeholder="Ex: 55000"
+                    value="${state.simulator.tradeInValue || ''}"
                     oninput="MTCarsApp.onSimulatorChange('tradeInValue', this.value)"
                     class="w-full bg-zinc-900 border border-zinc-700 focus:border-amber-500 rounded-xl px-3 py-2 text-sm text-white outline-none"
                   />
                 </div>
               </div>
-
-              <!-- Checkbox Carta de Crédito Contemplada -->
-              <div class="pt-2 border-t border-zinc-800/80">
-                <label class="flex items-center gap-3 cursor-pointer select-none">
-                  <input
-                    id="sim-consortium-check"
-                    type="checkbox"
-                    onchange="MTCarsApp.onSimulatorChange('consortiumToggle', this.checked)"
-                    class="w-4 h-4 accent-amber-500 rounded cursor-pointer"
-                  />
-                  <span class="text-sm font-bold text-amber-300 flex items-center gap-1.5">
-                    📜 Tenho Carta de Crédito Contemplada (Consórcio)
-                  </span>
-                </label>
-
-                <div id="sim-consortium-fields" class="hidden space-y-3 pt-2.5">
-                  <div class="grid grid-cols-2 gap-2">
-                    <div>
-                      <label class="text-[11px] text-zinc-400 block mb-1">Administradora</label>
-                      <input
-                        id="sim-consortium-admin"
-                        type="text"
-                        placeholder="Ex: Porto, Sicredi, Caixa..."
-                        oninput="MTCarsApp.onSimulatorChange('consortiumAdmin', this.value)"
-                        class="w-full bg-zinc-900 border border-zinc-700 focus:border-amber-500 rounded-xl px-3 py-2 text-xs text-white outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label class="text-[11px] text-zinc-400 block mb-1">Valor da Carta (R$)</label>
-                      <input
-                        id="sim-consortium-value"
-                        type="number"
-                        step="1000"
-                        placeholder="Ex: 80000"
-                        oninput="MTCarsApp.onSimulatorChange('consortiumValue', this.value)"
-                        class="w-full bg-zinc-900 border border-zinc-700 focus:border-amber-500 rounded-xl px-3 py-2 text-xs text-white outline-none"
-                      />
-                    </div>
-                  </div>
-                  <p class="text-[10px] text-amber-400 leading-tight">
-                    *A MT Car cuida de todo o faturamento da carta e liberação com a administradora.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="p-4 rounded-2xl bg-zinc-950 border-2 border-emerald-500/50 space-y-2">
-              <div class="flex items-center justify-between text-xs text-zinc-400">
-                <span>Saldo a Financiar Estimado:</span>
-                <span id="sim-financed-amount" class="font-bold text-white">${formatBRL(Math.max(0, v.priceSale - state.simulator.downPayment))}</span>
-              </div>
-              <div class="flex items-baseline justify-between pt-1">
-                <span id="sim-result-months-label" class="text-sm font-bold text-white">${state.simulator.installments}x fixas de:</span>
-                <span id="sim-result-installment" class="text-3xl font-black text-emerald-400">${formatBRL(installmentVal)}</span>
-              </div>
-              <p class="text-[11px] text-zinc-400">
-                *Taxa referencial de 1,49% a.m. sujeita à aprovação de CPF/CNPJ (Safra, Santander, BV, Itaú, Sicredi MT).
-              </p>
             </div>
 
             <div class="px-3 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-[11px] text-amber-300 flex items-center gap-2">
               <i data-lucide="radio" class="w-4 h-4 shrink-0 text-amber-400"></i>
-              <span><strong>Radar Ativo:</strong> Sua simulação já está visível em tempo real na Central dos Consultores MT Cars.</span>
+              <span><strong>Radar Ativo:</strong> Nossos consultores já recebem seus dados no mesmo instante.</span>
             </div>
 
             <button
@@ -971,7 +1043,7 @@ window.MTCarsApp = (function () {
               class="w-full py-3.5 px-5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-extrabold text-sm shadow-xl shadow-emerald-500/20 flex items-center justify-center gap-2 transition"
             >
               <i data-lucide="message-circle" class="w-5 h-5"></i>
-              <span>Aprovar Esta Simulação no WhatsApp</span>
+              <span id="btn-submit-sim-text">Aprovar Esta Simulação no WhatsApp</span>
             </button>
           </div>
         </div>
@@ -996,7 +1068,40 @@ window.MTCarsApp = (function () {
     const v = state.vehicles.find((item) => item.id === state.activeVehicleModalId);
     if (!v) return;
 
-    if (field === "slider" || field === "input") {
+    if (field === "mode") {
+      state.simulator.mode = value; // "financiamento" ou "carta"
+      const boxFin = document.getElementById("sim-box-financiamento");
+      const boxCarta = document.getElementById("sim-box-carta");
+      const btnFin = document.getElementById("btn-mode-financiamento");
+      const btnCarta = document.getElementById("btn-mode-carta");
+      const btnSubmitText = document.getElementById("btn-submit-sim-text");
+
+      if (value === "carta") {
+        if (boxFin) boxFin.classList.add("hidden");
+        if (boxCarta) boxCarta.classList.remove("hidden");
+        if (btnFin) {
+          btnFin.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 text-zinc-400 hover:text-white";
+        }
+        if (btnCarta) {
+          btnCarta.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 bg-amber-500 text-zinc-950 shadow-md";
+        }
+        if (btnSubmitText) {
+          btnSubmitText.textContent = "Validar Carta de Crédito Contemplada no WhatsApp";
+        }
+      } else {
+        if (boxFin) boxFin.classList.remove("hidden");
+        if (boxCarta) boxCarta.classList.add("hidden");
+        if (btnFin) {
+          btnFin.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 bg-blue-600 text-white shadow-md";
+        }
+        if (btnCarta) {
+          btnCarta.className = "py-2 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 text-zinc-400 hover:text-white";
+        }
+        if (btnSubmitText) {
+          btnSubmitText.textContent = "Aprovar Esta Simulação no WhatsApp";
+        }
+      }
+    } else if (field === "slider" || field === "input") {
       const numeric = Math.max(0, Math.min(v.priceSale, Number(value) || 0));
       state.simulator.downPayment = numeric;
       const slider = document.getElementById("sim-down-slider");
@@ -1025,23 +1130,20 @@ window.MTCarsApp = (function () {
       state.simulator.tradeInModel = value;
     } else if (field === "tradeInValue") {
       state.simulator.tradeInValue = Number(value) || 0;
-    } else if (field === "consortiumToggle") {
-      state.simulator.hasConsortium = Boolean(value);
-      const box = document.getElementById("sim-consortium-fields");
-      if (box) {
-        box.classList.toggle("hidden", !state.simulator.hasConsortium);
-      }
     } else if (field === "consortiumAdmin") {
       state.simulator.consortiumAdmin = value;
     } else if (field === "consortiumValue") {
       state.simulator.consortiumValue = Number(value) || 0;
+    } else if (field === "consortiumStatus") {
+      state.simulator.consortiumStatus = value;
     }
 
     const tradeCredit = state.simulator.hasTradeIn ? Number(state.simulator.tradeInValue) || 0 : 0;
-    const consortiumCredit = state.simulator.hasConsortium ? Number(state.simulator.consortiumValue) || 0 : 0;
-    const totalEntry = Number(state.simulator.downPayment) + tradeCredit + consortiumCredit;
-    const financed = Math.max(0, v.priceSale - totalEntry);
-    const installmentVal = calculateInstallment(v.priceSale, totalEntry, state.simulator.installments);
+
+    // Atualiza cálculos do MODO FINANCIAMENTO
+    const totalEntryFin = Number(state.simulator.downPayment) + tradeCredit;
+    const financed = Math.max(0, v.priceSale - totalEntryFin);
+    const installmentVal = calculateInstallment(v.priceSale, totalEntryFin, state.simulator.installments);
 
     const finEl = document.getElementById("sim-financed-amount");
     const monthsLbl = document.getElementById("sim-result-months-label");
@@ -1051,31 +1153,37 @@ window.MTCarsApp = (function () {
     if (monthsLbl) monthsLbl.textContent = `${state.simulator.installments}x fixas de:`;
     if (instEl) instEl.textContent = formatBRL(installmentVal);
 
+    // Atualiza cálculos do MODO CARTA CONTEMPLADA
+    const cartaVal = Number(state.simulator.consortiumValue) || 0;
+    const cartaDiff = Math.max(0, v.priceSale - cartaVal - tradeCredit);
+    const cartaValLabel = document.getElementById("sim-carta-val-label");
+    const cartaDiffVal = document.getElementById("sim-carta-diff-val");
+    if (cartaValLabel) cartaValLabel.textContent = formatBRL(cartaVal);
+    if (cartaDiffVal) cartaDiffVal.textContent = formatBRL(cartaDiff);
+
+    const isCarta = state.simulator.mode === "carta";
     const simPayload = {
+      mode: isCarta ? "carta_contemplada" : "financiamento_bancario",
       downPayment: state.simulator.downPayment,
       installments: state.simulator.installments,
       installmentValue: installmentVal,
       hasTradeIn: state.simulator.hasTradeIn,
       tradeInModel: state.simulator.tradeInModel,
       tradeInValue: state.simulator.tradeInValue,
-      hasConsortium: state.simulator.hasConsortium,
       consortiumAdmin: state.simulator.consortiumAdmin,
-      consortiumValue: state.simulator.consortiumValue
+      consortiumValue: state.simulator.consortiumValue,
+      consortiumStatus: state.simulator.consortiumStatus || "tenho_carta"
     };
 
     const tradeText = state.simulator.hasTradeIn && state.simulator.tradeInModel
       ? ` + Troca: ${state.simulator.tradeInModel} (${formatBRL(state.simulator.tradeInValue || 0)})`
       : "";
 
-    const consText = state.simulator.hasConsortium && state.simulator.consortiumValue
-      ? ` + Carta Contemplada ${state.simulator.consortiumAdmin || ""}: ${formatBRL(state.simulator.consortiumValue)}`
-      : "";
+    const actionText = isCarta
+      ? `📜 Simulando Carta Contemplada (${v.title}): Cota ${formatBRL(cartaVal)} (${state.simulator.consortiumAdmin || "Consórcio"})${tradeText}`
+      : `💰 Simulando Financiamento Bancário (${v.title}): Entrada ${formatBRL(state.simulator.downPayment)} • ${state.simulator.installments}x de ${formatBRL(installmentVal)}${tradeText}`;
 
-    trackVisitorAction(
-      `💰 Mexendo no Simulador (${v.title}): Entrada ${formatBRL(state.simulator.downPayment)} • ${state.simulator.installments}x de ${formatBRL(installmentVal)}${tradeText}${consText}`,
-      v,
-      simPayload
-    );
+    trackVisitorAction(actionText, v, simPayload);
   }
 
   function requestSpecialistFromSimulator(vehicleId) {
@@ -1083,13 +1191,23 @@ window.MTCarsApp = (function () {
     if (!v) return;
     const clientName = state.currentClient ? state.currentClient.name : "Cliente MT Cars";
     const tradeInfo = state.simulator.hasTradeIn && state.simulator.tradeInModel
-      ? ` e meu usado na troca (${state.simulator.tradeInModel} - ${formatBRL(state.simulator.tradeInValue)})`
+      ? ` e dando meu usado na troca (${state.simulator.tradeInModel} - ${formatBRL(state.simulator.tradeInValue)})`
       : "";
-    const consortiumInfo = state.simulator.hasConsortium && state.simulator.consortiumValue
-      ? ` + Carta de Crédito Contemplada ${state.simulator.consortiumAdmin ? `(${state.simulator.consortiumAdmin})` : ""} de ${formatBRL(state.simulator.consortiumValue)}`
-      : "";
-    const msg = `Olá Central MT Cars! Sou *${clientName}* (${state.currentClient?.city || "MT"}). Acabei de simular no site o veículo *${v.title} (${v.ref})* de ${formatBRL(v.priceSale)} com entrada de *${formatBRL(state.simulator.downPayment)}*${tradeInfo}${consortiumInfo} em *${state.simulator.installments}x*. Quero avançar na negociação!`;
-    showToast("✅ Simulação registrada! Nossos consultores já receberam seu cálculo ao vivo.", "emerald");
+
+    let msg = "";
+    if (state.simulator.mode === "carta") {
+      const cartaVal = Number(state.simulator.consortiumValue) || 0;
+      const adminName = state.simulator.consortiumAdmin ? `da ${state.simulator.consortiumAdmin}` : "de consórcio";
+      const statusText = state.simulator.consortiumStatus === "quero_comprar"
+        ? "Tenho interesse em comprar uma Carta de Crédito Contemplada da MT Car"
+        : `Tenho uma Carta de Crédito Contemplada ${adminName} no valor de *${formatBRL(cartaVal)}*`;
+
+      msg = `Olá Central MT Cars! Sou *${clientName}* (${state.currentClient?.city || "MT"}). Tenho interesse no veículo *${v.title} (${v.ref})* de ${formatBRL(v.priceSale)}. ${statusText}${tradeInfo}. Quero alinhar o faturamento e liberação!`;
+    } else {
+      msg = `Olá Central MT Cars! Sou *${clientName}* (${state.currentClient?.city || "MT"}). Acabei de simular no site o *Financiamento Bancário* do veículo *${v.title} (${v.ref})* de ${formatBRL(v.priceSale)} com entrada de *${formatBRL(state.simulator.downPayment)}*${tradeInfo} em *${state.simulator.installments}x*. Quero avançar na aprovação!`;
+    }
+
+    showToast("✅ Simulação registrada! Nossos consultores já receberam sua solicitação ao vivo.", "emerald");
     window.open(`https://wa.me/5565999110101?text=${encodeURIComponent(msg)}`, "_blank");
   }
 
