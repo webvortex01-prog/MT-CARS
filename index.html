@@ -38,14 +38,14 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 
-<body class="bg-zinc-950 text-zinc-100 min-h-screen selection:bg-red-600 selection:text-white overflow-x-hidden">
+<body class="bg-zinc-950 text-zinc-100 min-h-screen selection:bg-blue-700 selection:text-white overflow-x-hidden">
 
   <!-- ========================================================================
        MÓDULO 1: VITRINE PÚBLICA E EXPERIÊNCIA DO CLIENTE (BLINDAGEM COMISSÃO)
        ======================================================================== -->
   <div id="view-public-vitrine" class="min-h-screen flex flex-col">
 
-    <!-- Top Regional Bar -->g
+    <!-- Top Regional Bar -->
     <div class="bg-zinc-900/90 border-b border-zinc-800/80 py-2 px-4 text-xs">
       <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
         <div class="flex items-center gap-3">
@@ -63,7 +63,7 @@
         <div class="flex flex-wrap items-center gap-2">
           <select id="header-city-select"
             onchange="document.getElementById('filter-city-select').value=this.value; MTCarsApp.applyPublicFilters();"
-            class="bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-xs text-zinc-200 outline-none focus:border-red-500">
+            class="bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 text-xs text-zinc-200 outline-none focus:border-blue-500">
             <option value="">📍 Todo o Mato Grosso (142 Cidades)</option>
           </select>
 
@@ -149,7 +149,7 @@
           <!-- Pílulas Rápidas das 5 Categorias Oficiais -->
           <div class="flex flex-wrap gap-1.5">
             <button onclick="MTCarsApp.setQuickCategoryFilter('')" data-cat=""
-              class="quick-cat-pill px-3.5 py-2 rounded-xl text-xs font-bold bg-red-600 text-white keep-white-text border border-red-500 shadow transition">
+              class="quick-cat-pill px-3.5 py-2 rounded-xl text-xs font-bold bg-blue-700 text-white keep-white-text border border-blue-500 shadow transition">
               Todos
             </button>
             <button onclick="MTCarsApp.setQuickCategoryFilter('Hatch')" data-cat="Hatch"
@@ -183,13 +183,13 @@
               <i data-lucide="search" class="w-4 h-4 text-zinc-400 absolute left-3.5 pointer-events-none"></i>
               <input id="filter-search-input" type="text" oninput="MTCarsApp.applyPublicFilters()"
                 placeholder="Buscar marca, modelo ou código (Ex: Hilux, S10, Jetta, Compass)..."
-                class="w-full bg-zinc-950 border border-zinc-800 focus:border-red-500 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white outline-none" />
+                class="w-full bg-zinc-950 border border-zinc-800 focus:border-blue-500 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white outline-none" />
             </div>
 
             <!-- Seletor Cidade MT -->
             <div class="md:w-56">
               <select id="filter-city-select" onchange="MTCarsApp.applyPublicFilters()"
-                class="w-full bg-zinc-950 border border-zinc-800 focus:border-red-500 rounded-xl px-3 py-2.5 text-xs text-white outline-none">
+                class="w-full bg-zinc-950 border border-zinc-800 focus:border-blue-500 rounded-xl px-3 py-2.5 text-xs text-white outline-none">
                 <option value="">📍 Todas as Cidades do MT</option>
               </select>
             </div>
@@ -197,7 +197,7 @@
             <!-- Seletor Faixa de Preço -->
             <div class="md:w-48">
               <select id="filter-price-select" onchange="MTCarsApp.applyPublicFilters()"
-                class="w-full bg-zinc-950 border border-zinc-800 focus:border-red-500 rounded-xl px-3 py-2.5 text-xs text-white outline-none">
+                class="w-full bg-zinc-950 border border-zinc-800 focus:border-blue-500 rounded-xl px-3 py-2.5 text-xs text-white outline-none">
                 <option value="">💰 Qualquer Valor</option>
                 <option value="up_to_50">Até R$ 50 mil</option>
                 <option value="50_to_100">R$ 50k a R$ 100k</option>
@@ -311,7 +311,7 @@
             <div class="flex items-center justify-between text-xs pt-1">
               <div id="public-results-count" class="text-zinc-400">Carregando estoque estadual...</div>
               <button onclick="MTCarsApp.clearPublicFilters()"
-                class="text-zinc-400 hover:text-red-400 text-[11px] font-semibold">
+                class="text-zinc-400 hover:text-blue-400 text-[11px] font-semibold">
                 Limpar filtros
               </button>
             </div>
@@ -337,7 +337,7 @@
         <div class="flex items-center gap-4">
           <button onclick="MTCarsApp.openLeadGateModal('Receba Ofertas Exclusivas Abaixo da FIPE no WhatsApp')"
             class="text-zinc-400 hover:text-white">Cadastro VIP WhatsApp</button>
-          <button onclick="MTCarsApp.switchViewMode('admin')" class="text-red-400 hover:text-red-300 font-bold">Painel
+          <button onclick="MTCarsApp.switchViewMode('admin')" class="text-blue-400 hover:text-blue-300 font-bold">Painel
             dos 8 Vendedores →</button>
         </div>
       </div>
@@ -350,17 +350,17 @@
   <div id="view-admin-warroom" class="hidden min-h-screen flex flex-col bg-zinc-950">
 
     <!-- Header da Central de Guerra -->
-    <header class="glass-header sticky top-0 z-30 border-b border-red-900/30">
+    <header class="glass-header sticky top-0 z-30 border-b border-blue-900/30">
       <div class="max-w-[1440px] mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
         <!-- Identidade War Room -->
         <div class="flex items-center gap-3">
           <div
-            class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-amber-600 flex items-center justify-center text-white shadow-lg shadow-red-600/20">
+            class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-700 to-amber-600 flex items-center justify-center text-white shadow-lg shadow-blue-700/20">
             <i data-lucide="radar" class="w-5 h-5"></i>
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <span class="font-display text-lg font-black text-white">MT CARS <span class="text-red-500">WAR
+              <span class="font-display text-lg font-black text-white">MT CARS <span class="text-blue-400">WAR
                   ROOM</span></span>
               <span
                 class="px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-extrabold animate-pulse">DUAL-SYNC
@@ -402,7 +402,7 @@
       <!-- Barra das 5 Abas Principais da Central de Guerra -->
       <div class="max-w-[1440px] mx-auto px-4 pb-3 flex items-center gap-2 overflow-x-auto">
         <button onclick="MTCarsAdmin.switchAdminTab('radar')" data-tab="radar"
-          class="admin-tab-btn px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 bg-red-600 text-white shadow-lg shadow-red-600/25 transition shrink-0">
+          class="admin-tab-btn px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 bg-blue-700 text-white shadow-lg shadow-blue-700/25 transition shrink-0">
           <i data-lucide="radio" class="w-4 h-4"></i>
           <span>1. RADAR AO VIVO</span>
           <span id="tab-badge-radar"
@@ -490,14 +490,14 @@
             </div>
           </div>
 
-          <div class="glass-panel rounded-2xl p-5 border border-red-500/30 flex items-center justify-between">
+          <div class="glass-panel rounded-2xl p-5 border border-blue-500/30 flex items-center justify-between">
             <div>
-              <span class="text-xs font-bold uppercase text-red-400 block">🤖 Abordagens Automáticas Robô</span>
+              <span class="text-xs font-bold uppercase text-blue-400 block">🤖 Abordagens Automáticas Robô</span>
               <span id="radar-kpi-bot" class="text-3xl font-black text-white mt-1 block">19</span>
               <span class="text-[11px] text-zinc-400">Retargeting de saída no WhatsApp</span>
             </div>
             <div
-              class="w-12 h-12 rounded-2xl bg-red-500/15 border border-red-500/30 flex items-center justify-center text-red-400">
+              class="w-12 h-12 rounded-2xl bg-blue-600/15 border border-blue-500/30 flex items-center justify-center text-blue-400">
               <i data-lucide="bot" class="w-6 h-6"></i>
             </div>
           </div>
@@ -583,7 +583,7 @@
           </div>
 
           <button onclick="MTCarsAdmin.openNewVehicleModal()"
-            class="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-red-600/25 shrink-0">
+            class="px-4 py-2.5 rounded-xl bg-blue-700 hover:bg-blue-600 text-white font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-blue-700/25 shrink-0">
             <i data-lucide="plus" class="w-4 h-4"></i>
             <span>Cadastrar Novo Veículo (Garagem Parceira)</span>
           </button>
@@ -678,7 +678,7 @@
 
               <div class="flex items-center gap-2 pt-1">
                 <button type="submit"
-                  class="flex-1 py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs transition">
+                  class="flex-1 py-2.5 px-4 rounded-xl bg-blue-700 hover:bg-blue-600 text-white font-bold text-xs transition">
                   Salvar Configuração do Robô
                 </button>
                 <button type="button" onclick="MTCarsApp.triggerExitRetargetingBot()"
@@ -828,7 +828,7 @@
 
       <div class="flex items-center gap-3">
         <div
-          class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-600 to-amber-500 flex items-center justify-center text-white shadow-lg">
+          class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-700 to-amber-500 flex items-center justify-center text-white shadow-lg">
           <i data-lucide="unlock" class="w-6 h-6"></i>
         </div>
         <div>
@@ -850,7 +850,7 @@
           <label class="text-xs font-bold text-zinc-300 block mb-1">Seu Nome ou Empresa / Fazenda</label>
           <input id="gate-name-input" type="text" required oninput="MTCarsApp.onGateLiveTyping()"
             placeholder="Ex: João Paulo / Fazenda Santa Luzia"
-            class="w-full bg-zinc-950 border border-zinc-700 focus:border-red-500 rounded-xl px-3.5 py-2.5 text-sm text-white outline-none" />
+            class="w-full bg-zinc-950 border border-zinc-700 focus:border-blue-500 rounded-xl px-3.5 py-2.5 text-sm text-white outline-none" />
         </div>
 
         <div>
@@ -858,19 +858,19 @@
           <input id="gate-phone-input" type="tel" required
             oninput="this.value = MTCarsApp.maskPhone(this.value); MTCarsApp.onGateLiveTyping();"
             placeholder="(65) 99999-9999"
-            class="w-full bg-zinc-950 border border-zinc-700 focus:border-red-500 rounded-xl px-3.5 py-2.5 text-sm text-white font-mono outline-none" />
+            class="w-full bg-zinc-950 border border-zinc-700 focus:border-blue-500 rounded-xl px-3.5 py-2.5 text-sm text-white font-mono outline-none" />
         </div>
 
         <div>
           <label class="text-xs font-bold text-zinc-300 block mb-1">Sua Cidade no Mato Grosso</label>
           <select id="gate-city-select" required onchange="MTCarsApp.onGateLiveTyping()"
-            class="w-full bg-zinc-950 border border-zinc-700 focus:border-red-500 rounded-xl px-3.5 py-2.5 text-sm text-white outline-none">
+            class="w-full bg-zinc-950 border border-zinc-700 focus:border-blue-500 rounded-xl px-3.5 py-2.5 text-sm text-white outline-none">
             <option value="Cuiabá">Cuiabá - MT</option>
           </select>
         </div>
 
         <button type="submit"
-          class="w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-black text-sm shadow-xl shadow-red-600/30 transition">
+          class="w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-600 hover:to-blue-700 text-white font-black text-sm shadow-xl shadow-blue-700/30 transition">
           🔓 Liberar Ofertas e Simulador Agora
         </button>
       </form>
@@ -887,7 +887,7 @@
     <div class="glass-panel rounded-3xl max-w-6xl w-full p-5 sm:p-7 border border-zinc-700 shadow-2xl my-auto relative">
       <div class="flex items-center justify-between border-b border-zinc-800 pb-4 mb-5">
         <div class="flex items-center gap-2">
-          <span class="px-2.5 py-1 rounded-lg bg-red-600 text-white text-xs font-extrabold">FICHA AUDITADA MT
+          <span class="px-2.5 py-1 rounded-lg bg-blue-700 text-white text-xs font-extrabold">FICHA AUDITADA MT
             CARS</span>
           <span class="text-xs text-zinc-400 hidden sm:inline">Intermediação Blindada • Garantia de Procedência</span>
         </div>
@@ -910,7 +910,7 @@
         class="absolute top-4 right-4 text-zinc-400 hover:text-white p-1">✕</button>
 
       <div>
-        <span class="text-xs font-extrabold uppercase text-red-500">Acesso Corporativo Restrito</span>
+        <span class="text-xs font-extrabold uppercase text-blue-400">Acesso Corporativo Restrito</span>
         <h3 class="text-2xl font-black text-white">Central de Guerra dos 8 Vendedores MT Cars</h3>
         <p class="text-xs text-zinc-400 mt-1">
           Clique em qualquer perfil abaixo para <strong>Login Instantâneo em 1 Clique</strong> (ou digite e-mail e senha
@@ -935,7 +935,7 @@
             class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
         </div>
         <button type="submit"
-          class="py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs">
+          class="py-2.5 px-4 rounded-xl bg-blue-700 hover:bg-blue-600 text-white font-extrabold text-xs">
           Entrar no Painel →
         </button>
       </form>
@@ -1104,7 +1104,7 @@
           <button type="button" onclick="MTCarsAdmin.closeNewVehicleModal()"
             class="px-4 py-2.5 rounded-xl bg-zinc-900 text-zinc-300 text-xs font-bold">Cancelar</button>
           <button type="submit"
-            class="px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs shadow-lg shadow-red-600/25">
+            class="px-6 py-2.5 rounded-xl bg-blue-700 hover:bg-blue-600 text-white font-extrabold text-xs shadow-lg shadow-blue-700/25">
             💾 Salvar Veículo no Estoque Estadual
           </button>
         </div>
@@ -1156,7 +1156,7 @@
           <button type="button" onclick="MTCarsAdmin.closeEditSellerModal()"
             class="px-4 py-2 rounded-xl bg-zinc-900 text-zinc-400 text-xs font-bold">Cancelar</button>
           <button type="submit"
-            class="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-extrabold">Salvar
+            class="px-5 py-2 rounded-xl bg-blue-700 hover:bg-blue-600 text-white text-xs font-extrabold">Salvar
             Alterações</button>
         </div>
       </form>
@@ -1248,7 +1248,7 @@
           </span>
         </label>
         <button type="submit"
-          class="w-full py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white keep-white-text font-extrabold text-xs">
+          class="w-full py-3 rounded-xl bg-blue-700 hover:bg-blue-600 text-white keep-white-text font-extrabold text-xs">
           Cadastrar Veículo no Sistema MT Car
         </button>
       </form>
@@ -1268,7 +1268,7 @@
           placeholder="Digite seu WhatsApp (65) 99999-9999..."
           class="flex-1 bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white font-mono" />
         <button onclick="MTCarsApp.renderTrackOrderResult(document.getElementById('track-phone-input').value)"
-          class="px-4 py-2 rounded-xl bg-red-600 text-white font-bold text-xs">
+          class="px-4 py-2 rounded-xl bg-blue-700 text-white font-bold text-xs">
           Consultar
         </button>
       </div>
@@ -1388,7 +1388,7 @@
           🔍 Super Zoom (2x)
         </button>
         <button type="button" onclick="MTCarsApp.closeFullscreenLightbox()"
-          class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white keep-white-text font-black text-xs transition shadow-lg">
+          class="px-4 py-2 rounded-xl bg-blue-700 hover:bg-blue-600 text-white keep-white-text font-black text-xs transition shadow-lg">
           ✕ Fechar Tela Cheia (ESC)
         </button>
       </div>
@@ -1450,7 +1450,7 @@
         </button>
 
         <button onclick="MTCarsApp.toggleViewModeQuick()"
-          class="w-full py-2 px-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs flex items-center justify-between transition shadow">
+          class="w-full py-2 px-3 rounded-xl bg-blue-700 hover:bg-blue-600 text-white font-extrabold text-xs flex items-center justify-between transition shadow">
           <span id="demo-toggle-view-label">Alternar Nesta Aba (Cliente/Admin)</span>
           <span>⇄</span>
         </button>

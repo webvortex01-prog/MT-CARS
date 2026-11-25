@@ -62,7 +62,6 @@ html.theme-light .bg-zinc-950\/90,
 html.theme-light .bg-zinc-950\/85,
 html.theme-light .bg-zinc-950\/80,
 html.theme-light .bg-zinc-950\/70,
-html.theme-light .bg-zinc-950\/60 {
 html.theme-light .bg-zinc-950\/60,
 html.theme-light .via-zinc-900,
 html.theme-light .to-zinc-900,
@@ -121,8 +120,11 @@ html.theme-light .text-amber-300 {
 }
 
 html.theme-light .text-sky-300,
-html.theme-light .text-sky-400 {
-  color: #0369a1 !important;
+html.theme-light .text-sky-400,
+html.theme-light .text-blue-300,
+html.theme-light .text-blue-400,
+html.theme-light .text-blue-500 {
+  color: #0038a8 !important;
 }
 
 html.theme-light .text-purple-300,
@@ -272,23 +274,35 @@ html.theme-light .hero-mesh-bg .glass-panel .bg-zinc-900 span {
    ========================================================================== */
 .bg-red-600,
 .bg-red-500,
+.bg-blue-700,
+.bg-blue-600,
 .hover\:bg-red-500:hover,
-.hover\:bg-red-600:hover {
+.hover\:bg-red-600:hover,
+.hover\:bg-blue-600:hover,
+.hover\:bg-blue-500:hover {
   background-color: #0038a8 !important;
   color: #ffffff !important;
 }
 
-.bg-red-600:hover {
+.bg-red-600:hover,
+.bg-blue-700:hover,
+.bg-blue-600:hover {
   background-color: #1d4ed8 !important;
 }
 
-/* Garante que qualquer span ou texto dentro de botão Azul ou Verde seja BRANCO */
+/* Garante que qualquer span ou texto dentro de botão Azul ou Verde Escuro seja BRANCO */
 html.theme-light .bg-red-600,
 html.theme-light .bg-red-600 span,
+html.theme-light .bg-blue-700,
+html.theme-light .bg-blue-700 span,
+html.theme-light .bg-blue-600,
+html.theme-light .bg-blue-600 span,
 html.theme-light .bg-emerald-600,
 html.theme-light .bg-emerald-600 span,
 html.theme-light .from-red-600,
 html.theme-light .from-red-600 span,
+html.theme-light .from-blue-700,
+html.theme-light .from-blue-700 span,
 html.theme-light .from-emerald-500,
 html.theme-light .from-emerald-500 span {
   color: #ffffff !important;
@@ -302,9 +316,10 @@ html.theme-light .bg-emerald-500 span {
   color: #071e48 !important;
 }
 
-/* Overlays escuros sobre as fotos dos carros mantêm letra branca */
+/* Overlays escuros sobre as fotos dos carros e Lightbox mantêm letra branca */
 html.theme-light .keep-white-text,
-html.theme-light .keep-white-text span {
+html.theme-light .keep-white-text span,
+html.theme-light #fullscreen-lightbox-modal .keep-white-text {
   color: #ffffff !important;
 }
 

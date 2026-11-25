@@ -66,7 +66,7 @@ window.MTCarsData = (function () {
       city: "Cuiabá",
       status: "online",
       avatar: "CE",
-      color: "from-red-600 to-rose-700",
+      color: "from-blue-700 to-blue-900",
       leadsAssumidosHoje: 6,
       carrosCaptados: 4,
       vendasRealizadas: 5,
@@ -156,7 +156,7 @@ window.MTCarsData = (function () {
       city: "Primavera do Leste",
       status: "online",
       avatar: "PO",
-      color: "from-pink-600 to-rose-700",
+      color: "from-pink-600 to-blue-900",
       leadsAssumidosHoje: 4,
       carrosCaptados: 2,
       vendasRealizadas: 3,
@@ -212,7 +212,7 @@ window.MTCarsData = (function () {
     city: "Cuiabá",
     status: "online",
     avatar: "RD",
-    color: "from-amber-400 to-red-600",
+    color: "from-amber-400 to-blue-700",
     isDirector: true
   };
 

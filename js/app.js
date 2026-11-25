@@ -398,7 +398,7 @@ window.MTCarsApp = (function () {
           </div>
           <h3 class="text-xl font-bold text-white mb-2">Nenhum veículo encontrado com estes filtros</h3>
           <p class="text-zinc-400 text-sm max-w-md mx-auto mb-6">Nossa central possui dezenas de garagens parceiras em todo o Mato Grosso. Limpe os filtros para ver todo o estoque estadual.</p>
-          <button onclick="MTCarsApp.clearPublicFilters()" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-semibold text-sm transition">
+          <button onclick="MTCarsApp.clearPublicFilters()" class="px-5 py-2.5 rounded-xl bg-blue-700 hover:bg-blue-600 text-white font-semibold text-sm transition">
             Limpar Filtros e Ver Todo o Estoque MT
           </button>
         </div>
@@ -484,13 +484,13 @@ window.MTCarsApp = (function () {
             <!-- Corpo Prático e Limpo -->
             <div class="p-4">
               <div class="flex items-center justify-between text-[11px] text-zinc-400 mb-1">
-                <span class="font-semibold text-red-500 uppercase tracking-wide">${v.category}</span>
+                <span class="font-semibold text-blue-400 uppercase tracking-wide">${v.category}</span>
                 <span class="text-emerald-400 font-medium">✔ Laudo Aprovado</span>
               </div>
 
               <h3
                 onclick="MTCarsApp.openVehicleDetail('${v.id}')"
-                class="text-base font-extrabold text-white group-hover:text-red-500 transition line-clamp-1 cursor-pointer mb-2"
+                class="text-base font-extrabold text-white group-hover:text-blue-400 transition line-clamp-1 cursor-pointer mb-2"
               >
                 ${v.title}
               </h3>
@@ -524,7 +524,7 @@ window.MTCarsApp = (function () {
           <div class="px-4 pb-4">
             <button
               onclick="MTCarsApp.openVehicleDetail('${v.id}')"
-              class="w-full py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white keep-white-text font-bold text-xs flex items-center justify-center gap-2 transition"
+              class="w-full py-2.5 px-4 rounded-xl bg-blue-700 hover:bg-blue-600 text-white keep-white-text font-bold text-xs flex items-center justify-center gap-2 transition"
             >
               <span>Simular Parcelas e Ver Ficha</span>
               <i data-lucide="arrow-right" class="w-4 h-4"></i>
@@ -646,7 +646,7 @@ window.MTCarsApp = (function () {
                         type="button"
                         onclick="document.getElementById('detail-main-photo').src='${imgUrl}'; MTCarsApp.state.currentDetailPhotoIdx=${idx};"
                         ondblclick="MTCarsApp.openFullscreenLightbox('${v.id}', ${idx})"
-                        class="w-24 h-16 rounded-xl overflow-hidden border-2 border-zinc-700 hover:border-red-500 transition block"
+                        class="w-24 h-16 rounded-xl overflow-hidden border-2 border-zinc-700 hover:border-blue-500 transition block"
                       >
                         <img src="${imgUrl}" class="w-full h-full object-cover" alt="Ângulo ${idx + 1}" />
                       </button>
@@ -661,7 +661,7 @@ window.MTCarsApp = (function () {
           <div class="glass-panel rounded-2xl p-5 border border-zinc-800">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
               <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-red-500">${v.category} • INTERMEDIAÇÃO GARANTIDA MT CARS</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-blue-400">${v.category} • INTERMEDIAÇÃO GARANTIDA MT CARS</span>
                 <h2 class="text-2xl font-extrabold text-white">${v.title}</h2>
               </div>
               <div class="text-right">
@@ -705,32 +705,23 @@ window.MTCarsApp = (function () {
             </div>
           </div>
 
-          <div class="glass-panel rounded-2xl p-5 border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-zinc-900 to-zinc-900">
           <div class="glass-panel rounded-2xl p-5 border-2 border-amber-500/40">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
               <span class="text-xs font-extrabold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
                 <i data-lucide="award" class="w-4 h-4"></i> Comparativo Oficial Tabela FIPE (${v.fipeCode || "Mato Grosso"})
               </span>
-              <span class="text-xs font-semibold text-emerald-400">Economia imediata de ${formatBRL(Math.max(0, fipeDiff))}</span>
               <span class="text-xs font-extrabold text-emerald-400">Economia imediata de ${formatBRL(Math.max(0, fipeDiff))}</span>
             </div>
             <div class="grid grid-cols-2 gap-4 mt-3">
-              <div class="p-3 rounded-xl bg-zinc-950/80 border border-zinc-800">
               <div class="p-3 rounded-xl bg-zinc-950 border border-zinc-800">
                 <span class="text-xs text-zinc-400 block">Preço Médio FIPE no MT</span>
-                <span class="text-lg font-bold text-zinc-300">${formatBRL(v.priceFipe)}</span>
                 <span class="text-lg font-bold text-white">${formatBRL(v.priceFipe)}</span>
               </div>
-              <div class="p-3 rounded-xl bg-zinc-950/80 border border-emerald-500/40">
-                <span class="text-xs text-emerald-400 block">Preço Exclusivo MT Cars</span>
               <div class="p-3 rounded-xl bg-zinc-950 border border-emerald-500/50">
                 <span class="text-xs text-emerald-400 font-bold block">Preço Exclusivo MT Car</span>
                 <span class="text-lg font-extrabold text-white">${formatBRL(v.priceSale)}</span>
               </div>
             </div>
-            <p class="text-[11px] text-zinc-400 mt-3">
-              🔒 <strong>Blindagem de Negócio MT Cars:</strong> Veículo vistoriado presencialmente em <strong>${v.city} - MT</strong>. Pagamento seguro diretamente na transferência com intermediação jurídica completa.
             <p class="text-xs text-zinc-300 mt-3">
               🔒 <strong>Blindagem de Negócio MT Car:</strong> Veículo vistoriado presencialmente em <strong>${v.city} - MT</strong>. Pagamento seguro diretamente na transferência com intermediação jurídica completa.
             </p>
@@ -738,7 +729,7 @@ window.MTCarsApp = (function () {
         </div>
 
         <div class="lg:col-span-5">
-          <div class="glass-panel rounded-2xl p-6 border-2 border-red-600/50 sticky top-4 space-y-5 shadow-2xl">
+          <div class="glass-panel rounded-2xl p-6 border-2 border-blue-600/50 sticky top-4 space-y-5 shadow-2xl">
             <div class="flex items-center justify-between border-b border-zinc-800 pb-4">
               <div>
                 <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold inline-flex items-center gap-1 mb-1">
@@ -774,7 +765,7 @@ window.MTCarsApp = (function () {
                   max="${v.priceSale}"
                   value="${state.simulator.downPayment}"
                   oninput="MTCarsApp.onSimulatorChange('input', this.value)"
-                  class="flex-1 bg-zinc-950 border border-zinc-700 focus:border-red-500 rounded-xl px-3 py-2 text-sm font-bold text-white outline-none"
+                  class="flex-1 bg-zinc-950 border border-zinc-700 focus:border-blue-500 rounded-xl px-3 py-2 text-sm font-bold text-white outline-none"
                 />
               </div>
             </div>
@@ -791,7 +782,7 @@ window.MTCarsApp = (function () {
                     data-months="${m}"
                     class="sim-month-btn py-2.5 rounded-xl font-bold text-xs border transition ${
                       m === state.simulator.installments
-                        ? "bg-red-600 border-red-500 text-white shadow-lg shadow-red-600/30"
+                        ? "bg-blue-700 border-blue-500 text-white shadow-lg shadow-blue-700/30"
                         : "bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-600"
                     }"
                   >
@@ -809,7 +800,7 @@ window.MTCarsApp = (function () {
                   id="sim-tradein-check"
                   type="checkbox"
                   onchange="MTCarsApp.onSimulatorChange('tradeInToggle', this.checked)"
-                  class="w-4 h-4 accent-red-600 rounded cursor-pointer"
+                  class="w-4 h-4 accent-blue-600 rounded cursor-pointer"
                 />
                 <span class="text-sm font-bold text-white flex items-center gap-1.5">
                   🔄 Quero dar meu veículo usado na troca
@@ -841,19 +832,15 @@ window.MTCarsApp = (function () {
               </div>
             </div>
 
-            <div class="p-4 rounded-2xl bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 border border-emerald-500/40 space-y-2">
             <div class="p-4 rounded-2xl bg-zinc-950 border-2 border-emerald-500/50 space-y-2">
               <div class="flex items-center justify-between text-xs text-zinc-400">
                 <span>Saldo a Financiar Estimado:</span>
-                <span id="sim-financed-amount" class="font-bold text-zinc-200">${formatBRL(Math.max(0, v.priceSale - state.simulator.downPayment))}</span>
                 <span id="sim-financed-amount" class="font-bold text-white">${formatBRL(Math.max(0, v.priceSale - state.simulator.downPayment))}</span>
               </div>
               <div class="flex items-baseline justify-between pt-1">
-                <span id="sim-result-months-label" class="text-sm font-bold text-zinc-300">${state.simulator.installments}x fixas de:</span>
                 <span id="sim-result-months-label" class="text-sm font-bold text-white">${state.simulator.installments}x fixas de:</span>
                 <span id="sim-result-installment" class="text-3xl font-black text-emerald-400">${formatBRL(installmentVal)}</span>
               </div>
-              <p class="text-[11px] text-zinc-500">
               <p class="text-[11px] text-zinc-400">
                 *Taxa referencial de 1,49% a.m. sujeita à aprovação de CPF/CNPJ (Safra, Santander, BV, Itaú, Sicredi MT).
               </p>
@@ -908,7 +895,7 @@ window.MTCarsApp = (function () {
       document.querySelectorAll(".sim-month-btn").forEach((btn) => {
         const m = Number(btn.getAttribute("data-months"));
         if (m === state.simulator.installments) {
-          btn.className = "sim-month-btn py-2.5 rounded-xl font-bold text-xs border transition bg-red-600 border-red-500 text-white shadow-lg shadow-red-600/30";
+          btn.className = "sim-month-btn py-2.5 rounded-xl font-bold text-xs border transition bg-blue-700 border-blue-500 text-white shadow-lg shadow-blue-700/30";
         } else {
           btn.className = "sim-month-btn py-2.5 rounded-xl font-bold text-xs border transition bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-600";
         }
@@ -1672,7 +1659,7 @@ window.MTCarsApp = (function () {
     document.querySelectorAll(".quick-cat-pill").forEach((btn) => {
       const btnCat = btn.getAttribute("data-cat") || "";
       if (btnCat === state.filters.category) {
-        btn.className = "quick-cat-pill px-4 py-2 rounded-xl text-xs font-bold bg-red-600 text-white border border-red-500 shadow-lg shadow-red-600/25 transition";
+        btn.className = "quick-cat-pill px-4 py-2 rounded-xl text-xs font-bold bg-blue-700 text-white border border-blue-500 shadow-lg shadow-blue-700/25 transition";
       } else {
         btn.className = "quick-cat-pill px-4 py-2 rounded-xl text-xs font-semibold bg-zinc-900/90 text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition";
       }
@@ -1729,7 +1716,7 @@ window.MTCarsApp = (function () {
     const borderColors = {
       emerald: "border-emerald-500/70 bg-zinc-900/95 text-emerald-300",
       amber: "border-amber-500/70 bg-zinc-900/95 text-amber-300",
-      red: "border-red-500/70 bg-zinc-900/95 text-red-300"
+      red: "border-blue-500/70 bg-zinc-900/95 text-blue-300"
     };
 
     const toast = document.createElement("div");
@@ -1814,7 +1801,7 @@ window.MTCarsApp = (function () {
               <div class="p-4 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-3">
                 <img src="${v.image}" class="w-full h-40 object-cover rounded-xl" alt="${v.title}" />
                 <div>
-                  <span class="text-[10px] font-bold uppercase text-red-500">${v.category} • 📍 ${v.city}-MT</span>
+                  <span class="text-[10px] font-bold uppercase text-blue-400">${v.category} • 📍 ${v.city}-MT</span>
                   <h4 class="text-base font-extrabold text-white">${v.title}</h4>
                 </div>
                 <div class="space-y-1.5 text-xs border-t border-zinc-800 pt-2.5">
@@ -1827,7 +1814,7 @@ window.MTCarsApp = (function () {
                 </div>
                 <button
                   onclick="MTCarsApp.closeCompareModal(); MTCarsApp.openVehicleDetail('${v.id}');"
-                  class="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white keep-white-text font-bold text-xs transition"
+                  class="w-full py-2.5 rounded-xl bg-blue-700 hover:bg-blue-600 text-white keep-white-text font-bold text-xs transition"
                 >
                   Simular Este Veículo
                 </button>
@@ -2033,7 +2020,7 @@ window.MTCarsApp = (function () {
     document.querySelectorAll(".brand-shortcut-pill").forEach((btn) => {
       const b = btn.getAttribute("data-brand") || "";
       if (b.toLowerCase() === newVal.toLowerCase()) {
-        btn.className = "brand-shortcut-pill px-3.5 py-2 rounded-xl text-xs font-extrabold bg-red-600 text-white keep-white-text border border-red-500 shadow transition shrink-0";
+        btn.className = "brand-shortcut-pill px-3.5 py-2 rounded-xl text-xs font-extrabold bg-blue-700 text-white keep-white-text border border-blue-500 shadow transition shrink-0";
       } else {
         btn.className = "brand-shortcut-pill px-3.5 py-2 rounded-xl text-xs font-bold bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-700 transition shrink-0";
       }

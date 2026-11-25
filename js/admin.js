@@ -40,13 +40,13 @@ window.MTCarsAdmin = (function () {
       <button
         type="button"
         onclick="MTCarsAdmin.quickLoginAs('${acc.id}')"
-        class="p-2.5 rounded-xl bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 hover:border-red-500/60 text-left flex items-center gap-2.5 transition group"
+        class="p-2.5 rounded-xl bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 hover:border-blue-500/60 text-left flex items-center gap-2.5 transition group"
       >
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br ${acc.color || "from-red-600 to-rose-700"} flex items-center justify-center text-white font-black text-xs shrink-0">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br ${acc.color || "from-blue-700 to-blue-900"} flex items-center justify-center text-white font-black text-xs shrink-0">
           ${acc.avatar}
         </div>
         <div class="overflow-hidden">
-          <div class="text-xs font-bold text-white group-hover:text-red-400 truncate">${acc.fullTitle}</div>
+          <div class="text-xs font-bold text-white group-hover:text-blue-400 truncate">${acc.fullTitle}</div>
           <div class="text-[10px] text-zinc-400 truncate">📍 ${acc.city} • ${acc.email}</div>
         </div>
       </button>
@@ -121,7 +121,7 @@ window.MTCarsAdmin = (function () {
 
     if (badge) {
       badge.innerHTML = `
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br ${current.color || "from-red-600 to-rose-700"} flex items-center justify-center text-white font-black text-xs">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br ${current.color || "from-blue-700 to-blue-900"} flex items-center justify-center text-white font-black text-xs">
           ${current.avatar}
         </div>
         <div class="hidden sm:block text-left">
@@ -145,7 +145,7 @@ window.MTCarsAdmin = (function () {
     document.querySelectorAll(".admin-tab-btn").forEach((btn) => {
       const t = btn.getAttribute("data-tab");
       if (t === tabName) {
-        btn.className = "admin-tab-btn px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 bg-red-600 text-white shadow-lg shadow-red-600/25 transition shrink-0";
+        btn.className = "admin-tab-btn px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 bg-blue-700 text-white shadow-lg shadow-blue-700/25 transition shrink-0";
       } else {
         btn.className = "admin-tab-btn px-4 py-2.5 rounded-xl font-semibold text-xs flex items-center gap-2 bg-zinc-900/90 text-zinc-400 hover:text-white border border-zinc-800 transition shrink-0";
       }
@@ -263,7 +263,7 @@ window.MTCarsAdmin = (function () {
               </span>
               <button
                 onclick="MTCarsAdmin.openProposalPdfModal('${vis.id}')"
-                class="text-[11px] px-2.5 py-0.5 rounded-lg bg-red-600 hover:bg-red-500 text-white keep-white-text font-extrabold transition shadow"
+                class="text-[11px] px-2.5 py-0.5 rounded-lg bg-blue-700 hover:bg-blue-600 text-white keep-white-text font-extrabold transition shadow"
               >
                 📄 Gerar Proposta PDF
               </button>
@@ -286,7 +286,7 @@ window.MTCarsAdmin = (function () {
                           ? "text-emerald-400"
                           : tradeEval.statusTone === "amber"
                           ? "text-amber-400"
-                          : "text-red-400"
+                          : "text-blue-400"
                       }">${tradeEval.verdict}</span>
                     </div>
                     <div class="flex flex-wrap items-center justify-between text-[11px] text-zinc-400">
@@ -322,7 +322,7 @@ window.MTCarsAdmin = (function () {
             <span>⏳ Visitante olhando fotos • Sua comissão neste carro: <strong class="text-emerald-400">${App.formatBRL(sellerShare)}</strong></span>
             <button
               onclick="MTCarsAdmin.openProposalPdfModal('${vis.id}')"
-              class="text-[11px] px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-red-600 text-white font-bold transition"
+              class="text-[11px] px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-blue-700 text-white font-bold transition"
             >
               📄 Gerar Proposta PDF
             </button>
@@ -431,13 +431,13 @@ window.MTCarsAdmin = (function () {
                          </span>
                          🟢 ONLINE AGORA
                        </span>`
-                    : `<span class="px-3 py-1 rounded-full bg-red-500/15 border border-red-500/30 text-red-400 text-xs font-bold flex items-center gap-1.5">
+                    : `<span class="px-3 py-1 rounded-full bg-blue-600/15 border border-blue-500/30 text-blue-400 text-xs font-bold flex items-center gap-1.5">
                          🔴 SAIU DO SITE HÁ ${minsAgo} MIN
                        </span>`
                 }
                 ${
                   isLiveClientTab
-                    ? `<span class="px-2.5 py-1 rounded-full bg-red-600 text-white text-[10px] font-black uppercase tracking-wider shadow">
+                    ? `<span class="px-2.5 py-1 rounded-full bg-blue-700 text-white text-[10px] font-black uppercase tracking-wider shadow">
                          📡 SUA ABA DE VITRINE AO VIVO
                        </span>`
                     : ""
@@ -469,7 +469,7 @@ window.MTCarsAdmin = (function () {
               <div class="text-xs sm:text-sm font-extrabold text-white leading-snug">
                 ${vis.currentAction || `👀 Olhando agora: ${veh.title}`}
               </div>
-              <div class="text-xs font-bold text-red-400 pt-0.5">
+              <div class="text-xs font-bold text-blue-400 pt-0.5">
                 🚘 Veículo em Foco: ${veh.title} (${veh.year}) — ${App.formatBRL(veh.priceSale)}
               </div>
               <div class="text-[11px] text-zinc-400">
@@ -1166,7 +1166,7 @@ window.MTCarsAdmin = (function () {
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px] pt-1">
-          <div class="text-zinc-400">👀 Saiu olhando: <strong class="text-red-400">${log.lastVehicle}</strong></div>
+          <div class="text-zinc-400">👀 Saiu olhando: <strong class="text-blue-400">${log.lastVehicle}</strong></div>
           <div class="text-zinc-400">🎯 Robô recomendou: <strong class="text-amber-400">${log.suggestedVehicle} (${log.suggestedCity})</strong></div>
         </div>
 
@@ -1281,7 +1281,7 @@ window.MTCarsAdmin = (function () {
                   <div
                     draggable="true"
                     ondragstart="MTCarsAdmin.onKanbanDragStart(event, '${lead.id}')"
-                    class="p-3.5 rounded-xl bg-zinc-950/95 border border-zinc-800 hover:border-red-500/50 transition space-y-2.5 cursor-grab active:cursor-grabbing shadow"
+                    class="p-3.5 rounded-xl bg-zinc-950/95 border border-zinc-800 hover:border-blue-500/50 transition space-y-2.5 cursor-grab active:cursor-grabbing shadow"
                   >
                     <div class="flex items-start justify-between gap-2">
                       <div>
@@ -1294,7 +1294,7 @@ window.MTCarsAdmin = (function () {
                     </div>
 
                     <div class="p-2.5 rounded-lg bg-zinc-900/90 border border-zinc-800/80 space-y-1">
-                      <div class="text-[11px] font-bold text-red-400 line-clamp-1">🚘 ${lead.vehicleTitle}</div>
+                      <div class="text-[11px] font-bold text-blue-400 line-clamp-1">🚘 ${lead.vehicleTitle}</div>
                       <div class="text-[11px] text-zinc-300">
                         💵 Entrada: <strong class="text-emerald-400">${App.formatBRL(lead.downPayment)}</strong> (${lead.installments}x)
                       </div>
@@ -1316,7 +1316,7 @@ window.MTCarsAdmin = (function () {
                         }
                         ${
                           nextStage
-                            ? `<button onclick="MTCarsAdmin.moveLeadStage('${lead.id}', '${nextStage}')" title="Avançar etapa" class="px-2.5 py-1 rounded bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white font-bold text-[11px] transition">Avançar →</button>`
+                            ? `<button onclick="MTCarsAdmin.moveLeadStage('${lead.id}', '${nextStage}')" title="Avançar etapa" class="px-2.5 py-1 rounded bg-blue-700/20 hover:bg-blue-700 text-blue-300 hover:text-white font-bold text-[11px] transition">Avançar →</button>`
                             : ""
                         }
                       </div>
@@ -1397,7 +1397,7 @@ window.MTCarsAdmin = (function () {
       <div class="space-y-4">
         <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
           <div>
-            <span class="text-xs font-bold text-red-400 uppercase">Dossiê Completo do Lead MT Cars</span>
+            <span class="text-xs font-bold text-blue-400 uppercase">Dossiê Completo do Lead MT Cars</span>
             <h3 class="text-xl font-black text-white">${lead.name}</h3>
             <p class="text-xs text-zinc-400">📱 ${lead.whatsapp} • 📍 ${lead.city} - MT</p>
           </div>
@@ -1445,7 +1445,7 @@ window.MTCarsAdmin = (function () {
         <div class="flex items-center justify-end gap-3 pt-2">
           <button
             onclick="MTCarsAdmin.saveLeadDossierNotes('${lead.id}')"
-            class="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs"
+            class="px-4 py-2.5 rounded-xl bg-blue-700 hover:bg-blue-600 text-white font-bold text-xs"
           >
             Salvar Anotações
           </button>
@@ -1528,7 +1528,7 @@ window.MTCarsAdmin = (function () {
                 ${s.avatar}
               </div>
               <div>
-                <span class="text-[11px] font-bold uppercase tracking-wider text-red-400">${s.code}</span>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-blue-400">${s.code}</span>
                 <h4 class="text-base font-extrabold text-white">${s.name}</h4>
                 <span class="text-xs text-zinc-400 block">📍 Base: ${s.city} - MT</span>
               </div>
@@ -1565,7 +1565,7 @@ window.MTCarsAdmin = (function () {
               <span class="text-base font-black text-emerald-400">${App.formatBRL(s.comissoesGeradas)}</span>
             </div>
             <div class="w-full h-2 rounded-full bg-zinc-950 overflow-hidden border border-zinc-800">
-              <div class="h-full bg-gradient-to-r from-red-600 via-amber-500 to-emerald-500" style="width: ${progressPct}%"></div>
+              <div class="h-full bg-gradient-to-r from-blue-700 via-amber-500 to-emerald-500" style="width: ${progressPct}%"></div>
             </div>
             <div class="flex justify-between text-[10px] text-zinc-500">
               <span>${progressPct}% da meta atingida</span>
@@ -1582,7 +1582,7 @@ window.MTCarsAdmin = (function () {
             </button>
             <button
               onclick="MTCarsAdmin.switchActiveSeller('${s.id}')"
-              class="py-2 px-3 rounded-xl bg-red-600/20 hover:bg-red-600 border border-red-500/40 text-red-300 hover:text-white text-xs font-bold transition"
+              class="py-2 px-3 rounded-xl bg-blue-700/20 hover:bg-blue-700 border border-blue-500/40 text-blue-300 hover:text-white text-xs font-bold transition"
             >
               Operar como ${s.code.split(" ")[1]}
             </button>
@@ -1712,7 +1712,7 @@ window.MTCarsAdmin = (function () {
         <!-- Cabeçalho Oficial da Proposta -->
         <div class="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800 pb-4">
           <div class="flex items-center gap-3">
-            <div class="w-11 h-11 rounded-xl bg-red-600 flex items-center justify-center text-white keep-white-text font-black text-base">
+            <div class="w-11 h-11 rounded-xl bg-blue-700 flex items-center justify-center text-white keep-white-text font-black text-base">
               MT
             </div>
             <div>
@@ -1782,7 +1782,7 @@ window.MTCarsAdmin = (function () {
                 const val = App.calculateInstallment(veh.priceSale, totalEntry, m);
                 const isSelected = m === (vis.simulation?.installments || 48);
                 return `
-                  <div class="p-2.5 rounded-xl border ${isSelected ? "bg-red-600/20 border-red-500 text-white" : "bg-zinc-950 border-zinc-800 text-zinc-300"}">
+                  <div class="p-2.5 rounded-xl border ${isSelected ? "bg-blue-700/20 border-blue-500 text-white" : "bg-zinc-950 border-zinc-800 text-zinc-300"}">
                     <span class="text-xs font-bold block">${m}x fixas</span>
                     <strong class="text-sm font-black ${isSelected ? "text-emerald-400" : "text-white"}">${App.formatBRL(val)}</strong>
                   </div>
