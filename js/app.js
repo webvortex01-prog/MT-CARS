@@ -444,19 +444,29 @@ window.MTCarsApp = (function () {
                 ${isRegionalMatch ? `<span class="px-1.5 py-0.5 rounded bg-emerald-500 text-zinc-950 text-[9px] font-extrabold">Sua Região</span>` : ""}
               </div>
 
-              <!-- Topo Direito: Botão Prático Comparar -->
-              <button
-                type="button"
-                onclick="MTCarsApp.toggleCompareVehicle('${v.id}')"
-                title="Adicionar ao Comparador"
-                class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[11px] font-bold backdrop-blur-md transition ${
-                  isCompared
-                    ? "bg-amber-500 text-zinc-950 shadow"
-                    : "bg-black/70 text-zinc-200 hover:bg-black/90 keep-white-text"
-                }"
-              >
-                ${isCompared ? "✔ Comparando" : "⚖️ Comparar"}
-              </button>
+              <!-- Topo Direito: Botões Práticos Tela Cheia + Comparar -->
+              <div class="absolute top-2.5 right-2.5 flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onclick="event.stopPropagation(); MTCarsApp.openFullscreenLightbox('${v.id}', 0);"
+                  title="Ver Fotos em Tela Cheia com Zoom"
+                  class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-black/75 hover:bg-black text-white keep-white-text backdrop-blur-md transition flex items-center gap-1 shadow"
+                >
+                  <span>🔍 Tela Cheia (${Array.isArray(v.gallery) && v.gallery.length ? v.gallery.length : 1})</span>
+                </button>
+                <button
+                  type="button"
+                  onclick="event.stopPropagation(); MTCarsApp.toggleCompareVehicle('${v.id}');"
+                  title="Adicionar ao Comparador"
+                  class="px-2.5 py-1 rounded-full text-[11px] font-bold backdrop-blur-md transition ${
+                    isCompared
+                      ? "bg-amber-500 text-zinc-950 shadow"
+                      : "bg-black/70 text-zinc-200 hover:bg-black/90 keep-white-text"
+                  }"
+                >
+                  ${isCompared ? "✔" : "⚖️"}
+                </button>
+              </div>
 
               <!-- Base da Foto: Único Selo de Economia FIPE -->
               <div class="absolute bottom-2.5 left-3 right-3 flex items-center justify-between">
@@ -582,23 +592,41 @@ window.MTCarsApp = (function () {
 
     const content = document.getElementById("vehicle-detail-content");
     const galleryImgs = Array.isArray(v.gallery) && v.gallery.length ? v.gallery : [v.image];
+    state.currentDetailPhotoIdx = 0;
 
     content.innerHTML = `
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div class="lg:col-span-7 space-y-5">
-          <div class="relative rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 h-72 sm:h-96">
-            <img id="detail-main-photo" src="${galleryImgs[0]}" alt="${v.title}" class="w-full h-full object-cover" />
-            <div class="absolute top-3 left-3 flex flex-wrap gap-2">
-              <span class="px-3 py-1.5 rounded-xl bg-zinc-950/90 border border-zinc-700 text-xs font-bold text-white">
+          <div class="relative rounded-2xl overflow-hidden vehicle-photo-frame border border-zinc-800 h-72 sm:h-96 group">
+            <img
+              id="detail-main-photo"
+              src="${galleryImgs[0]}"
+              alt="${v.title}"
+              onclick="MTCarsApp.openFullscreenLightbox('${v.id}', MTCarsApp.state.currentDetailPhotoIdx || 0)"
+              class="w-full h-full object-cover cursor-zoom-in transition-transform duration-300"
+            />
+            <div class="absolute top-3 left-3 flex flex-wrap gap-2 pointer-events-none">
+              <span class="px-3 py-1.5 rounded-xl bg-black/80 border border-zinc-700 text-xs font-bold text-white keep-white-text">
                 📍 ${v.city} - ${v.uf}
               </span>
-              <span class="px-3 py-1.5 rounded-xl bg-emerald-500/90 text-zinc-950 text-xs font-extrabold">
-                ✔ Veículo Verificado MT Cars • Ref: ${v.ref}
+              <span class="px-3 py-1.5 rounded-xl bg-emerald-500 text-zinc-950 text-xs font-extrabold">
+                ✔ Verificado MT Car • Ref: ${v.ref}
               </span>
             </div>
+
+            <!-- Botão Ver em Tela Cheia com Zoom -->
+            <button
+              type="button"
+              onclick="MTCarsApp.openFullscreenLightbox('${v.id}', MTCarsApp.state.currentDetailPhotoIdx || 0)"
+              class="absolute top-3 right-3 px-3.5 py-2 rounded-xl bg-black/80 hover:bg-black text-white keep-white-text text-xs font-extrabold flex items-center gap-1.5 shadow-xl border border-white/20 transition"
+            >
+              <i data-lucide="maximize-2" class="w-4 h-4"></i>
+              <span>🔍 Ver em Tela Cheia (${galleryImgs.length} fotos)</span>
+            </button>
+
             ${
               fipeDiff > 0
-                ? `<div class="absolute bottom-3 left-3">
+                ? `<div class="absolute bottom-3 left-3 pointer-events-none">
                      <span class="px-3 py-1.5 rounded-xl bg-amber-500 text-zinc-950 text-xs font-extrabold shadow-lg">
                        🔥 Oportunidade: ${formatBRL(fipeDiff)} Abaixo da Tabela FIPE
                      </span>
@@ -609,13 +637,20 @@ window.MTCarsApp = (function () {
 
           ${
             galleryImgs.length > 1
-              ? `<div class="flex gap-3 overflow-x-auto pb-1">
+              ? `<div class="flex gap-2.5 overflow-x-auto pb-1">
                   ${galleryImgs
                     .map(
                       (imgUrl, idx) => `
-                    <button onclick="document.getElementById('detail-main-photo').src='${imgUrl}'" class="w-24 h-16 rounded-xl overflow-hidden border-2 border-zinc-700 hover:border-red-500 shrink-0 transition">
-                      <img src="${imgUrl}" class="w-full h-full object-cover" alt="Ângulo ${idx + 1}" />
-                    </button>
+                    <div class="relative shrink-0">
+                      <button
+                        type="button"
+                        onclick="document.getElementById('detail-main-photo').src='${imgUrl}'; MTCarsApp.state.currentDetailPhotoIdx=${idx};"
+                        ondblclick="MTCarsApp.openFullscreenLightbox('${v.id}', ${idx})"
+                        class="w-24 h-16 rounded-xl overflow-hidden border-2 border-zinc-700 hover:border-red-500 transition block"
+                      >
+                        <img src="${imgUrl}" class="w-full h-full object-cover" alt="Ângulo ${idx + 1}" />
+                      </button>
+                    </div>
                   `
                     )
                     .join("")}
@@ -670,23 +705,32 @@ window.MTCarsApp = (function () {
             </div>
           </div>
 
+          <div class="glass-panel rounded-2xl p-5 border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-zinc-900 to-zinc-900">
           <div class="glass-panel rounded-2xl p-5 border-2 border-amber-500/40">
             <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
               <span class="text-xs font-extrabold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
                 <i data-lucide="award" class="w-4 h-4"></i> Comparativo Oficial Tabela FIPE (${v.fipeCode || "Mato Grosso"})
               </span>
+              <span class="text-xs font-semibold text-emerald-400">Economia imediata de ${formatBRL(Math.max(0, fipeDiff))}</span>
               <span class="text-xs font-extrabold text-emerald-400">Economia imediata de ${formatBRL(Math.max(0, fipeDiff))}</span>
             </div>
             <div class="grid grid-cols-2 gap-4 mt-3">
+              <div class="p-3 rounded-xl bg-zinc-950/80 border border-zinc-800">
               <div class="p-3 rounded-xl bg-zinc-950 border border-zinc-800">
                 <span class="text-xs text-zinc-400 block">Preço Médio FIPE no MT</span>
+                <span class="text-lg font-bold text-zinc-300">${formatBRL(v.priceFipe)}</span>
                 <span class="text-lg font-bold text-white">${formatBRL(v.priceFipe)}</span>
               </div>
+              <div class="p-3 rounded-xl bg-zinc-950/80 border border-emerald-500/40">
+                <span class="text-xs text-emerald-400 block">Preço Exclusivo MT Cars</span>
               <div class="p-3 rounded-xl bg-zinc-950 border border-emerald-500/50">
                 <span class="text-xs text-emerald-400 font-bold block">Preço Exclusivo MT Car</span>
                 <span class="text-lg font-extrabold text-white">${formatBRL(v.priceSale)}</span>
               </div>
             </div>
+            <p class="text-[11px] text-zinc-400 mt-3">
+              🔒 <strong>Blindagem de Negócio MT Cars:</strong> Veículo vistoriado presencialmente em <strong>${v.city} - MT</strong>. Pagamento seguro diretamente na transferência com intermediação jurídica completa.
             <p class="text-xs text-zinc-300 mt-3">
               🔒 <strong>Blindagem de Negócio MT Car:</strong> Veículo vistoriado presencialmente em <strong>${v.city} - MT</strong>. Pagamento seguro diretamente na transferência com intermediação jurídica completa.
             </p>
@@ -797,15 +841,19 @@ window.MTCarsApp = (function () {
               </div>
             </div>
 
+            <div class="p-4 rounded-2xl bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 border border-emerald-500/40 space-y-2">
             <div class="p-4 rounded-2xl bg-zinc-950 border-2 border-emerald-500/50 space-y-2">
               <div class="flex items-center justify-between text-xs text-zinc-400">
                 <span>Saldo a Financiar Estimado:</span>
+                <span id="sim-financed-amount" class="font-bold text-zinc-200">${formatBRL(Math.max(0, v.priceSale - state.simulator.downPayment))}</span>
                 <span id="sim-financed-amount" class="font-bold text-white">${formatBRL(Math.max(0, v.priceSale - state.simulator.downPayment))}</span>
               </div>
               <div class="flex items-baseline justify-between pt-1">
+                <span id="sim-result-months-label" class="text-sm font-bold text-zinc-300">${state.simulator.installments}x fixas de:</span>
                 <span id="sim-result-months-label" class="text-sm font-bold text-white">${state.simulator.installments}x fixas de:</span>
                 <span id="sim-result-installment" class="text-3xl font-black text-emerald-400">${formatBRL(installmentVal)}</span>
               </div>
+              <p class="text-[11px] text-zinc-500">
               <p class="text-[11px] text-zinc-400">
                 *Taxa referencial de 1,49% a.m. sujeita à aprovação de CPF/CNPJ (Safra, Santander, BV, Itaú, Sicredi MT).
               </p>
@@ -1429,7 +1477,9 @@ window.MTCarsApp = (function () {
     const year = Number(document.getElementById("sell-car-year")?.value) || 2023;
     const priceRepasse = Number(document.getElementById("sell-car-price")?.value) || 120000;
     const photoUrl = document.getElementById("sell-car-photo")?.value.trim() || "";
-    const waitCooperadoPhotos = document.getElementById("sell-car-wait-photos")?.checked || !photoUrl;
+    const uploadedPhotos = Array.isArray(state.uploadedLojistaPhotos) ? state.uploadedLojistaPhotos : [];
+    const allPhotos = uploadedPhotos.length > 0 ? uploadedPhotos : (photoUrl ? [photoUrl] : []);
+    const waitCooperadoPhotos = document.getElementById("sell-car-wait-photos")?.checked && allPhotos.length === 0;
 
     if (!owner || !phone || !model) {
       showToast("⚠️ Preencha o nome do lojista/responsável, WhatsApp e o modelo do veículo.", "amber");
@@ -1464,7 +1514,7 @@ window.MTCarsApp = (function () {
       garageOwner: owner,
       garageWhatsapp: phone,
       captadorId: waitCooperadoPhotos ? null : "seller_1",
-      captadorName: waitCooperadoPhotos ? "📸 Aberto p/ Cooperado Fotografar na Loja" : "Lojista Parceiro (Com Fotos)",
+      captadorName: waitCooperadoPhotos ? "📸 Aberto p/ Cooperado Fotografar na Loja" : `Lojista Parceiro (${allPhotos.length} fotos)`,
       photoStatus: waitCooperadoPhotos ? "pending_photos" : "complete",
       status: waitCooperadoPhotos ? "Aguardando Fotos" : "Disponível",
       highlightTag: waitCooperadoPhotos ? "📸 Sem Fotos (Aberto p/ Cooperados)" : "⭐ Recém Cadastrado MT",
@@ -1474,10 +1524,14 @@ window.MTCarsApp = (function () {
         ? `Cadastrado pelo lojista ${storeName} (${city}-MT) sem fotos. Aberto no painel para qualquer Cooperado ir até a loja fotografar e ativar na vitrine!`
         : `Veículo cadastrado pelo lojista parceiro ${storeName} em ${city} - MT. Disponível para intermediação imediata.`,
       options: ["Vistoria Cautelar MT Car", "Documentação 2026 OK", "Intermediação Garantida"],
-      image: photoUrl || defaultImg,
-      gallery: photoUrl ? [photoUrl] : [],
+      image: allPhotos[0] || defaultImg,
+      gallery: allPhotos.length > 0 ? allPhotos : [],
       fipeCode: "005400-1"
     };
+
+    state.uploadedLojistaPhotos = [];
+    const prevBox = document.getElementById("sell-car-photos-preview");
+    if (prevBox) prevBox.innerHTML = "";
 
     loadStateFromStorage();
     state.vehicles.unshift(newVeh);
@@ -1795,6 +1849,199 @@ window.MTCarsApp = (function () {
     }
   }
 
+  // =========================================================================
+  // 1. LIGHTBOX DE FOTOS EM TELA CHEIA COM ZOOM E CARROSSEL (DETALHE DO CARRO)
+  // =========================================================================
+  let lightboxState = {
+    vehicleId: null,
+    images: [],
+    currentIndex: 0,
+    zoomed: false
+  };
+
+  function openFullscreenLightbox(vehicleId, startIndex = 0) {
+    const v = state.vehicles.find((item) => item.id === vehicleId);
+    if (!v) return;
+    const imgs = Array.isArray(v.gallery) && v.gallery.length ? v.gallery : [v.image];
+
+    lightboxState = {
+      vehicleId: v.id,
+      title: `${v.title} (${v.year}) — ${formatBRL(v.priceSale)}`,
+      images: imgs,
+      currentIndex: Math.max(0, Math.min(startIndex, imgs.length - 1)),
+      zoomed: false
+    };
+
+    const modal = document.getElementById("fullscreen-lightbox-modal");
+    if (!modal) return;
+    renderLightboxSlide();
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    trackVisitorAction(`🔍 Ampliou fotos em Tela Cheia: ${v.title} (Foto ${lightboxState.currentIndex + 1}/${imgs.length})`, v);
+  }
+
+  function renderLightboxSlide() {
+    const imgEl = document.getElementById("lightbox-main-img");
+    const titleEl = document.getElementById("lightbox-title");
+    const counterEl = document.getElementById("lightbox-counter");
+    const thumbsEl = document.getElementById("lightbox-thumbs");
+    const zoomBtnEl = document.getElementById("lightbox-zoom-btn");
+
+    const total = lightboxState.images.length;
+    const idx = lightboxState.currentIndex;
+    const currentUrl = lightboxState.images[idx] || "";
+
+    if (imgEl) {
+      imgEl.src = currentUrl;
+      imgEl.style.transform = lightboxState.zoomed ? "scale(1.85)" : "scale(1)";
+      imgEl.style.cursor = lightboxState.zoomed ? "zoom-out" : "zoom-in";
+    }
+    if (titleEl) titleEl.textContent = lightboxState.title || "Visualizador em Tela Cheia MT Car";
+    if (counterEl) counterEl.textContent = `Foto ${idx + 1} de ${total}`;
+    if (zoomBtnEl) {
+      zoomBtnEl.textContent = lightboxState.zoomed ? "🔎 Reduzir Zoom (1x)" : "🔍 Dar Super Zoom (2x)";
+    }
+
+    if (thumbsEl) {
+      thumbsEl.innerHTML = lightboxState.images
+        .map(
+          (url, i) => `
+          <button
+            type="button"
+            onclick="MTCarsApp.setLightboxIndex(${i})"
+            class="w-20 h-14 rounded-xl overflow-hidden border-2 transition shrink-0 ${
+              i === idx ? "border-amber-400 scale-105 shadow-lg" : "border-zinc-700 opacity-60 hover:opacity-100"
+            }"
+          >
+            <img src="${url}" class="w-full h-full object-cover" alt="Foto ${i + 1}" />
+          </button>
+        `
+        )
+        .join("");
+    }
+  }
+
+  function setLightboxIndex(newIdx) {
+    const total = lightboxState.images.length;
+    if (!total) return;
+    lightboxState.currentIndex = (newIdx + total) % total;
+    lightboxState.zoomed = false;
+    renderLightboxSlide();
+  }
+
+  function nextLightboxPhoto(step = 1) {
+    setLightboxIndex(lightboxState.currentIndex + step);
+  }
+
+  function toggleLightboxZoom() {
+    lightboxState.zoomed = !lightboxState.zoomed;
+    renderLightboxSlide();
+  }
+
+  function closeFullscreenLightbox() {
+    const modal = document.getElementById("fullscreen-lightbox-modal");
+    if (modal) {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+    lightboxState.zoomed = false;
+  }
+
+  // Atalhos de teclado (Setas Esquerda/Direita e ESC) para a Tela Cheia
+  window.addEventListener("keydown", (e) => {
+    const modal = document.getElementById("fullscreen-lightbox-modal");
+    if (!modal || modal.classList.contains("hidden")) return;
+    if (e.key === "Escape") closeFullscreenLightbox();
+    if (e.key === "ArrowRight") nextLightboxPhoto(1);
+    if (e.key === "ArrowLeft") nextLightboxPhoto(-1);
+  });
+
+  // =========================================================================
+  // 2. UPLOAD REAL DE MÚLTIPLAS FOTOS DIRETO DO CELULAR / PC (COM COMPRESSÃO HD)
+  // =========================================================================
+  function compressImageFileToDataUrl(file, maxWidth = 1100, quality = 0.82) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          let w = img.width;
+          let h = img.height;
+          if (w > maxWidth) {
+            h = Math.round((h * maxWidth) / w);
+            w = maxWidth;
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, w, h);
+          resolve(canvas.toDataURL("image/jpeg", quality));
+        };
+        img.onerror = () => resolve(ev.target.result);
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function handleMultiPhotoUpload(inputEl, targetContext = "lojista") {
+    const files = Array.from(inputEl?.files || []).slice(0, 12);
+    if (!files.length) return;
+
+    showToast(`📸 Processando ${files.length} foto(s) em alta definição...`, "amber");
+    const dataUrls = [];
+    for (const file of files) {
+      const compressed = await compressImageFileToDataUrl(file);
+      dataUrls.push(compressed);
+    }
+
+    if (targetContext === "lojista") {
+      state.uploadedLojistaPhotos = dataUrls;
+      const waitCheck = document.getElementById("sell-car-wait-photos");
+      if (waitCheck) waitCheck.checked = false;
+      const prevBox = document.getElementById("sell-car-photos-preview");
+      if (prevBox) {
+        prevBox.innerHTML = dataUrls
+          .map((u, i) => `<img src="${u}" class="w-16 h-12 object-cover rounded-lg border border-emerald-500" title="Foto ${i + 1}" />`)
+          .join("");
+      }
+    } else if (targetContext === "admin") {
+      state.uploadedAdminPhotos = dataUrls;
+      const urlInput = document.getElementById("new-veh-image");
+      if (urlInput && dataUrls[0]) urlInput.value = dataUrls[0];
+      const prevBox = document.getElementById("admin-veh-photos-preview");
+      if (prevBox) {
+        prevBox.innerHTML = dataUrls
+          .map((u, i) => `<img src="${u}" class="w-16 h-12 object-cover rounded-lg border border-emerald-500" title="Foto ${i + 1}" />`)
+          .join("");
+      }
+    }
+
+    showToast(`✅ ${dataUrls.length} foto(s) carregadas da galeria e prontas para salvar!`, "emerald");
+  }
+
+  // =========================================================================
+  // 3. BARRA DE MARCAS CLICÁVEIS ESTILO "USADO FÁCIL"
+  // =========================================================================
+  function setQuickBrandFilter(brandName) {
+    const searchInput = document.getElementById("filter-search-input");
+    const current = (searchInput?.value || "").trim();
+    const newVal = current.toLowerCase() === brandName.toLowerCase() ? "" : brandName;
+    if (searchInput) searchInput.value = newVal;
+
+    document.querySelectorAll(".brand-shortcut-pill").forEach((btn) => {
+      const b = btn.getAttribute("data-brand") || "";
+      if (b.toLowerCase() === newVal.toLowerCase()) {
+        btn.className = "brand-shortcut-pill px-3.5 py-2 rounded-xl text-xs font-extrabold bg-red-600 text-white keep-white-text border border-red-500 shadow transition shrink-0";
+      } else {
+        btn.className = "brand-shortcut-pill px-3.5 py-2 rounded-xl text-xs font-bold bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-700 transition shrink-0";
+      }
+    });
+
+    applyPublicFilters();
+  }
+
   function init() {
     // Sempre inicia com FUNDO BRANCO POR PADRÃO (a menos que a pessoa clique no botão para mudar)
     const savedTheme = localStorage.getItem("mtcars_theme_mode_v3");
@@ -1888,6 +2135,14 @@ window.MTCarsApp = (function () {
     toggleThemeMode,
     toggleCompareVehicle,
     openCompareModal,
-    closeCompareModal
+    closeCompareModal,
+    openFullscreenLightbox,
+    setLightboxIndex,
+    nextLightboxPhoto,
+    toggleLightboxZoom,
+    closeFullscreenLightbox,
+    handleMultiPhotoUpload,
+    setQuickBrandFilter,
+    compressImageFileToDataUrl
   };
 })();

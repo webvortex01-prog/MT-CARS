@@ -1017,13 +1017,22 @@ window.MTCarsAdmin = (function () {
     const garageWhatsapp = document.getElementById("new-veh-garage-phone")?.value.trim() || "(65) 99999-1111";
     const captadorId = document.getElementById("new-veh-captador")?.value || "seller_1";
     const sellerObj = App.state.sellers.find((s) => s.id === captadorId) || App.state.sellers[0];
-    const image = document.getElementById("new-veh-image")?.value.trim() || "https://images.unsplash.com/photo-1559416523-140ddc3d238c?auto=format&fit=crop&w=1000&q=85";
+    const uploadedGallery = Array.isArray(App.state.uploadedAdminPhotos) && App.state.uploadedAdminPhotos.length > 0
+      ? [...App.state.uploadedAdminPhotos]
+      : null;
+    const rawImageInput = document.getElementById("new-veh-image")?.value.trim();
+    const image = uploadedGallery
+      ? uploadedGallery[0]
+      : (rawImageInput || "https://images.unsplash.com/photo-1559416523-140ddc3d238c?auto=format&fit=crop&w=1000&q=85");
     const description = document.getElementById("new-veh-desc")?.value.trim() || `Veículo selecionado em ${city} - MT com intermediação e garantia documental MT Cars.`;
 
     let savedVehObj = null;
     if (editId) {
       const idx = App.state.vehicles.findIndex((v) => v.id === editId);
       if (idx !== -1) {
+        const existingGallery = Array.isArray(App.state.vehicles[idx].gallery) && App.state.vehicles[idx].gallery.length > 0
+          ? App.state.vehicles[idx].gallery
+          : [image];
         App.state.vehicles[idx] = {
           ...App.state.vehicles[idx],
           brand,
@@ -1044,7 +1053,8 @@ window.MTCarsAdmin = (function () {
           captadorId,
           captadorName: sellerObj.fullTitle,
           image,
-          gallery: [image],
+          gallery: uploadedGallery || existingGallery,
+          photoStatus: "complete",
           description
         };
         savedVehObj = App.state.vehicles[idx];
@@ -1073,13 +1083,14 @@ window.MTCarsAdmin = (function () {
         captadorId,
         captadorName: sellerObj.fullTitle,
         status: "Disponível",
+        photoStatus: "complete",
         highlightTag: category.includes("Camionetes") ? "🚜 Pronto pro Agro" : "⭐ Oferta Auditada MT",
         color: "Branco",
         plateEnd: "IPVA 2026 Pago",
         description,
         options: ["Laudo Cautelar Aprovado", "IPVA 2026 Pago", "Garantia Procedência MT Car", "Multimídia Completa"],
         image,
-        gallery: [image],
+        gallery: uploadedGallery || [image],
         fipeCode: "002140-1"
       };
       App.state.vehicles.unshift(newVeh);
@@ -1087,6 +1098,10 @@ window.MTCarsAdmin = (function () {
       sellerObj.carrosCaptados = (Number(sellerObj.carrosCaptados) || 0) + 1;
       App.showToast(`🚗 Novo veículo ${newVeh.title} (${newVeh.ref}) salvo no Banco Cloud MT Car!`, "emerald");
     }
+
+    App.state.uploadedAdminPhotos = [];
+    const adminPreviewEl = document.getElementById("admin-veh-photos-preview");
+    if (adminPreviewEl) adminPreviewEl.innerHTML = "";
 
     App.persistAll();
     window.MTCarsRealtime.emit("VEHICLE_SAVED", { vehicle: savedVehObj });
@@ -1996,37 +2011,60 @@ window.MTCarsAdmin = (function () {
     `;
   }
 
-  // 5. Cooperado Vai até a Loja e Adiciona as Fotos do Veículo Cadastrado pelo Lojista
+  // 5. Cooperado Vai até a Loja e Adiciona as Fotos do Veículo Cadastrado pelo Lojista (Direto da Galeria Celular/PC!)
   function cooperadoAddPhotosToVehicle(vehicleId) {
     App.loadStateFromStorage();
     const v = App.state.vehicles.find((item) => item.id === vehicleId);
     if (!v) return;
 
     const currentSeller = App.state.currentSeller || App.state.sellers[0];
-    const customUrl = window.prompt(
-      `📷 COOPERADO NA LOJA (${v.garageName} - ${v.city}/MT)\n\nCole a URL da foto tirada do ${v.title} (ou deixe em branco para usar a foto oficial de alta resolução da galeria MT Car):`,
-      v.image || "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1000&q=85"
-    );
-    if (customUrl === null) return;
 
-    const finalImg = customUrl.trim() || "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1000&q=85";
-    v.image = finalImg;
-    v.gallery = [finalImg];
-    v.photoStatus = "complete";
-    v.status = "Disponível";
-    v.captadorId = currentSeller.id;
-    v.captadorName = `${currentSeller.fullTitle} (Fotografou na Loja)`;
-    v.highlightTag = "📸 Fotografado por Cooperado MT Car";
+    // Cria seletor de arquivos nativo para o Cooperado enviar múltiplas fotos direto do celular ou PC
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/*";
+    fileInput.multiple = true;
+    fileInput.style.display = "none";
+    document.body.appendChild(fileInput);
 
-    const sellerObj = App.state.sellers.find((s) => s.id === currentSeller.id);
-    if (sellerObj) {
-      sellerObj.carrosCaptados = (Number(sellerObj.carrosCaptados) || 0) + 1;
-    }
+    fileInput.onchange = async () => {
+      const files = Array.from(fileInput.files || []).slice(0, 12);
+      document.body.removeChild(fileInput);
+      if (!files.length) return;
 
-    App.persistAll();
-    window.MTCarsRealtime.emit("VEHICLE_UPDATED", { vehicleId: v.id, vehicle: v });
-    renderStockTab();
-    App.showToast(`📸 Fotos adicionadas por ${currentSeller.fullTitle}! O veículo ${v.title} já está publicado na Vitrine!`, "emerald");
+      App.showToast(`📸 Processando ${files.length} foto(s) tiradas pelo Cooperado...`, "amber");
+      const uploadedList = [];
+      for (const f of files) {
+        try {
+          const dataUrl = await App.compressImageFileToDataUrl(f);
+          uploadedList.push(dataUrl);
+        } catch (err) {
+          console.warn("Erro ao comprimir foto do cooperado:", err);
+        }
+      }
+
+      if (!uploadedList.length) return;
+
+      v.image = uploadedList[0];
+      v.gallery = uploadedList;
+      v.photoStatus = "complete";
+      v.status = "Disponível";
+      v.captadorId = currentSeller.id;
+      v.captadorName = `${currentSeller.fullTitle} (Fotografou na Loja)`;
+      v.highlightTag = "📸 Fotografado por Cooperado MT Car";
+
+      const sellerObj = App.state.sellers.find((s) => s.id === currentSeller.id);
+      if (sellerObj) {
+        sellerObj.carrosCaptados = (Number(sellerObj.carrosCaptados) || 0) + 1;
+      }
+
+      App.persistAll();
+      window.MTCarsRealtime.emit("VEHICLE_UPDATED", { vehicleId: v.id, vehicle: v });
+      renderStockTab();
+      App.showToast(`📸 ${uploadedList.length} foto(s) adicionada(s) por ${currentSeller.fullTitle}! O veículo ${v.title} já está no ar na Vitrine!`, "emerald");
+    };
+
+    fileInput.click();
   }
 
   // 6. ABA 6 EXCLUSIVA DO DONO: PÁGINA EXCLUSIVA DE LOJAS PARCEIRAS CADASTRADAS

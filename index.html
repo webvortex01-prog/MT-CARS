@@ -262,13 +262,59 @@
             </div>
           </div>
 
-          <!-- Linha discreta de contagem -->
-          <div class="flex items-center justify-between pt-2.5 mt-2.5 border-t border-zinc-800/60 text-xs">
-            <div id="public-results-count" class="text-zinc-400">Carregando estoque estadual...</div>
-            <button onclick="MTCarsApp.clearPublicFilters()"
-              class="text-zinc-400 hover:text-red-400 text-[11px] font-semibold">
-              Limpar filtros
-            </button>
+          <!-- Linha discreta de contagem + Barra de Marcas Clicáveis (Estilo Portal Completo) -->
+          <div class="pt-3 mt-3 border-t border-zinc-800/60 space-y-2.5">
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span class="text-[11px] font-extrabold uppercase text-zinc-400 mr-1">🏷️ Marcas:</span>
+              <button type="button" onclick="MTCarsApp.setQuickBrandFilter('')" data-brand=""
+                class="quick-brand-pill px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500 text-zinc-950 border border-amber-400 transition">
+                Todas
+              </button>
+              <button type="button" onclick="MTCarsApp.setQuickBrandFilter('Chevrolet')" data-brand="Chevrolet"
+                class="quick-brand-pill px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-amber-500 transition">
+                Chevrolet
+              </button>
+              <button type="button" onclick="MTCarsApp.setQuickBrandFilter('Toyota')" data-brand="Toyota"
+                class="quick-brand-pill px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-amber-500 transition">
+                Toyota
+              </button>
+              <button type="button" onclick="MTCarsApp.setQuickBrandFilter('Volkswagen')" data-brand="Volkswagen"
+                class="quick-brand-pill px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-amber-500 transition">
+                Volkswagen
+              </button>
+              <button type="button" onclick="MTCarsApp.setQuickBrandFilter('Fiat')" data-brand="Fiat"
+                class="quick-brand-pill px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-amber-500 transition">
+                Fiat
+              </button>
+              <button type="button" onclick="MTCarsApp.setQuickBrandFilter('Jeep')" data-brand="Jeep"
+                class="quick-brand-pill px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-amber-500 transition">
+                Jeep
+              </button>
+              <button type="button" onclick="MTCarsApp.setQuickBrandFilter('Ford')" data-brand="Ford"
+                class="quick-brand-pill px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-amber-500 transition">
+                Ford
+              </button>
+              <button type="button" onclick="MTCarsApp.setQuickBrandFilter('Honda')" data-brand="Honda"
+                class="quick-brand-pill px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-amber-500 transition">
+                Honda
+              </button>
+              <button type="button" onclick="MTCarsApp.setQuickBrandFilter('Hyundai')" data-brand="Hyundai"
+                class="quick-brand-pill px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-amber-500 transition">
+                Hyundai
+              </button>
+              <button type="button" onclick="MTCarsApp.setQuickBrandFilter('Yamaha')" data-brand="Yamaha"
+                class="quick-brand-pill px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-amber-500 transition">
+                Yamaha
+              </button>
+            </div>
+
+            <div class="flex items-center justify-between text-xs pt-1">
+              <div id="public-results-count" class="text-zinc-400">Carregando estoque estadual...</div>
+              <button onclick="MTCarsApp.clearPublicFilters()"
+                class="text-zinc-400 hover:text-red-400 text-[11px] font-semibold">
+                Limpar filtros
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1031,10 +1077,20 @@
                 class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white"></select>
             </div>
             <div>
-              <label class="text-[11px] font-bold text-zinc-300 block mb-1">URL da Foto Principal</label>
-              <input id="new-veh-image" type="url" placeholder="https://images.unsplash.com/..."
+              <label class="text-[11px] font-bold text-zinc-300 block mb-1">URL da Foto Principal (ou envie fotos abaixo)</label>
+              <input id="new-veh-image" type="text" placeholder="https://images.unsplash.com/..."
                 class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
             </div>
+          </div>
+
+          <div class="pt-2 border-t border-zinc-800/80 space-y-2">
+            <label class="text-[11px] font-extrabold text-emerald-400 block">
+              📸 Enviar Várias Fotos Direto da Galeria do Celular / Computador (Até 12 Fotos HD)
+            </label>
+            <input id="new-veh-files" type="file" accept="image/*" multiple
+              onchange="MTCarsApp.handleMultiPhotoUpload(this, 'admin')"
+              class="w-full bg-zinc-950 border border-emerald-500/50 rounded-xl px-3 py-2 text-xs text-white file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-extrabold file:bg-emerald-500 file:text-zinc-950 hover:file:bg-emerald-400 cursor-pointer" />
+            <div id="admin-veh-photos-preview" class="grid grid-cols-4 sm:grid-cols-6 gap-2"></div>
           </div>
         </div>
 
@@ -1171,9 +1227,18 @@
           <input id="sell-car-price" type="number" required placeholder="Ex: 245000"
             class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
         </div>
+        <div class="space-y-2 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/40">
+          <label class="text-xs font-extrabold text-emerald-400 block">
+            📸 Enviar Fotos da Galeria do Celular / PC (Até 12 Fotos)
+          </label>
+          <input id="sell-car-files" type="file" accept="image/*" multiple
+            onchange="MTCarsApp.handleMultiPhotoUpload(this, 'lojista')"
+            class="w-full bg-zinc-950 border border-emerald-500/50 rounded-xl px-2.5 py-2 text-xs text-white file:mr-2.5 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-extrabold file:bg-emerald-500 file:text-zinc-950 hover:file:bg-emerald-400 cursor-pointer" />
+          <div id="sell-car-photos-preview" class="grid grid-cols-4 gap-1.5"></div>
+        </div>
         <div>
-          <label class="text-xs font-bold text-zinc-400 block mb-1">URL da Foto (Opcional — Se não tiver, cooperado tira na loja)</label>
-          <input id="sell-car-photo" type="url" placeholder="Deixe em branco para um Cooperado ir fotografar na loja..."
+          <label class="text-xs font-bold text-zinc-400 block mb-1">Ou URL da Foto (Opcional — Se não tiver, cooperado tira na loja)</label>
+          <input id="sell-car-photo" type="text" placeholder="Deixe em branco para um Cooperado ir fotografar na loja..."
             class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white" />
         </div>
         <label class="p-3 rounded-xl bg-amber-500/15 border border-amber-500/40 flex items-start gap-2.5 cursor-pointer">
@@ -1301,6 +1366,59 @@
         <button onclick="MTCarsApp.closeCompareModal()" class="text-zinc-400 hover:text-white">✕</button>
       </div>
       <div id="compare-vehicles-content"></div>
+    </div>
+  </div>
+
+  <!-- 13. MODAL VISUALIZADOR DE FOTOS EM TELA CHEIA COM ZOOM E CARROSSEL -->
+  <div id="fullscreen-lightbox-modal"
+    class="hidden fixed inset-0 z-[70] bg-black/95 backdrop-blur-xl flex-col justify-between p-3 sm:p-6 select-none">
+    <!-- Topo do Lightbox -->
+    <div class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-zinc-950/90 border border-zinc-800">
+      <div class="flex items-center gap-3">
+        <span id="lightbox-counter"
+          class="px-3 py-1 rounded-lg bg-amber-500 text-zinc-950 font-black text-xs">Foto 1 de 1</span>
+        <h3 id="lightbox-title" class="text-sm sm:text-base font-extrabold text-white keep-white-text truncate max-w-md sm:max-w-xl">
+          Visualizador em Tela Cheia MT Car
+        </h3>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="lightbox-zoom-btn" type="button" onclick="MTCarsApp.toggleLightboxZoom()"
+          class="px-3.5 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 text-white keep-white-text font-extrabold text-xs transition">
+          🔍 Super Zoom (2x)
+        </button>
+        <button type="button" onclick="MTCarsApp.closeFullscreenLightbox()"
+          class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white keep-white-text font-black text-xs transition shadow-lg">
+          ✕ Fechar Tela Cheia (ESC)
+        </button>
+      </div>
+    </div>
+
+    <!-- Área Central da Imagem em Alta Resolução + Setas Laterais -->
+    <div class="relative flex-1 flex items-center justify-center overflow-auto my-3">
+      <button type="button" onclick="MTCarsApp.nextLightboxPhoto(-1)"
+        class="fixed left-4 sm:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-zinc-950/90 hover:bg-amber-500 text-white keep-white-text hover:text-zinc-950 border-2 border-zinc-700 font-black text-xl flex items-center justify-center shadow-2xl transition"
+        title="Foto Anterior (Seta Esquerda)">
+        ◀
+      </button>
+
+      <div class="max-w-6xl max-h-[75vh] flex items-center justify-center p-2">
+        <img id="lightbox-main-img" src="" alt="Foto em Tela Cheia"
+          onclick="MTCarsApp.toggleLightboxZoom()"
+          style="transform: scale(1); cursor: zoom-in;"
+          class="max-h-[72vh] max-w-[90vw] w-auto h-auto object-contain rounded-2xl shadow-2xl border border-zinc-800 transition-transform duration-200" />
+      </div>
+
+      <button type="button" onclick="MTCarsApp.nextLightboxPhoto(1)"
+        class="fixed right-4 sm:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-zinc-950/90 hover:bg-amber-500 text-white keep-white-text hover:text-zinc-950 border-2 border-zinc-700 font-black text-xl flex items-center justify-center shadow-2xl transition"
+        title="Próxima Foto (Seta Direita)">
+        ▶
+      </button>
+    </div>
+
+    <!-- Barra Inferior de Miniaturas (Filmstrip) -->
+    <div class="px-4 py-2.5 rounded-2xl bg-zinc-950/90 border border-zinc-800">
+      <div id="lightbox-thumbs" class="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto py-1"></div>
     </div>
   </div>
 
